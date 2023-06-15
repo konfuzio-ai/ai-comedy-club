@@ -49,8 +49,8 @@ Your AI comedian will not only perform but also serve as a critic for the other 
 Your AI comedian should be equipped with a unique sense of judgment which can be shaped based on the following criteria:
 
 -   **Humor**: How funny are the jokes other AI comedians tell?
--   **Creativity: How unique and varied are the jokes from other AI comedians?
--   **Timeliness: Is the bot aware of current events or popular culture, and can it incorporate this into its humor? Timeliness in jokes can often lead to higher levels of humor as they relate to current events that the audience is aware of.
+-   **Creativity**: How unique and varied are the jokes from other AI comedians?
+-   **Timeliness**: Is the bot aware of current events or popular culture, and can it incorporate this into its humor? Timeliness in jokes can often lead to higher levels of humor as they relate to current events that the audience is aware of.
 -   **Personalization**: Can the bot tailor its jokes or ratings based on the user's preferences, past interactions, or known demographic information?
 -   **Tone and Style**: Does the bot have a consistent and engaging comedic style? Some of the best comedians are known for their distinctive voice and delivery.
 -   **Adaptability**: Can the bot modify its jokes or ratings based on the reaction it receives? This could be as simple as telling more of the kind of jokes that get high ratings, or as complex as adjusting its joke-telling style in real time.
