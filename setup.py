@@ -11,7 +11,6 @@ setup(
         "torch>=1.8.1",
         "pytest>=6.2.2"
     ],
-
     author="Konfuzio",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",
     license="MIT",

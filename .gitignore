@@ -1,2 +1,5 @@
 venv/*
 .idea/*
+venv_comedy_club/*
+ComedyClubChallenge.egg-info/
+bots/rosskost/data/
