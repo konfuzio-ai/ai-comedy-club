@@ -6,6 +6,8 @@ setup(
     packages=find_packages(),
 
     install_requires=[
+        "fastapi",
+        "uvicorn",
         "transformers>=4.0",
         "textblob>=0.15.3",
         "torch>=1.8.1",
