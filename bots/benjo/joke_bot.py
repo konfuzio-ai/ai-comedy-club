@@ -1,4 +1,6 @@
 import pyjokes
+import os 
+import importlib.util
 
 class Bot:
     name = 'Funny'
@@ -14,36 +16,30 @@ class Bot:
         return joke
     
     def rate_joke(self, joke):
-        # Calculate the rating based on various criteria
+     
+        bots_dir = './bots/'
         rating = 0
+        bot_directories = [d for d in os.listdir(bots_dir) if os.path.isdir(os.path.join(bots_dir, d))]
 
-        # Criteria 1: Length of the joke
-        length = len(joke)
-        if length <= 50:
-            rating += 5
-        elif length < 100:
-            rating += 4
-        else:
-            rating += 3
+        total_rating = 0
+        i = 0
+        for bot_dir in bot_directories:
+            if bot_dir != "benjo":
+               
+                spec = importlib.util.spec_from_file_location("bot", os.path.join(bots_dir, bot_dir, "joke_bot.py"))
+                bot_module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(bot_module)
 
-        
-        if 'java' in joke.lower() or 'python' in joke.lower():
-            rating += 2
+                bot = bot_module.Bot()
 
-       
-        if 'php' in joke.lower() or 'laravel' in joke.lower():
+                bot_rating = bot.rate_joke(joke)
+                total_rating += bot_rating
+                i += 1
+
+        rating = total_rating / i
+        if rating < 9:
             rating += 1
-
-      
-        if 'clever' in joke.lower() or 'smart' in joke.lower():
-            rating += 1
-
-        
-        if 'windows' in joke.lower() or 'atom' in joke.lower():
-            rating += 1
-
-        joke_without_spaces = ''.join(joke.lower().split())
-        if joke_without_spaces == joke_without_spaces[::-1]:
+        if rating > 10:
             rating = 10
 
         return rating
