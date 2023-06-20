@@ -1,7 +1,3 @@
 flake8
 pandas
-transformers
-datasets
-einops
-accelerate
-xformers
+sentence-transformers
