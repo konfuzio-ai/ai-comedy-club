@@ -26,8 +26,3 @@ gpt2.finetune(sess,
 
 
 print(run_name)
-sess = gpt2.start_tf_sess()
-gpt2.load_gpt2(sess, run_name=run_name)
-
-
-gpt2.generate(sess, run_name=run_name, temperature=0.7, length=100, prefix=None, top_k=40, nsamples=10)
