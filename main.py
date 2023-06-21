@@ -1,7 +1,11 @@
 import importlib.util
 import os
 import subprocess
+import pandas as pd
+from datetime import datetime
 
+# Take the joke preference as input from the user
+preference = input("Joke Preference: ")
 # The directory where the bots are located
 bots_dir = './bots/'
 
@@ -40,17 +44,28 @@ for bot_dir in bot_directories:
 # Scorecard for each bot
 scorecard = {bot.name: [] for bot in bots}
 
+# array to store results of every round
+results = pd.read_csv("results/result.csv")
+results = results[["Bot Name", "Joke", "Rating", "Time"]]
+# Generate the timestamp
+timestamp = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+
 # Let each bot tell a joke and rate the others' jokes
 for bot in bots:
-    joke = bot.tell_joke()
+    joke = bot.tell_joke(preference)
     print(f"\n{bot.name} tells a joke: {joke}")
 
     for other_bot in bots:
         if other_bot is not bot:
-            rating = other_bot.rate_joke(joke)
+            rating = other_bot.rate_joke(preference, bot.name, joke)
             print(f"{other_bot.name} rates the joke a {rating} out of 10")
             # Add the rating to the scorecard
             scorecard[bot.name].append(rating)
+            new_record = pd.DataFrame([[bot.name, joke, rating, timestamp]], columns=results.columns)
+            results = pd.concat([results, new_record], ignore_index=True)
+
+# Save the DataFrame as CSV
+results.to_csv('results/result.csv', index=False)
 
 # Display the scorecard
 print("\nScorecard:")

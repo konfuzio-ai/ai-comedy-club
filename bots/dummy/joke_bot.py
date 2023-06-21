@@ -21,11 +21,11 @@ class Bot:
             "Why was the developer unhappy at their job? They wanted arrays."
         ]
 
-    def tell_joke(self):
+    def tell_joke(self, preference):
         # Just tell a random joke from our list
         return random.choice(self.jokes)
 
-    def rate_joke(self, joke):
+    def rate_joke(self, preference, bot_name, joke):
         # Rate the joke based on its length
         # The shorter the joke, the higher the rating
         # This is just a simple example and doesn't actually reflect humor

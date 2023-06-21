@@ -10,14 +10,14 @@ class Bot:
             "My best joke is: "
         ]
 
-    def tell_joke(self):
+    def tell_joke(self, preference):
         # Use the GPT-2 model to generate a joke
         # Choose a random prefix for the joke
         prefix = random.choice(self.joke_prefixes)
         joke = self.joke_generator(f'{prefix}', max_length=25, do_sample=True)[0]['generated_text']
         return joke
 
-    def rate_joke(self, joke):
+    def rate_joke(self, preference, bot_name, joke):
         # Rate the joke based on its sentiment polarity
         # This is a simple example and doesn't actually reflect humor
         blob = TextBlob(joke)
