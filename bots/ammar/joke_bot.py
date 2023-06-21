@@ -6,7 +6,7 @@ import numpy as np
 import re
 
 # Set up your OpenAI API credentials
-openai.api_key = "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"
+openai.api_key = "YOUR API KEY"
 
 
 def preprocess_result(df):
