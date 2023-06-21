@@ -1,10 +1,9 @@
 import gpt_2_simple as gpt2
-import os
 import configparser
 from datetime import datetime
 import os
 import tensorflow as tf
-from transformers import BertTokenizer, BertForSequenceClassification, pipeline
+from transformers import pipeline
 
 
 import logging
@@ -30,7 +29,10 @@ class Bot:
     def text_generation(self):
         text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
                              return_as_list=True)
-        return text[0].replace("[JOKE] : ", "")[:text.index('[')-1]
+        text = text[0].replace("[JOKE] : ", "")
+        if "[EOS]" in text:
+            text = text[:text.index('[')-1]
+        return text
 
     def rate_joke(self, joke):
         print(joke)
