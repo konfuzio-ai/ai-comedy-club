@@ -1,4 +1,7 @@
 venv/*
 .idea/*
-venv_comedy_club/*
-ComedyClubChallenge.egg-info/
+*.egg-info/
+__pycache__/
+build/
+.hypothesis/
+call_bot.py

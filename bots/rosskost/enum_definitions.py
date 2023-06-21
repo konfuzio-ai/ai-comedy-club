@@ -10,3 +10,4 @@ class Topic(Enum):
     RELATIONSHIPS = "relationships"
     RELIGION = "religion"
     ECONOMY = "economy"
+    BLONDES = "blondes"

@@ -5,18 +5,19 @@ from textblob import TextBlob
 import os
 from pathlib import Path
 
-from enum_definitions import Topic
-from sbert_space import find_closest_joke_for_topic, jokes_from_file
+from bots.rosskost.enum_definitions import Topic
+from bots.rosskost.sbert_space import find_closest_joke_for_topic, jokes_from_file
 
 REPRODUCIBILITY: bool = False
 SEED: int = 42
 if REPRODUCIBILITY:
     random.seed(SEED)
 MY_DIR_NAME: str = os.path.basename(Path(__file__).parent.resolve())
+MINUMUM_REASONABLE_JOKE_LENGTH: int = 4
 
-AMOUNT_AVAILABLE_JOKES: int = 999
+# per default, use all jokes:
+AMOUNT_AVAILABLE_JOKES: int = len(jokes_from_file)
 BOT_NAME: str = "rosskost_bot"
-
 
 assert AMOUNT_AVAILABLE_JOKES <= len(
     jokes_from_file), f"You should set AMOUNT_AVAILABLE_JOKES to <= {len(jokes_from_file)}"
@@ -34,25 +35,24 @@ class Bot:
 
     @property
     def get_prompt(self) -> str:
-        _style_str, _topic_str = "", ""
-        if self.style:
-            _style_str = f" in the style of {self.style.value}"
+        _topic_str = ""
         if self.topic:
             _topic_str = f" about {self.topic.value}"
-        return "please tell me a joke" + _style_str + _topic_str + ": \n"
+        return "please tell me a joke" + _topic_str + ": \n"
 
-    def tell_joke(self, topic: Optional[Topic] = None) -> str:
+    def tell_joke(self, topic: Optional[Topic] = None, choice_from_top_n: Optional[int] = 5) -> str:
         if topic is None and self.topic is not None:
             topic = self.topic
         if topic:
             # if a topic is given (either in method-call or class-instance), we return a joke that is close to that topic:
-            return find_closest_joke_for_topic(topic)
+            return find_closest_joke_for_topic(topic, self.available_jokes, choice_from_top_n)
         else:
             # if no topic is given, just return a random joke:
-            print("returning random joke due to no given topic")
             return random.choice(self.available_jokes)
 
-    def rate_joke(self, joke) -> int:
+    def rate_joke(self, joke: str) -> int:
+        if len(joke.split()) < MINUMUM_REASONABLE_JOKE_LENGTH:
+            return 1
         # Rate the joke based on its sentiment polarity
         # This is a simple example and doesn't actually reflect humor
         blob = TextBlob(joke)
