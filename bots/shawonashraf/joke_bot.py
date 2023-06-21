@@ -5,6 +5,7 @@ from textblob import TextBlob
 from transformers import pipeline
 
 # propmts or starters for text/joke generation
+# source: https://www.greataiprompts.com/chat-gpt/funny-chat-gpt-prompts/?expand_article=1
 JOKE_PROMPTS = ['Knock, knock!',
                 'What do you call a fake noodle?',
                 'Can February March?',
