@@ -15,10 +15,12 @@ sess = gpt2.start_tf_sess()
 gpt2.finetune(sess,
               dataset=file_name,
               model_name=model_size,
-              steps=500,
+              steps=steps,
               restore_from='fresh',
               run_name = run_name,
               print_every=10,
+              save_every=100,
+              sample_every=100
               )
              # , learning_rate=.00003)
 
@@ -28,4 +30,4 @@ sess = gpt2.start_tf_sess()
 gpt2.load_gpt2(sess, run_name=run_name)
 
 
-gpt2.generate(sess, run_name=run_name, temperature=.7, length=100, prefix=None, top_k=40, nsamples=10)
+gpt2.generate(sess, run_name=run_name, temperature=0.7, length=100, prefix=None, top_k=40, nsamples=10)
