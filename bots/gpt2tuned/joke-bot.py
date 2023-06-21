@@ -19,6 +19,8 @@ class Bot:
         # Loading models
         self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased', return_all_scores=True)
         self.classifier = pipeline("zero-shot-classification")
+        # Final mark (0-10)
+        self.mark = 0
 
     def text_generation(self):
         text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
@@ -26,16 +28,25 @@ class Bot:
         return text[0].replace("[JOKE] : ", "")
 
     def rate_joke(self, joke):
-        result = self.regression_pipeline(joke)
-        # Range from 1 to 10
+        result = self.regression_pipeline(joke)[0]
+        # Logical evaluation from 1 to 10
         score = result[0]['score']
-        scaled_score = (score * 10).round()
+        logic_score = (score * 10).round()
 
         # Logic evaluation
         result = self.classifier(joke, candidate_labels=["logical", "not logical"])
+
+        # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
+        if len(joke.split()) in range(5, 16):
+            self.mark += 1
+        # number of unique words
+        joke = joke.lower().split()
+        if len(set(joke)) < len(joke):
+            self.mark += (len(joke) - len(set(joke)))/10
         # pring result and logic
         print(f"logical or not {result}")
-        print(f"Logic mark: {scaled_score}/10")
+        print(f"Logic score: {logic_score}/10")
+        print(f"Final score {self.mark}")
         return
 
 
