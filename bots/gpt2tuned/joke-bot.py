@@ -29,12 +29,13 @@ class Bot:
 
     def rate_joke(self, joke):
         result = self.regression_pipeline(joke)[0]
-        # Logical evaluation from 1 to 10
+        # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
-        logic_score = (score * 10).round()
+        logic_score_1 = round(score*3) + 1
 
-        # Logic evaluation
-        result = self.classifier(joke, candidate_labels=["logical", "not logical"])
+        # Logic evaluation based zero-shot classification with two parameters
+        result = self.classifier(joke, candidate_labels=["logical", "not logical"])['scores'][0]
+        logic_score_2 = round(result*3) + 1
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
         if len(joke.split()) in range(5, 16):
@@ -43,9 +44,11 @@ class Bot:
         joke = joke.lower().split()
         if len(set(joke)) < len(joke):
             self.mark += (len(joke) - len(set(joke)))/10
-        # pring result and logic
-        print(f"logical or not {result}")
-        print(f"Logic score: {logic_score}/10")
+
+        self.mark += (logic_score_1 + logic_score_2)
+        # print result and logic
+        print(f"Logic score 1 : {logic_score_1}/4")
+        print(f"Logic score 2:  {logic_score_2}/4")
         print(f"Final score {self.mark}")
         return
 
