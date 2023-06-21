@@ -2,8 +2,13 @@ import gpt_2_simple as gpt2
 import os
 import configparser
 from datetime import datetime
-import torch
+import os
+import tensorflow as tf
 from transformers import BertTokenizer, BertForSequenceClassification, pipeline
+
+
+import logging
+tf.get_logger().setLevel(logging.ERROR)
 
 config = configparser.ConfigParser()
 config.read(os.path.join("fine-tuning", "conf.ini"))
@@ -25,9 +30,10 @@ class Bot:
     def text_generation(self):
         text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
                              return_as_list=True)
-        return text[0].replace("[JOKE] : ", "")
+        return text[0].replace("[JOKE] : ", "")[:text.index('[')-1]
 
     def rate_joke(self, joke):
+        print(joke)
         result = self.regression_pipeline(joke)[0]
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
