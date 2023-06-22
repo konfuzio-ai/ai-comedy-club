@@ -7,7 +7,7 @@ from transformers import pipeline
 tf.get_logger().setLevel("3")
 
 config = configparser.ConfigParser()
-config.read(os.path.join("fine-tuning", "conf.ini"))
+config.read("conf.ini")
 run_name = config["DEFAULT"]["RunName"]
 
 checkpoint_dir = os.path.join(os.getcwd(), "checkpoint", run_name)
