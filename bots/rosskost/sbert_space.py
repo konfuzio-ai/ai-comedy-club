@@ -1,13 +1,13 @@
-from sentence_transformers import util
 import random
+from sentence_transformers import util
 import torch
 import pickle
 from typing import List
 
-from bots.rosskost.enum_definitions import Topic
-from bots.rosskost.save_joke_embeddings import (model_sbert,
-                                                PICKLE_DEST,
-                                                Embedded_Jokes_Type)
+from bots.rosskost.definitions import Topic
+from bots.rosskost.save_joke_embeddings import (
+    model_sbert, PICKLE_DEST, Embedded_Jokes_Type
+)
 
 # load saved embeddings [they were saved and computed in save_joke_embeddings.py]:
 with open(PICKLE_DEST, "rb") as file:
@@ -16,7 +16,7 @@ with open(PICKLE_DEST, "rb") as file:
 
 def find_closest_joke_for_topic(topic: Topic, available_jokes: List[str], choice_from_top_n: int) -> str:
     """This function returns from the list of jokes a joke, that is close
-    to the topic in the latent space of our language sentence-transformer model.
+    to the topic in the latent space of our SBERT sentence-transformer model.
     To make it not return the same joke everytime, we randomly choose
     from the "choice_from_top_n"-most_similar jokes."""
 
