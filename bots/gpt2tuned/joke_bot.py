@@ -10,7 +10,7 @@ config = configparser.ConfigParser()
 config.read(os.path.join("fine-tuning", "conf.ini"))
 run_name = config["DEFAULT"]["RunName"]
 
-checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning","checkpoint", run_name)
+checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
 
 
 class Bot:
@@ -22,7 +22,7 @@ class Bot:
         self.mark = 0
 
     def text_generation(self):
-        if os.path.isdir(os.path.join(os.getcwd(), "fine-tuning", "checkpoint", run_name)):
+        if os.path.isdir(checkpoint_dir):
             sess = gpt2.start_tf_sess()
             gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
             text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
