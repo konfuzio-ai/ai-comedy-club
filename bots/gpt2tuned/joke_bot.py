@@ -6,15 +6,12 @@ import logging
 
 logging.disable(logging.WARNING)
 
-config = configparser.ConfigParser()
-config.read(os.path.join("fine-tuning", "conf.ini"))
-run_name = config["DEFAULT"]["RunName"]
-
 checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
 
 
 class Bot:
     name = "GPT2Tuned"
+
     def __init__(self):
         # Loading models
         self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased')
@@ -25,8 +22,8 @@ class Bot:
     def tell_joke(self):
         if os.path.isdir(checkpoint_dir):
             sess = gpt2.start_tf_sess()
-            gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
-            text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
+            gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name="shortjokes")
+            text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name="shortjokes", length=50, prefix="[JOKE]",
                                  return_as_list=True)
             text = text[0].replace("[JOKE] : ", "")
             if "[EOS]" in text:
