@@ -1,14 +1,13 @@
 import gpt_2_simple as gpt2
 import configparser
 import os
-import tensorflow as tf
 from transformers import pipeline
 import logging
 
 logging.disable(logging.WARNING)
 
 config = configparser.ConfigParser()
-config.read("conf.ini")
+config.read(os.path.join("fine-tuning", "conf.ini"))
 run_name = config["DEFAULT"]["RunName"]
 
 checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning"," checkpoint", run_name)
