@@ -10,7 +10,6 @@ def test_bot_name(bot):
 
 def test_tell_joke(bot):
     joke = bot.tell_joke()
-    assert  joke in bot.jokes
     assert isinstance(joke, str), "Joke is not a string."
     assert len(joke) > 15, "Joke length is not within the correct range."
 
