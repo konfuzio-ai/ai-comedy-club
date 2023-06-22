@@ -14,6 +14,7 @@ checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
 
 
 class Bot:
+    name = "GPT2Tuned"
     def __init__(self):
         # Loading models
         self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased')
