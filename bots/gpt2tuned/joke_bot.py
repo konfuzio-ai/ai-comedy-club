@@ -34,8 +34,8 @@ class Bot:
 
     def __init__(self):
         # Loading models
-        self.pipe1 = pipeline("text-classification", model='bert-base-uncased')
-        self.pipe2 = pipeline("zero-shot-classification", model='bert-base-uncased')
+        self.first_model = pipeline("text-classification", model='bert-base-uncased')
+        self.second_model = pipeline("zero-shot-classification", model='bert-base-uncased')
         # Final mark (0-10)
         self.mark = 0
 
@@ -61,13 +61,13 @@ class Bot:
     def rate_joke(self, joke) -> int:
         self.mark = 0
         print(joke)
-        result = self.pipe1(joke)
+        result = self.first_model(joke)
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
         logic_score_1 = round(score*10)
 
         # Logic evaluation based zero-shot classification with two parameters
-        result = self.pipe2(joke, candidate_labels=["logical", "not logical"])['scores'][0]
+        result = self.second_model(joke, candidate_labels=["logical", "not logical"])['scores'][0]
         logic_score_2 = round(result*10)
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
