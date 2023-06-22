@@ -30,6 +30,11 @@ class Bot:
             if "[EOS]" in text:
                 text = text[:text.index('[') - 1]
             return text
+        else:
+            # if we didn't fine-tune dataset use already learned model
+            short_joke_pipe = pipeline(
+                'text-generation', model='AlekseyKorshuk/gpt2-jokes')
+            return short_joke_pipe( max_length=50, do_sample=True)[0]['generated_text']
 
     def rate_joke(self, joke):
         self.mark = 0
@@ -55,6 +60,3 @@ class Bot:
         print(f"Final score {self.mark}")
         return int(self.mark)
 
-
-if __name__ == "__main__":
-    Bot().rate_joke(Bot().tell_joke())
