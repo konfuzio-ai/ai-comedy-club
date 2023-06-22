@@ -30,7 +30,7 @@ def perform_sentiment_analysis(joke):
     # Get the polarity scores for the text
     sentiment_scores = sid.polarity_scores(str(joke))
 
-    # Extract the compound score
+    # Extract the compound rating
     compound_score = sentiment_scores['compound']
     rating = round((compound_score + 1) * 5, 1)
 
@@ -102,14 +102,13 @@ def compute_diversity_score(joke, previous_jokes):
               f"on how much the jokes are distinct on a scale of 1 to 10:"
     score = Scores_calculator(prompt)
     return score
-    return rating
 
 
 class Bot:
     name = 'Ammar'
 
     def __init__(self):
-        # Define the introductory phrases or questions
+        # Define the results dataframe and extract list of jokes and ratings
         self.df = pd.read_csv("results/result.csv")
         self.extracted_df = preprocess_result(self.df)
         self.my_ratings = self.extracted_df.loc[self.extracted_df['Bot Name'] == self.name, 'Rating'].tolist()
@@ -157,7 +156,7 @@ class Bot:
         diversity_score = compute_diversity_score(joke, previous_jokes)
         delivery_score = Scores_calculator(prompt[6])
         sentiment_score = perform_sentiment_analysis(joke)
-        # Calculate an overall rating out of 10
+        # Calculate an overall rating out of 11
         overall_rating = (humor_score + creativity_score + timeliness_score + personalization_score
                           + tone_and_style_score + adaptability_score + user_engagement_score
                           + appropriate_content_score + diversity_score + delivery_score + sentiment_score) / 11.0
