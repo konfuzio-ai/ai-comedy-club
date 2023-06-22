@@ -37,23 +37,18 @@ class Bot:
         result = self.regression_pipeline(joke)
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
-        logic_score_1 = round(score * 3) + 1
+        logic_score_1 = round(score*10)
 
         # Logic evaluation based zero-shot classification with two parameters
         result = self.classifier(joke, candidate_labels=["logical", "not logical"])['scores'][0]
-        logic_score_2 = round(result * 3) + 1
+        logic_score_2 = round(result*10)
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
         if len(joke.split()) in range(5, 16):
             print("One point for length criteria")
             self.mark += 1
-        # number of unique words
-        joke = joke.lower().split()
-        if len(set(joke)) < len(joke):
-            print(len(set(joke)) / 10, "points for unique words criteria")
-            self.mark += len(set(joke)) / 10
 
-        self.mark += (logic_score_1 + logic_score_2)
+        self.mark += (logic_score_1 + logic_score_2) // 2 
         # print result and logic
         print(f"Logic score 1 : {logic_score_1}/4")
         print(f"Logic score 2:  {logic_score_2}/4")
