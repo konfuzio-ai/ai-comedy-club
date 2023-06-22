@@ -1,8 +1,9 @@
+from transformers import pipeline
 from textblob import TextBlob
 import random
 
 class Bot:
-    name = 'First attempt'
+    name = 'AnotherBot'
     def __init__(self):
         self.jokes = [
             # Science/Computer themed
@@ -25,6 +26,7 @@ class Bot:
             "I got my daughter a fridge for her birthday. I can't wait to see her face light up when she opens it.",
             "Rest in peace to boiling water. You will be mist.",
         ]
+        self.joke_critic = pipeline('text-generation', model='gpt2')
 
     def tell_joke(self):
         # Just tell a random joke from our list
@@ -33,12 +35,16 @@ class Bot:
     def rate_joke(self, joke):
         """
         A very self-centered bot, it rates jokes that itself would tell the highest.
-        Other jokes vary, using sentiment analysis as a proxy.
+        
+        For other jokes, use the joke as a prompt for a GPT2 model and take its 
+        output as the model's reaction. Using sentiment analysis, use the reaction's 
+        polarity to generate the rating.
         """
         if joke in self.jokes:
             return 10
         
-        blob = TextBlob(joke)
+        reaction = self.joke_critic(joke, max_new_tokens=25, do_sample=True)[0]['generated_text']
+        blob = TextBlob(reaction)
         polarity = blob.sentiment.polarity
         rating = (polarity + 1) * 5  # convert polarity from [-1, 1] to [0, 10]
         return rating
