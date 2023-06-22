@@ -3,26 +3,27 @@ import configparser
 import os
 import tensorflow as tf
 from transformers import pipeline
+import logging
 
-tf.get_logger().setLevel("3")
+logging.disable(logging.WARNING)
 
 config = configparser.ConfigParser()
 config.read("conf.ini")
 run_name = config["DEFAULT"]["RunName"]
 
-checkpoint_dir = os.path.join(os.getcwd(), "checkpoint", run_name)
+checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning"," checkpoint", run_name)
 
 
 class Bot:
     def __init__(self):
         # Loading models
-        self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased', return_all_scores=True)
-        self.classifier = pipeline("zero-shot-classification")
+        self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased')
+        self.classifier = pipeline("zero-shot-classification", model='bert-base-uncased')
         # Final mark (0-10)
         self.mark = 0
 
     def text_generation(self):
-        if os.path.exists(checkpoint_dir):
+        if os.path.isdir(os.path.join(os.getcwd(), "fine-tuning", "checkpoint", run_name)):
             sess = gpt2.start_tf_sess()
             gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
             text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
@@ -34,9 +35,9 @@ class Bot:
 
     def rate_joke(self, joke):
         print(joke)
-        result = self.regression_pipeline(joke)[0]
+        result = self.regression_pipeline(joke)
         # Logical evaluation from bert-base-uncased on Regression
-        score = result[0]['score']
+        score = result[0][0]['score']
         logic_score_1 = round(score * 3) + 1
 
         # Logic evaluation based zero-shot classification with two parameters

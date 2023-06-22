@@ -10,10 +10,10 @@ templates = Jinja2Templates(directory="templates")
 @app.get('/', response_class=HTMLResponse)
 def index(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "title": "Kaustubh Demo",
-                                                     "body_content": "This is the demo for using FastAPI with Jinja "
+                                                     "placeholder": "This is the demo for using FastAPI with Jinja "
                                                                      "templates"})
 
 
 if __name__ == "__main__":
-    uvicorn.run("api:app", host='127.0.0.1', port=8000, reload=True)
+    uvicorn.run("api:app", host='127.1.1.1', port=8001, reload=True)
 
