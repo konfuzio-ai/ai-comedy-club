@@ -45,10 +45,12 @@ class Bot:
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
         if len(joke.split()) in range(5, 16):
+            print("One point for length criteria")
             self.mark += 1
         # number of unique words
         joke = joke.lower().split()
         if len(set(joke)) < len(joke):
+            print(len(set(joke)) / 10, "points for unique words criteria")
             self.mark += len(set(joke)) / 10
 
         self.mark += (logic_score_1 + logic_score_2)

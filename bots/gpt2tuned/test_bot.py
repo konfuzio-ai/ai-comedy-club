@@ -1,7 +1,6 @@
 import pytest
 from joke_bot import Bot
 
-
 @pytest.fixture
 def bot():
     return Bot()
