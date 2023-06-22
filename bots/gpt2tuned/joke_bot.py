@@ -7,17 +7,39 @@ logging.disable(logging.WARNING)
 
 
 class Bot:
+    """
+    Bot class which can generate jokes (based on gpt2 fine-tuned on labeled shortjokes.csv or with usage of
+    hugging-face model - AlekseyKorshuk/gpt2-jokes) and classificate jokes (text and zero-shor classification from bert)
+
+    Note:
+        If you want to work with gpt2 fine-tuned by me you should look /fine-tuning folder
+
+    Attributes
+    ----------
+        name: str
+            Bot name
+        checkpoint_dir: str
+            Attribute to store path to fine-tuned model
+
+    Methods
+    ----------
+    tell_joke()
+        returns generated joke
+
+    rate_joke()
+        returns mark
+    """
     name = "GPT2Tuned"
     checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
 
     def __init__(self):
         # Loading models
-        self.regression_pipeline = pipeline("text-classification", model='bert-base-uncased')
-        self.classifier = pipeline("zero-shot-classification", model='bert-base-uncased')
+        self.pipeline1 = pipeline("text-classification", model='bert-base-uncased')
+        self.pipeline2 = pipeline("zero-shot-classification", model='bert-base-uncased')
         # Final mark (0-10)
         self.mark = 0
 
-    def tell_joke(self):
+    def tell_joke(self) -> str:
         if "gpt2tuned" not in self.checkpoint_dir:
             self.checkpoint_dir = os.path.join(os.getcwd(), "bots", "gpt2tuned", "fine-tuning", "checkpoint")
         if os.path.isdir(self.checkpoint_dir):
@@ -34,18 +56,18 @@ class Bot:
             # if we didn't fine-tune dataset use already learned model
             short_joke_pipe = pipeline(
                 'text-generation', model='AlekseyKorshuk/gpt2-jokes')
-            return short_joke_pipe( max_length=50, do_sample=True)[0]['generated_text']
+            return short_joke_pipe(max_length=50, do_sample=True)[0]['generated_text']
 
-    def rate_joke(self, joke):
+    def rate_joke(self, joke) -> int:
         self.mark = 0
         print(joke)
-        result = self.regression_pipeline(joke)
+        result = self.pipeline1(joke)
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
         logic_score_1 = round(score*10)
 
         # Logic evaluation based zero-shot classification with two parameters
-        result = self.classifier(joke, candidate_labels=["logical", "not logical"])['scores'][0]
+        result = self.pipeline2(joke, candidate_labels=["logical", "not logical"])['scores'][0]
         logic_score_2 = round(result*10)
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
@@ -60,3 +82,6 @@ class Bot:
         print(f"Final score {self.mark}")
         return int(self.mark)
 
+
+if __name__ == "__main__":
+    Bot().rate_joke(Bot().tell_joke())

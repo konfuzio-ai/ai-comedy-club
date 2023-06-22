@@ -4,6 +4,7 @@ import sys
 
 
 def preparate_jokes_dataset():
+    """Convert csv into txt and add two tokens"""
     k = ""
     csv.field_size_limit(sys.maxsize)
     with open('shortjokes.csv') as f:

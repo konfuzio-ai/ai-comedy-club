@@ -1,4 +1,5 @@
 <!doctype html>
+
 <html lang="en">
 
 <head>
@@ -7,11 +8,9 @@
 
 <body>
 <h1>Want some jokes?</h1>
-<input
-type="text"
-id="userBox"
-placeholder={{placeholder}}
-/>
+{% for key, value in jokes.items() %}
+<b>Joke from {{ key }}: {{ value }}</b><br>
+{% endfor %}
 </body>
 
 </html>
