@@ -33,6 +33,9 @@ class Bot:
     checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
 
     def __init__(self):
+        # Loading models
+        self.first_model = pipeline("text-classification", model='bert-base-uncased')
+        self.second_model = pipeline("zero-shot-classification", model='bert-base-uncased')
         # Final mark (0-10)
         self.mark = 0
 
@@ -53,21 +56,18 @@ class Bot:
             # if we didn't fine-tune dataset use already learned model
             short_joke_pipe = pipeline(
                 'text-generation', model='AlekseyKorshuk/gpt2-jokes')
-            return short_joke_pipe(max_length=50, do_sample=True)[0]['generated_text']
+            return short_joke_pipe(text_inputs="Knock, knock!", max_length=50, do_sample=True)[0]['generated_text']
 
     def rate_joke(self, joke) -> int:
-        # Loading models
-        first_model = pipeline("text-classification", model='bert-base-uncased')
-        second_model = pipeline("zero-shot-classification", model='bert-base-uncased')
         self.mark = 0
         print(joke)
-        result = first_model(joke)
+        result = self.first_model(joke)
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
         logic_score_1 = round(score*10)
 
         # Logic evaluation based zero-shot classification with two parameters
-        result = second_model(joke, candidate_labels=["logical", "not logical"])['scores'][0]
+        result = self.second_model(joke, candidate_labels=["logical", "not logical"])['scores'][0]
         logic_score_2 = round(result*10)
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
