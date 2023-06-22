@@ -19,7 +19,7 @@ templates = Jinja2Templates(directory="templates")
 @app.get('/', response_class=HTMLResponse)
 def index(request: Request):
     bots = []
-    bot_directories = [d for d in os.listdir(bots_dir) if os.path.isdir(os.path.join(bots_dir, d)) and d!= "gpt2tuned"]
+    bot_directories = [d for d in os.listdir(bots_dir) if os.path.isdir(os.path.join(bots_dir, d))]
     for bot_dir in bot_directories:
 
         # Dynamically load the bot's module
