@@ -10,7 +10,7 @@ config = configparser.ConfigParser()
 config.read(os.path.join("fine-tuning", "conf.ini"))
 run_name = config["DEFAULT"]["RunName"]
 
-checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning"," checkpoint", run_name)
+checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning","checkpoint", run_name)
 
 
 class Bot:
