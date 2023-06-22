@@ -124,9 +124,9 @@ class Bot:
         # The shorter the joke, the higher the rating
         # This is just a simple example and doesn't actually reflect humor
         length = len(joke)
-        if length < 50:
+        if length < 75:
             return 10
-        elif length < 80:
+        elif length < 110:
             return 7
         else:
             return 5
