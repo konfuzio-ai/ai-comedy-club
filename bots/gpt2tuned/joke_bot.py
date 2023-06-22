@@ -1,5 +1,4 @@
 import gpt_2_simple as gpt2
-import configparser
 import os
 from transformers import pipeline
 import logging
@@ -33,6 +32,7 @@ class Bot:
             return text
 
     def rate_joke(self, joke):
+        self.mark = 0
         print(joke)
         result = self.regression_pipeline(joke)
         # Logical evaluation from bert-base-uncased on Regression
@@ -48,10 +48,10 @@ class Bot:
             print("One point for length criteria")
             self.mark += 1
 
-        self.mark += (logic_score_1 + logic_score_2) // 2 
+        self.mark += (logic_score_1 + logic_score_2) // 2
         # print result and logic
-        print(f"Logic score 1 : {logic_score_1}/4")
-        print(f"Logic score 2:  {logic_score_2}/4")
+        print(f"Logic score 1 : {logic_score_1}/10")
+        print(f"Logic score 2:  {logic_score_2}/10")
         print(f"Final score {self.mark}")
         return int(self.mark)
 
