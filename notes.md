@@ -10,6 +10,7 @@
 - THERE IS NO OFFENSIVE FILTER. Unfortunately,I didn't add anyone but found suitable solution - https://developers.perspectiveapi.com/
 
 ## Things to do
+- Due to PEP, it is better to use .toml files for builds - https://peps.python.org/pep-0518/
 - Solve all the problems
 - Classify jokes using NLP methods
 - Expand web interface
