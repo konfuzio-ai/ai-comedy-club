@@ -21,7 +21,7 @@ class Bot:
         # Final mark (0-10)
         self.mark = 0
 
-    def text_generation(self):
+    def tell_joke(self):
         if os.path.isdir(checkpoint_dir):
             sess = gpt2.start_tf_sess()
             gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
@@ -36,7 +36,7 @@ class Bot:
         print(joke)
         result = self.regression_pipeline(joke)
         # Logical evaluation from bert-base-uncased on Regression
-        score = result[0][0]['score']
+        score = result[0]['score']
         logic_score_1 = round(score * 3) + 1
 
         # Logic evaluation based zero-shot classification with two parameters
@@ -60,4 +60,4 @@ class Bot:
 
 
 if __name__ == "__main__":
-    Bot().rate_joke(Bot().text_generation())
+    Bot().rate_joke(Bot().tell_joke())
