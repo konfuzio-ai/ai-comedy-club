@@ -1,6 +1,13 @@
 import pytest
 import os
 from joke_bot import Bot
+from dataclasses import dataclass
+
+
+@dataclass
+class Tests:
+    joke: str
+
 
 @pytest.fixture
 def bot():
@@ -8,9 +15,8 @@ def bot():
 
 
 def test_tell_joke(bot):
-    if "gpt2tuned" not in bot.checkpoint_dir:
-        bot.checkpoint_dir = os.path.join(os.getcwd(), "bots", "gpt2tuned", "fine-tuning", "checkpoint")
     joke = bot.tell_joke()
+    Tests.joke = joke
     assert isinstance(joke, str), "Joke is not a string."
     assert len(joke) > 50, "Joke length is not within the correct range."
 

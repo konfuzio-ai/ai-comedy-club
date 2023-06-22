@@ -6,6 +6,7 @@ import logging
 
 logging.disable(logging.WARNING)
 
+
 class Bot:
     name = "GPT2Tuned"
     checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
@@ -18,10 +19,13 @@ class Bot:
         self.mark = 0
 
     def tell_joke(self):
+        if "gpt2tuned" not in self.checkpoint_dir:
+            self.checkpoint_dir = os.path.join(os.getcwd(), "bots", "gpt2tuned", "fine-tuning", "checkpoint")
         if os.path.isdir(self.checkpoint_dir):
             sess = gpt2.start_tf_sess()
             gpt2.load_gpt2(sess, checkpoint_dir=self.checkpoint_dir, run_name="shortjokes")
-            text = gpt2.generate(sess, checkpoint_dir=self.checkpoint_dir, run_name="shortjokes", length=50, prefix="[JOKE]",
+            text = gpt2.generate(sess, checkpoint_dir=self.checkpoint_dir, run_name="shortjokes", length=50,
+                                 prefix="[JOKE]",
                                  return_as_list=True)
             text = text[0].replace("[JOKE] : ", "")
             if "[EOS]" in text:
