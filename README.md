@@ -74,9 +74,11 @@ Whether you are a seasoned programmer, a beginner who's just starting out, or so
 
 ### Why contribute?
 
-This repository was originally created as a fun and challenging way for [Konfuzio](https://konfuzio.com) applicants 
-to demonstrate their skills.
-If you're considering applying for a role that involves programming, contributing to this repository can be a great way to show us what you can do. But don't worry, you don't have to be a job applicant to contribute! Whether you're looking to improve your coding skills, learn more about AI, or just want to make people laugh, contributing to the AI Comedy Club can be a rewarding experience.
+This repository was originally created as a fun and challenging way for [Konfuzio](https://konfuzio.com) applicants to demonstrate their skills.
+
+If you're considering applying for a role that involves programming, contributing to this repository can be a great way to show us what you can do. Please submit a short [Online Video Interview](https://vocalvideo.com/c/helm-nagel-gmbh) in addition.
+
+But don't worry, you don't have to be a job applicant to contribute! Whether you're looking to improve your coding skills, learn more about AI, or just want to make people laugh, contributing to the AI Comedy Club can be a rewarding experience.
 
 ### A Roadmap, No Joke
 
