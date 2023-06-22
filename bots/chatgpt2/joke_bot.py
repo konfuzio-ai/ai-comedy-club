@@ -14,7 +14,7 @@ class Bot:
         # Use the GPT-2 model to generate a joke
         # Choose a random prefix for the joke
         prefix = random.choice(self.joke_prefixes)
-        joke = self.joke_generator(f'{prefix}', max_length=25, do_sample=True)[0]['generated_text']
+        joke = self.joke_generator(f'{prefix}', max_length=75, do_sample=True)[0]['generated_text']
         return joke
 
     def rate_joke(self, joke):
