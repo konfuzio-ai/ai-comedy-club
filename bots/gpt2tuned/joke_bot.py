@@ -1,21 +1,16 @@
 import gpt_2_simple as gpt2
 import configparser
-from datetime import datetime
 import os
 import tensorflow as tf
 from transformers import pipeline
 
-
-import logging
-tf.get_logger().setLevel(logging.ERROR)
+tf.get_logger().setLevel("3")
 
 config = configparser.ConfigParser()
 config.read(os.path.join("fine-tuning", "conf.ini"))
 run_name = config["DEFAULT"]["RunName"]
 
-checkpoint_dir = os.path.join(os.getcwd(), "fine-tuning", "checkpoint")
-sess = gpt2.start_tf_sess()
-gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
+checkpoint_dir = os.path.join(os.getcwd(), "checkpoint", run_name)
 
 
 class Bot:
@@ -27,23 +22,26 @@ class Bot:
         self.mark = 0
 
     def text_generation(self):
-        text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
-                             return_as_list=True)
-        text = text[0].replace("[JOKE] : ", "")
-        if "[EOS]" in text:
-            text = text[:text.index('[')-1]
-        return text
+        if os.path.exists(checkpoint_dir):
+            sess = gpt2.start_tf_sess()
+            gpt2.load_gpt2(sess, checkpoint_dir=checkpoint_dir, run_name=run_name)
+            text = gpt2.generate(sess, checkpoint_dir=checkpoint_dir, run_name=run_name, length=50, prefix="[JOKE]",
+                                 return_as_list=True)
+            text = text[0].replace("[JOKE] : ", "")
+            if "[EOS]" in text:
+                text = text[:text.index('[') - 1]
+            return text
 
     def rate_joke(self, joke):
         print(joke)
         result = self.regression_pipeline(joke)[0]
         # Logical evaluation from bert-base-uncased on Regression
         score = result[0]['score']
-        logic_score_1 = round(score*3) + 1
+        logic_score_1 = round(score * 3) + 1
 
         # Logic evaluation based zero-shot classification with two parameters
         result = self.classifier(joke, candidate_labels=["logical", "not logical"])['scores'][0]
-        logic_score_2 = round(result*3) + 1
+        logic_score_2 = round(result * 3) + 1
 
         # average count of words - https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/
         if len(joke.split()) in range(5, 16):
@@ -51,20 +49,15 @@ class Bot:
         # number of unique words
         joke = joke.lower().split()
         if len(set(joke)) < len(joke):
-            self.mark += (len(joke) - len(set(joke)))/10
+            self.mark += len(set(joke)) / 10
 
         self.mark += (logic_score_1 + logic_score_2)
         # print result and logic
         print(f"Logic score 1 : {logic_score_1}/4")
         print(f"Logic score 2:  {logic_score_2}/4")
         print(f"Final score {self.mark}")
-        return
-
-
-def main():
-    print(f"Greetings and have a good {datetime.now().strftime('%A')}! Here is a joke: ")
+        return int(self.mark)
 
 
 if __name__ == "__main__":
-    Bot().rate_joke("I am gay!")
     Bot().rate_joke(Bot().text_generation())
