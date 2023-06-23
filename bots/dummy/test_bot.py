@@ -3,7 +3,7 @@ from joke_bot import Bot
 
 def test_bot_name():
     bot = Bot()
-    assert bot.name == 'Not funny'
+    assert bot.name == 'Funny Autobot'
 
 def test_tell_joke():
     bot = Bot()
