@@ -2,6 +2,14 @@ import importlib.util
 import os
 import subprocess
 
+# https://jaketae.github.io/study/gpt2/#setup
+# Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
+from transformers import GPT2TokenizerFast, GPT2LMHeadModel
+
+tokenizer = GPT2TokenizerFast.from_pretrained("gpt2")
+# Setting `pad_token_id` to `eos_token_id`:50256 for open-end generation.
+model = GPT2LMHeadModel.from_pretrained("gpt2", pad_token_id=tokenizer.eos_token_id)
+
 # The directory where the bots are located
 bots_dir = './bots/'
 
