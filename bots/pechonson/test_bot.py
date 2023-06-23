@@ -35,6 +35,18 @@ class TestBot:
         prompt = bot.build_prompt(from_country=country, language=language)
         assert prompt == result_prompt
 
+    @pytest.mark.parametrize(
+        "reaction, temperature, new_temperature", (
+            (1, 0.7, 0.7),
+            (2, 1.0, 1.1),
+            (3, 1.0, 1.3),
+            (3, 1.9, 2.0)),
+    )
+    def test_change_temperature_according_to_public(self, bot: Bot, reaction, temperature, new_temperature):
+        changed_temperature = bot.change_temperature_according_to_public(
+            reaction=reaction, temperature=temperature)
+        assert new_temperature == changed_temperature
+
     def test_tell_introductory_phrase(self, bot: Bot, capfd):
         bot.tell_introductory_phrase()
         out, err = capfd.readouterr()
@@ -50,6 +62,25 @@ class TestBot:
             bot.from_country = "Peru"
             language = bot.get_language_from_user()
             assert language == "Spanish"
+
+    def test_translate_if_not_english(self, bot: Bot):
+        bot.language = "Spanish"
+        text = "Translate this text"
+        translated_text = bot.translate_if_not_english(text)
+        assert text != translated_text
+
+    def test_translate_if_english(self, bot: Bot):
+        bot.language = "English"
+        text = "Translate this text"
+        translated_text = bot.translate_if_not_english(text)
+        assert text == translated_text
+
+    def test_get_default_language_from_user(self, bot: Bot):
+        with mock.patch.object(builtins, 'input', lambda _: ''):
+            bot.from_country = "Peru"
+            language = bot.get_language_from_user()
+            # English is the language by default
+            assert language == "English"
 
     def test_pick_comedian(self, bot: Bot):
         with mock.patch.object(builtins, 'input', lambda _: '2'):
