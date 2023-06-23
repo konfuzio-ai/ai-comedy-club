@@ -19,6 +19,7 @@ class JudgeBot:
         self.users_preferences_and_geography += geography
 
     def rate_joke(self, current_joke):
+        self.current_joke_rating = 0
         if len(current_joke) > 1000:
             # This joke is too long
             self.current_joke_rating -= 1
@@ -27,7 +28,10 @@ class JudgeBot:
 
         for similarity_criteria in self.judgement_similarity_criteria:
             self._rate_with_similarity(current_joke, similarity_criteria)
-
+        # I would use a simple function that append only if it is not yet in the list
+        self.jokes.append(current_joke)
+        self.current_joke_rating = max(0, min(10, self.current_joke_rating))  # To ensure the rating is between 0 and 10
+        return self.current_joke_rating
     def _rate_with_similarity(self, current_joke, judgement_criteria):
 
         # I could use match case to better readability, but I don't know if you are using python >=3.10
@@ -50,7 +54,7 @@ class JudgeBot:
         for sentence in list_to_compare_with:
             sentence_embedding = self.sentence_transformer_model.encode(sentence, convert_to_tensor=True)
             similarity = util.pytorch_cos_sim(current_joke_embedding, sentence_embedding)
-            if similarity > 0.4:
+            if similarity > 0.3:
                 if is_negative_similarity:
                     self.current_joke_rating -= 1 * is_negative_similarity
                     break  # found similarity with previous jokes (from the same comedian or from all jokes)
@@ -58,6 +62,9 @@ class JudgeBot:
                     self.current_joke_rating += 1  # Found similarity with a trending topic or personalization
                     # The loop doesn't break, we can get more points if we combine them
         self.current_joke_rating += 1 * is_negative_similarity  # Not found similarity with any previous jokes
+
+    def finish_this_comedian_judgement(self):
+        self.current_comedian_jokes = list()  # remove jokes to start with next comedian
 
 
 if __name__ == "__main__":

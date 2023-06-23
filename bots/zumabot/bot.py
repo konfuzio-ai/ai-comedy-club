@@ -26,6 +26,6 @@ if __name__ == "__main__":
 
     print(len(bot.jokes))
     bot.rate_joke("What's the difference between")
-    print(len(bot.jokes))  # This bot learn jokes when it rates a joke, and it can use it in the future
-
+    print(len(bot.jokes))  # This bot learn jokes when it rates a joke
+    # , and it can use it in the future as a comedian
     bot.finish_show()

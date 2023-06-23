@@ -11,11 +11,11 @@ CHUCK_API_URL = "https://api.chucknorris.io/jokes/random"
 
 class ComedianBot:
     def __init__(self):
+        self.jokes: list = list()
         self.current_joke: str = ""
         self.jokes_rating: dict = dict()
         self.current_joke_rating: float = 0
         self.current_city: str = "Berlin"
-        self.jokes: list = list()
         self.jokes_learned: list = list()
         self.current_show_jokes: list = list()
         self.dad_joke_generator_pipeline = pipeline('text-generation', model='huggingtweets/dadsaysjokes')
@@ -40,14 +40,16 @@ class ComedianBot:
 
     def _learn_dad_says_jokes(self):
         generator = self.dad_joke_generator_pipeline
-        prompts = ["My dream is", "I don't like", "I want"]
-        prompts_current_city = [f"My dream is to live in {self.current_city}", f"I don't like how {self.current_city}",
+        prompts = ["my dream is", "I don't like", "I want"]
+        prompts_current_city = [f"my dream is to live in {self.current_city}", f"I don't like how {self.current_city}",
                                 f"I want {self.current_city}"]
         jokes_generated = generator(random.choice(prompts), num_return_sequences=8)
-        jokes_generated_with_current_city = random.choice(prompts_current_city)
+        jokes_generated_with_current_city = generator(random.choice(prompts_current_city), num_return_sequences=2)
+        jokes_current_city = [f"You know when dad says {joke['generated_text']}" for joke in
+                              jokes_generated_with_current_city]
         jokes = [f"You know when dad says {joke['generated_text']}" for joke in
-                 jokes_generated + jokes_generated_with_current_city]
-        self.jokes_learned += jokes
+                 jokes_generated]
+        self.jokes_learned += jokes + jokes_current_city
 
     def _copy_chuck_norris_jokes(self):
 
@@ -70,7 +72,7 @@ class ComedianBot:
         random.shuffle(self.current_show_jokes)
 
     def introduce_comedian(self) -> (str, list):
-        introduction = f"Hello everyone, how is people in {self.current_city}!! I'm Zuma and I'm here to make you laught (at least try)"
+        introduction = f"Hello everyone, how is people in {self.current_city}?! I'm Zuma and I'm here to make you laught (at least try)"
         return introduction
 
     def tell_joke(self) -> str:
@@ -105,7 +107,7 @@ if __name__ == "__main__":
     bot = ComedianBot()
     bot.study_new_jokes()
 
-    # Performance simulation 1
+    # Show simulation 1
     bot.select_current_show_jokes()
 
     bot.introduce_comedian()
@@ -120,7 +122,7 @@ if __name__ == "__main__":
     print(bot.jokes_rating)
 
     bot.study_new_jokes()
-    # Performance simulation 2
+    # show simulation 2
     bot.select_current_show_jokes()
 
     bot.introduce_comedian()
