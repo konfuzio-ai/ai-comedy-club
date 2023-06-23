@@ -11,6 +11,7 @@ setup(
         "torch>=1.8.1",
         "pytest>=6.2.2",
         "openai>=0.27.8",
+        "mock>=5.0.2",
         "python-dotenv>=1.0.0"
     ],
 

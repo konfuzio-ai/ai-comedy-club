@@ -9,7 +9,11 @@ os.environ["TOKENIZERS_PARALLELISM"] = "false"
 class Bot:
     name = 'Pechonson AI'
     MAX_TOKENS = 100
+    # Using a 0.7 value to force logic but more creatives texts.
+    # The max value can be 2.0 but this will give some irrational responses.
+    # The min value can be 0 but this will make the model very predictable.
     TEMPERATURE = 0.7
+    GPT_MODEL = "text-davinci-003"
 
     def __init__(self):
         openai.api_key = os.getenv('OPENAI_API_KEY')
@@ -18,16 +22,31 @@ class Bot:
         self.joke_evaluator = pipeline(model=joke_evaluator_model_name)
 
     def get_text_from_chatgpt3sdk(self, messages, max_tokens=MAX_TOKENS, temperature=TEMPERATURE):
-        print(f"Prompt here: {messages}")
+        # print(f"Prompt here: {messages}")
         response = openai.Completion.create(
-            model="text-davinci-003",
+            model=self.GPT_MODEL,
             prompt=messages,
-            max_tokens=max_tokens, 
+            max_tokens=max_tokens,
             temperature=temperature
         )
         return response.choices[0].text.strip()
 
+    def build_prompt(self, from_country=None):
+        prompt = "Tell me a joke"
+        if from_country != None:
+            prompt = f"{prompt} about people from {from_country}"
+        return prompt
+
     def tell_joke(self):
+        prompt = f"Your name is {self.name}. Tell me a unique and funny introductory phrase for an stand up comedy show"
+        intro_phrase = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
+        print(f"{self.name}: {intro_phrase}")
+
+        from_country = input(f"{self.name}: Where are you from?\n")
+        prompt = self.build_prompt(from_country=from_country)
+        joke = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
+        print(f"{self.name}: {joke}")
+
         prompt = "Tell me a joke about developers"
         joke = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
         return joke
@@ -35,4 +54,6 @@ class Bot:
     def rate_joke(self, joke):
         # [{'label': 'LABEL_1', 'score': 0.7313136458396912}]
         result = self.joke_evaluator(joke)
-        return result[0]['score'] if result[0]['label'] == 'LABEL_1' else 1 - result[0]['score']
+        result = result[0]['score'] if result[0]['label'] == 'LABEL_1' else 1 - \
+            result[0]['score']
+        return result * 10

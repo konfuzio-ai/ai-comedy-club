@@ -1,5 +1,5 @@
 venv/*
 .idea/*
 .env
-bots/pechonson/.env.test
 .DS_Store
+*.pyc
