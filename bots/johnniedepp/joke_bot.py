@@ -3,6 +3,27 @@ from textblob import TextBlob
 import random
 import spacy
 import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+from transformers import GPT2Tokenizer, GPT2LMHeadModel
+
+class MyDataset(Dataset):
+    def __init__(self, data):
+        self.data = data
+        
+    def __len__(self):
+        return len(self.data)
+        
+    def __getitem__(self, idx):
+        # implement logic here to retrieve a single item from the dataset at index 'idx'
+        return self.data[idx]
+
+
+my_dataset = MyDataset(my_data)
+dataloader = DataLoader(my_dataset, batch_size=32, shuffle=True)
+
 
 class Bot:
     name = 'Funny Johnnie D.'
