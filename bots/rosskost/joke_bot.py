@@ -1,6 +1,4 @@
 from dataclasses import dataclass, field
-import os
-from pathlib import Path
 import random
 from typing import List, Optional
 import torch
@@ -13,13 +11,11 @@ from bots.rosskost.rating_model import model, predict
 REPRODUCIBILITY: bool = False
 if REPRODUCIBILITY:
     random.seed(42)
-BOT_NAME: str = "reddit-based Bot"
-MY_DIR_NAME: str = os.path.basename(Path(__file__).parent.resolve())
+BOT_NAME: str = "Reddit Humour"
 MINUMUM_REASONABLE_JOKE_LENGTH: int = 4
 
 # per default, use all jokes:
 AMOUNT_AVAILABLE_JOKES: int = len(jokes_from_file)
-
 assert AMOUNT_AVAILABLE_JOKES <= len(
     jokes_from_file), f"You should set AMOUNT_AVAILABLE_JOKES to <= {len(jokes_from_file)}"
 
@@ -28,11 +24,11 @@ available_jokes = random.sample([joke for _, joke in jokes_from_file], AMOUNT_AV
 
 @dataclass
 class Bot(AbstractBot):
-    """Bot class from user rosskost that is based on Reddit.
+    """Bot class from user rosskost that is based on Reddit Humour.
     -tell_joke() uses jokes from r/cleanjokes and is able to return a random joke or a
     joke about a particular topic. To detect jokes similar to a topic, we use SBERT embeddings and
     return a choice from the n most similar jokes.
-    -rate_joke() uses a BERT-model, that was finetuned by me on upvotes/scores from data in r/jokes
+    -rate_joke() uses the tiny variant of BERT, that was finetuned by me on scores from r/jokes
     and returns a int rating from 1-10.
     """
     name: str = BOT_NAME
@@ -44,7 +40,8 @@ class Bot(AbstractBot):
         if topic is None and self.topic is not None:
             topic = self.topic
         if topic:
-            # if a topic is given (either in method-call or class-instance), we return a joke that is close to that topic:
+            # if a topic is given (either in method-call or class-instance),
+            # we return a joke that is semantically similar in meaning to that topic:
             return find_closest_joke_for_topic(topic, self.available_jokes, choice_from_top_n)
         else:
             # if no topic is given/wished, just return a random joke:

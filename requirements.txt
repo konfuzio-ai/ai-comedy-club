@@ -1,4 +1,0 @@
-flake8
-pandas
-sentence-transformers
-hypothesis

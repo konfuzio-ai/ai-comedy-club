@@ -25,5 +25,5 @@ class AbstractBot(ABC):
         pass
 
     @abstractmethod
-    def rate_joke(self, joke: str) -> int:
+    def rate_joke(self, joke: str) -> str:
         pass

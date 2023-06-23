@@ -4,4 +4,3 @@ venv/*
 __pycache__/
 build/
 .hypothesis/
-call_bot.py
