@@ -2,7 +2,7 @@ from transformers import pipeline
 from textblob import TextBlob
 import random
 import spacy
-import torch
+
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -23,6 +23,9 @@ class Bot:
         self.sentiment_analyzer = TextBlob()
         self.nlp = spacy.load("en_core_web_sm")
 
+        # Use the GPT-3 model to generate a joke
+        # Choose a random prefix for the joke
+
     def tell_joke(self):
         # Define the joke attributes
         humor = "funny"
@@ -30,12 +33,9 @@ class Bot:
         timeliness = "current"
         audience = "everyone"
         comedian = "Johnnie Depp"
-
-        # Use the GPT-2 model to generate a joke
-        # Choose a random prefix for the joke
         prefix = random.choice(self.joke_prefixes)
         joke = self.joke_generator(f'{prefix}', max_length=75, do_sample=True)[0]['generated_text']
-        return joke  
+        return joke
 
         # Analyze the sentiment of the joke
         sentiment = self.analyze_sentiment(joke)
