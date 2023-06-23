@@ -31,24 +31,47 @@ class Bot:
         )
         return response.choices[0].text.strip()
 
-    def build_prompt(self, from_country=None):
+    def build_prompt(self, from_country=None, language=None):
         prompt = "Tell me a joke"
         if from_country != None:
             prompt = f"{prompt} about people from {from_country}"
+
+        if language != None:
+            prompt = f"{prompt} in {language}"
+
         return prompt
 
-    def tell_joke(self):
+    def tell_introductory_phrase(self):
         prompt = f"Your name is {self.name}. Tell me a unique and funny introductory phrase for an stand up comedy show"
         intro_phrase = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
         print(f"{self.name}: {intro_phrase}")
 
+    def get_country_from_user(self):
         from_country = input(f"{self.name}: Where are you from?\n")
         prompt = self.build_prompt(from_country=from_country)
         joke = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
         print(f"{self.name}: {joke}")
+        return from_country
 
-        prompt = "Tell me a joke about developers"
+    def get_language_from_user(self):
+        language = input(
+            f"{self.name}: I am really an educated bot, would you like me to entertain you in another language? If so, tell me which one\n")
+        prompt = self.build_prompt(
+            from_country=self.from_country, language=language)
+        print(f"Prompt: {prompt}")
         joke = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
+        print(f"{self.name}: {joke}")
+        return language
+
+    def tell_joke(self):
+        self.tell_introductory_phrase()
+
+        self.from_country = self.get_country_from_user()
+
+        self.language = self.get_language_from_user()
+
+        joke = self.get_main_joke()
+
         return joke
 
     def rate_joke(self, joke):

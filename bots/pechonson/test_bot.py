@@ -25,16 +25,34 @@ class TestBot:
         assert text == "The same text is: \"Hello, how are you today?\""
 
     @pytest.mark.parametrize(
-        "country, result_prompt", ((
-            None, "Tell me a joke"), ("Peru", "Tell me a joke about people from Peru")),
+        "country, result_prompt, language", (
+            (None, "Tell me a joke", None),
+            (None, "Tell me a joke in Deutsch", "Deutsch"),
+            ("Peru", "Tell me a joke about people from Peru", None),
+            ("Peru", "Tell me a joke about people from Peru in Spanish", "Spanish")),
     )
-    def test_build_prompt(self, bot: Bot, country: str, result_prompt):
-        prompt = bot.build_prompt(from_country=country)
+    def test_build_prompt(self, bot: Bot, country: str, result_prompt: str, language: str):
+        prompt = bot.build_prompt(from_country=country, language=language)
         assert prompt == result_prompt
+
+    def test_tell_introductory_phrase(self, bot: Bot, capfd):
+        bot.tell_introductory_phrase()
+        out, err = capfd.readouterr()
+        assert isinstance(out, str), "There is no output in console"
+
+    def test_get_country_from_user(self, bot: Bot):
+        with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
+            country = bot.get_country_from_user()
+            assert country == "Peru"
+
+    def test_get_language_from_user(self, bot: Bot):
+        with mock.patch.object(builtins, 'input', lambda _: 'Spanish'):
+            bot.from_country = "Peru"
+            language = bot.get_language_from_user()
+            assert language == "Spanish"
 
     def test_tell_joke(self, bot: Bot):
         with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
-            # assert Bot.function() == 'expected_output'
             joke = bot.tell_joke()
             assert isinstance(joke, str), "Joke is not a string."
         # assert len(joke) > 200, "Joke length is not within the correct range."
