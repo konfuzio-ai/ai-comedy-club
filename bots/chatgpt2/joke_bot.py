@@ -3,7 +3,7 @@ from textblob import TextBlob
 import random
 
 class Bot:
-    name = 'Try AI to funny'
+    name = 'Try AI comedy'
     def __init__(self):
         self.joke_generator = pipeline('text-generation', model='gpt2')
         self.joke_prefixes = [
