@@ -51,6 +51,18 @@ class TestBot:
             language = bot.get_language_from_user()
             assert language == "Spanish"
 
+    def test_pick_comedian(self, bot: Bot):
+        with mock.patch.object(builtins, 'input', lambda _: '2'):
+            bot.language = "French"
+            comedian = bot.pick_comedian()
+            assert isinstance(comedian, str), "No comedian has been chosen"
+
+    def test_pick_no_comedian(self, bot: Bot):
+        with mock.patch.object(builtins, 'input', lambda _: '10'):
+            bot.language = "French"
+            comedian = bot.pick_comedian()
+            assert comedian == None
+
     def test_tell_outro_phrase(self, bot: Bot, capfd):
         bot.language = "English"
         bot.tell_outro_phrase()
