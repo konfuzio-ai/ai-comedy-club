@@ -6,9 +6,9 @@ class Bot:
     name = 'Funny Johnnie D.'
     def __init__(self):
        self.joke_generator = pipeline('text-generation', model='gpt2')
-        self.joke_prefixes = [
-            "My best joke is: "
-        ]
+       self.joke_prefixes = [
+           "My best joke is: "
+       ]
 
     def tell_joke(self):
         # Use the GPT-2 model to generate a joke
