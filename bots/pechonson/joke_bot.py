@@ -15,7 +15,7 @@ class Bot:
     TEMPERATURE = 0.7
     GPT_MODEL = "text-davinci-003"
 
-    # We can also ask GPT to tell us a list of 10 known comedians, but hardcoding 
+    # We can also ask GPT to tell us a list of 10 known comedians, but hardcoding
     # the list is better for the quota :)
     comedians = ["Luis CK",
                  "George Carlin",
@@ -28,7 +28,7 @@ class Bot:
 
     def __init__(self):
         openai.api_key = os.getenv('OPENAI_API_KEY')
-
+        self.language = "English"
         joke_evaluator_model_name = 'Reggie/muppet-roberta-base-joke_detector'
         self.joke_evaluator = pipeline(model=joke_evaluator_model_name)
 
@@ -65,10 +65,9 @@ class Bot:
 
     def get_language_from_user(self):
         language = input(
-            f"{self.name}: I am really an educated bot, would you like me to entertain you in another language? If so, tell me which one\n")
+            f"{self.name}: I am really an inclusive bot, would you like me to entertain you in another language? If so, tell me which one\n")
         prompt = self.build_prompt(
             from_country=self.from_country, language=language)
-        print(f"Prompt: {prompt}")
         joke = self.get_text_from_chatgpt3sdk(prompt, max_tokens=200)
         print(f"{self.name}: {joke}")
         return language
@@ -80,20 +79,34 @@ class Bot:
         return text
 
     def pick_comedian(self):
-        prompt = "I am so cool that i can be like one of your favorite comedians. Choose one of them with its number:"
+        prompt = "I am so cool that I can be like one of your favorite comedians. Choose one of them with its number:"
         prompt = self.translate_if_not_english(prompt)
-        print(prompt)
+        print(f"{self.name}: {prompt}")
+        # Adding some randomness to the flow
         comedians_to_show = random.sample(self.comedians, 3)
         for index, comedian in enumerate(comedians_to_show):
             print(f"{index+1}: {comedian}\n")
         print(f'4: {self.translate_if_not_english("Just be as you are")}\n')
+        # Putting value 4 as a default in case user does not specify a valid value (1-3)
         comedian_input = 4
         try:
             comedian_input = int(input(""))
         except ValueError:
             print(f'{self.translate_if_not_english("You seem to be very excited, so to please you I will simply be myself.")}!\n')
 
-        return comedians_to_show[comedian_input] if comedian_input in [1, 2, 3] else None
+        return comedians_to_show[comedian_input-1] if comedian_input in [1, 2, 3] else None
+
+    def improvise_a_joke(self):
+        question = self.translate_if_not_english(
+            "Now throw me a topic and we'll see if I can get something funny out of it.\n")
+        about = input(f"{question}\n")
+        style = f" in the style of {self.comedian}" if self.comedian != None else ""
+        prompt = f"""Write a unique and hilarious joke in {self.language} about {about}{style} in no more than 100 words.
+        """
+        print(f"\nPrompt para imporovizar: {prompt}\n")
+        joke = self.get_text_from_chatgpt3sdk(prompt)
+        print(f"{self.name}: {joke}")
+        return joke
 
     def get_main_joke(self):
         prompt = f"""Konfuzio is a unified AI platform turning unstructured data into 
@@ -121,6 +134,8 @@ class Bot:
         self.language = self.get_language_from_user()
 
         self.comedian = self.pick_comedian()
+
+        self.improvise_a_joke()
 
         joke = self.get_main_joke()
 

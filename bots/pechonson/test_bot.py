@@ -53,26 +53,33 @@ class TestBot:
 
     def test_pick_comedian(self, bot: Bot):
         with mock.patch.object(builtins, 'input', lambda _: '2'):
-            bot.language = "French"
             comedian = bot.pick_comedian()
             assert isinstance(comedian, str), "No comedian has been chosen"
 
     def test_pick_no_comedian(self, bot: Bot):
         with mock.patch.object(builtins, 'input', lambda _: '10'):
-            bot.language = "French"
             comedian = bot.pick_comedian()
             assert comedian == None
 
+    def test_improvise_a_joke(self, bot: Bot, capfd):
+        with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
+            bot.comedian = None
+            joke = bot.improvise_a_joke()
+            assert isinstance(joke, str), "Joke is not a string."
+            out, err = capfd.readouterr()
+            assert isinstance(out, str), "There is no output in console"
+
     def test_tell_outro_phrase(self, bot: Bot, capfd):
-        bot.language = "English"
         bot.tell_outro_phrase()
         out, err = capfd.readouterr()
         assert isinstance(out, str), "There is no output in console"
 
-    def test_tell_joke(self, bot: Bot):
+    def test_tell_joke(self, bot: Bot, capfd):
         with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
             joke = bot.tell_joke()
             assert isinstance(joke, str), "Joke is not a string."
+            out, err = capfd.readouterr()
+            assert isinstance(out, str), "There is no output in console"
 
     def test_rate_joke(self, bot: Bot):
         joke = "Why was the computer cold at the office? Because it left its Windows open."
