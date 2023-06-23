@@ -63,6 +63,13 @@ class Bot:
         print(f"{self.name}: {joke}")
         return language
 
+    def tell_outro_phrase(self):
+        prompt = f"""Tell me a unique and funny parting line for a stand up 
+        comedy show in {self.language}
+        """
+        outro_phrase = self.get_text_from_chatgpt3sdk(prompt, max_tokens=300)
+        print(f"{self.name}: {outro_phrase}")
+
     def tell_joke(self):
         self.tell_introductory_phrase()
 
@@ -71,6 +78,8 @@ class Bot:
         self.language = self.get_language_from_user()
 
         joke = self.get_main_joke()
+
+        self.tell_outro_phrase()
 
         return joke
 

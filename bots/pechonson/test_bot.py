@@ -51,11 +51,16 @@ class TestBot:
             language = bot.get_language_from_user()
             assert language == "Spanish"
 
+    def test_tell_outro_phrase(self, bot: Bot, capfd):
+        bot.language = "English"
+        bot.tell_outro_phrase()
+        out, err = capfd.readouterr()
+        assert isinstance(out, str), "There is no output in console"
+
     def test_tell_joke(self, bot: Bot):
         with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
             joke = bot.tell_joke()
             assert isinstance(joke, str), "Joke is not a string."
-        # assert len(joke) > 200, "Joke length is not within the correct range."
 
     def test_rate_joke(self, bot: Bot):
         joke = "Why was the computer cold at the office? Because it left its Windows open."
