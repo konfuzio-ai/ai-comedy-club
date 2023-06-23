@@ -32,7 +32,7 @@ PRESENCE_PENALTY = 0.6     # control repeated tokens
 MAX_CONTEXT_QUESTIONS = 10 # limits how many questions we include in the prompt
 
 class Bot:
-    def __init__(self, name = "The-AI-Larious"):
+    def __init__(self, name = "The-AI-larious"):
         self.name = name
 
     def get_response(self, instructions, previous_questions_and_answers, new_question):
@@ -71,7 +71,7 @@ class Bot:
 
     def tell_joke(self):
         """
-        Generates The-AI-Larious jokes. The function takes no arguments.
+        Generates The-AI-larious jokes. The function takes no arguments.
         """
         # keep track of previous questions and answers
         previous_questions_and_answers = []
@@ -90,21 +90,21 @@ class Bot:
     
     def rate_joke(self, joke):
         """
-        Generates The-AI-Larious' score based on a fellow AI comedian's joke.
+        Generates The-AI-larious' score based on a fellow AI comedian's joke.
         - Arguments: 
             joke (str): previous AI comedian's joke.
-        - Returns: only one integer value which is The-AI-Larious' score. 
+        - Returns: only one integer value which is The-AI-larious' score. 
         """        
         # initialise a new conversation with new fellow AI comedian
         previous_questions_and_answers = []
         
-        # prompt for The-AI-Larious
+        # prompt for The-AI-larious
         new_question = f"What would be the rating the {joke} for you? Answer only one number (integer), no other words!"
         
         # generates response using get_response() function
         score = self.get_response(INSTRUCTIONS, previous_questions_and_answers, new_question)
         
-        # makes sure that The-AI-Larious' answer is really one integer (the prompt "new_question" above fails sometimes)
+        # makes sure that The-AI-larious' answer is really one integer (the prompt "new_question" above fails sometimes)
         score_int = int(re.findall('\d+', score)[0]) 
 
         # add the new question and answer to the list of previous questions and answers
