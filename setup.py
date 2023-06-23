@@ -14,7 +14,7 @@ setup(
 
     ],
 
-    author="Konfuzio",
+    author="ether-levitation",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",
     license="MIT",
 )
