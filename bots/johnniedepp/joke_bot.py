@@ -12,7 +12,8 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 class Bot:
     name = 'Funny Johnnie D.'
 
-    def __init__(self):
+    def __init__(self, text=None):
+        text = text if text is not None else self.tell_joke()
         self.joke_generator = pipeline('text-generation', model='gpt2')
         self.joke_prefixes = [
             "My best joke is: "
