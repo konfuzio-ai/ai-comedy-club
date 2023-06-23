@@ -105,6 +105,7 @@ class TestBot:
         out, err = capfd.readouterr()
         assert isinstance(out, str), "There is no output in console"
 
+
     def test_tell_joke(self, bot: Bot, capfd):
         with mock.patch.object(builtins, 'input', lambda _: 'Peru'):
             joke = bot.tell_joke()
