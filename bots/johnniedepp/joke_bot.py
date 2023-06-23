@@ -1,7 +1,7 @@
 import random
 
 class Bot:
-    name = 'Not funny'
+    name = 'Not funny Johnnie D.'
     def __init__(self):
         self.jokes = [
             "Why was the developer unhappy at their job? They wanted arrays.",
