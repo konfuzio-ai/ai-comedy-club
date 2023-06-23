@@ -1,7 +1,7 @@
 import random
 
 class Bot:
-    name = 'Funny Autobot'
+    name = 'Not funny'
     def __init__(self):
         self.jokes = [
             "Why don't scientists trust atoms? Because they make up everything!",
