@@ -22,5 +22,5 @@ class Bot:
         # This is a simple example and doesn't actually reflect humor
         blob = TextBlob(joke)
         polarity = blob.sentiment.polarity
-        rating = (polarity + 1 + 0.525) * 5  # convert polarity from [-1, 1] to [0, 10]
+        rating = (polarity + 1 + 0.5001) * 5  # convert polarity from [-1, 1] to [0, 10]
         return rating
