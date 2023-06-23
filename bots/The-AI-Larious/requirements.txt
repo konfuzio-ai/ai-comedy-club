@@ -1,3 +1,2 @@
 openai
 python-dotenv
-colorama
