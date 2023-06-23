@@ -4,6 +4,8 @@ import random
 
 
 class Bot(ComedianBot, JudgeBot):
+    """His bot class inherite from ComedianBot and JudgeBot taking the advantage of
+    being able to use the joke it learns to judge and the jokes it judges to tell"""
     def __init__(self):
         ComedianBot.__init__(self)
         JudgeBot.__init__(self)

@@ -2,6 +2,10 @@ from sentence_transformers import SentenceTransformer, util
 
 
 class JudgeBot:
+    """
+    This bot class rate joke following this criterias: Diversity of Jokes, Creativity, Timeliness, Personalization.
+    And store jokes and important context to use in the judgement
+    """
     def __init__(self):
         self.jokes = list()
         self.current_comedian_jokes = list()
@@ -12,13 +16,20 @@ class JudgeBot:
         self.judgement_similarity_criteria = ["Diversity of Jokes", "Creativity", "Timeliness", "Personalization"]
         self.users_preferences_and_geography = []
 
-    def get_users_preferences_and_geography(self, users_preference: list[str], geography: list[str]
-
-                                            ):
+    def get_users_preferences_and_geography(self, users_preference: list[str], geography: list[str]):
+        """This method store users preference and geography"""
         self.users_preferences_and_geography += users_preference
         self.users_preferences_and_geography += geography
 
     def rate_joke(self, current_joke):
+        """
+        This method rate joke following this criterias: Diversity of Jokes, Creativity, Timeliness, Personalization
+        Args:
+            current_joke: str
+
+        Returns:
+
+        """
         self.current_joke_rating = 0
         if len(current_joke) > 1000:
             # This joke is too long
@@ -32,6 +43,7 @@ class JudgeBot:
         self.jokes.append(current_joke)
         self.current_joke_rating = max(0, min(10, self.current_joke_rating))  # To ensure the rating is between 0 and 10
         return self.current_joke_rating
+
     def _rate_with_similarity(self, current_joke, judgement_criteria):
 
         # I could use match case to better readability, but I don't know if you are using python >=3.10
@@ -56,14 +68,16 @@ class JudgeBot:
             similarity = util.pytorch_cos_sim(current_joke_embedding, sentence_embedding)
             if similarity > 0.3:
                 if is_negative_similarity:
-                    self.current_joke_rating -= 2 * is_negative_similarity
+                    self.current_joke_rating -= 2
                     break  # found similarity with previous jokes (from the same comedian or from all jokes)
                 else:
                     self.current_joke_rating += 2  # Found similarity with a trending topic or personalization
                     # The loop doesn't break, we can get more points if we combine them
-        self.current_joke_rating += 2 * is_negative_similarity  # Not found similarity with any previous jokes
+        self.current_joke_rating += 2 * is_negative_similarity  # Not found similarity with any previous jokes if is_negative_similarity= True
+        # if is_negative_similarity= False we don't add nothin 3*False = 0
 
     def finish_this_comedian_judgement(self):
+        """Remove current comedian jokes"""
         self.current_comedian_jokes = list()  # remove jokes to start with next comedian
 
 
