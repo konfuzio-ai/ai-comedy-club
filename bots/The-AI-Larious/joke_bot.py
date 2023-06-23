@@ -10,7 +10,7 @@ load_dotenv()
 # sets OpenAI key from. env file
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# prompt for our The-AI-Larious chatbot
+# prompt for our The-AI-larious chatbot
 INSTRUCTIONS = """You are an AI comedian that is an experts in telling funny and interesting jokes to the public.
 Every answer you do has to be funny.
 You are a good sport, capable of rating other performers' jokes on a scale from 1 (not funny) to 10 (hilarious).
