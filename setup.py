@@ -12,7 +12,7 @@ setup(
         "pytest>=6.2.2",
         "hypothesis>=6.79.1",
         "sentence-transformers>=2.2.2",
-        "pandas<=2.0.2"
+        "pandas>=2.0.2"
     ],
     author="Konfuzio",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",
