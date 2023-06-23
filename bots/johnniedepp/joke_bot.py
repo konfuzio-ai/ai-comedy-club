@@ -34,14 +34,15 @@ class Bot:
         # Use the GPT-2 model to generate a joke
         # Choose a random prefix for the joke
         prefix = random.choice(self.joke_prefixes)
-        generated_joke = self.joke_generator(f'{prefix}', max_length=75, do_sample=True)[0]['generated_text']
+        joke = self.joke_generator(f'{prefix}', max_length=75, do_sample=True)[0]['generated_text']
+        return joke  
 
         # Analyze the sentiment of the joke
-        sentiment = self.analyze_sentiment(generated_joke)
+        sentiment = self.analyze_sentiment(joke)
 
         # Return the formatted joke
         formatted_joke = f"Tell a joke that is {humor}, {creativity}, {timeliness} for {audience} in the style of {comedian}:"
-        formatted_joke += f"\n{generated_joke}"
+        formatted_joke += f"\n{joke}"
         formatted_joke += f"\nSentiment: {sentiment}"
         return formatted_joke
 
