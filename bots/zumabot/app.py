@@ -1,6 +1,6 @@
 import streamlit as st
 from gtts import gTTS
-from bots.zumabot.bot import Bot
+from bot import Bot
 
 TOOLTIP_TEXT_COMMENTS = "Write each comment separated by ;"
 

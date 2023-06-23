@@ -1,5 +1,5 @@
-from bots.zumabot.comedian_bot import ComedianBot
-from bots.zumabot.judge_bot import JudgeBot
+from bots.comedian_bot import ComedianBot
+from bots.judge_bot import JudgeBot
 import random
 
 

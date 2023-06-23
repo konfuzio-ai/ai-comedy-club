@@ -44,7 +44,7 @@ class ComedianBot:
         prompts_current_city = [f"my dream is to live in {self.current_city}", f"I don't like how {self.current_city}",
                                 f"I want {self.current_city}"]
         jokes_generated = generator(random.choice(prompts), num_return_sequences=8)
-        jokes_generated_with_current_city = generator(random.choice(prompts_current_city), num_return_sequences=2)
+        jokes_generated_with_current_city = generator(random.choice(prompts_current_city), num_return_sequences=3)
         jokes_current_city = [f"You know when dad says {joke['generated_text']}" for joke in
                               jokes_generated_with_current_city]
         jokes = [f"You know when dad says {joke['generated_text']}" for joke in

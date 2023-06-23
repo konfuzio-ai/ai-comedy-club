@@ -56,12 +56,12 @@ class JudgeBot:
             similarity = util.pytorch_cos_sim(current_joke_embedding, sentence_embedding)
             if similarity > 0.3:
                 if is_negative_similarity:
-                    self.current_joke_rating -= 1 * is_negative_similarity
+                    self.current_joke_rating -= 2 * is_negative_similarity
                     break  # found similarity with previous jokes (from the same comedian or from all jokes)
                 else:
-                    self.current_joke_rating += 1  # Found similarity with a trending topic or personalization
+                    self.current_joke_rating += 2  # Found similarity with a trending topic or personalization
                     # The loop doesn't break, we can get more points if we combine them
-        self.current_joke_rating += 1 * is_negative_similarity  # Not found similarity with any previous jokes
+        self.current_joke_rating += 2 * is_negative_similarity  # Not found similarity with any previous jokes
 
     def finish_this_comedian_judgement(self):
         self.current_comedian_jokes = list()  # remove jokes to start with next comedian
