@@ -47,4 +47,4 @@ class Bot:
         blob = TextBlob(reaction)
         polarity = blob.sentiment.polarity
         rating = (polarity + 1) * 5  # convert polarity from [-1, 1] to [0, 10]
-        return rating
+        return max(rating, 1)  # ensure the scale is obeyed (min score is 1)
