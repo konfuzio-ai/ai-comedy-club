@@ -7,7 +7,7 @@ class Bot:
     def __init__(self):
        self.joke_generator = pipeline('text-generation', model='gpt2')
         self.joke_prefixes = [
-            "My best joke is: Why was the developer unhappy at their job? They wanted arrays."
+            "My best joke is: "
         ]
 
     def tell_joke(self):
