@@ -1,5 +1,5 @@
 import pytest
-from joke_bot import Bot
+from .joke_bot import Bot
 
 
 @pytest.fixture

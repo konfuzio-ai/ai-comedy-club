@@ -1,2 +1,8 @@
-venv/*
+*venv
+*.egg*
 .idea/*
+__pycache__
+build
+dist
+*.ipynb
+playground.py

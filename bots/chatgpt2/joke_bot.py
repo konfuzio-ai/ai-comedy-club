@@ -2,8 +2,10 @@ from transformers import pipeline
 from textblob import TextBlob
 import random
 
+
 class Bot:
     name = 'Try AI to funny'
+
     def __init__(self):
         self.joke_generator = pipeline('text-generation', model='gpt2')
         self.joke_prefixes = [
@@ -14,7 +16,8 @@ class Bot:
         # Use the GPT-2 model to generate a joke
         # Choose a random prefix for the joke
         prefix = random.choice(self.joke_prefixes)
-        joke = self.joke_generator(f'{prefix}', max_length=25, do_sample=True)[0]['generated_text']
+        joke = self.joke_generator(f'{prefix}', max_length=25, do_sample=True)[
+            0]['generated_text']
         return joke
 
     def rate_joke(self, joke):
