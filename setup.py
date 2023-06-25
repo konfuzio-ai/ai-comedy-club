@@ -13,6 +13,8 @@ setup(
         "openai",
         "pydantic",
         "python-dotenv",
+        "fastapi",
+        "uvicorn"
     ],
     author="Konfuzio",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",

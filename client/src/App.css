@@ -1,0 +1,50 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 4em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+  cursor: pointer;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 1em #daf7a6);
+}
+.joke_item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 1px 5px;
+  box-sizing: border-box;
+  padding: 1rem;
+  margin: 1rem;
+  text-align: left;
+}
+.bot_title {
+  white-space: nowrap;
+  margin: 0;
+  color: #646cff;
+}
+.bot_joke {
+  float: left;
+  margin: 0;
+}
+
+div {
+  max-width: 800px;
+  margin: 2rem;
+}
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
