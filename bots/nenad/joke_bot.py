@@ -71,23 +71,12 @@ This is the main joker bot class based on GPT2 from transformers
 class Bot:
   def __init__(self):
     """
-    def tell_joke(self):
-        # Use the GPT-2 model to generate a joke
-        # Choose a random prefix for the joke
-        prefix = random.choice(self.joke_prefixes)
-        joke = self.joke_generator(f'{prefix}', max_length=25, do_sample=True)[0]['generated_text']
-        return joke
+    self.joke_generator = pipeline('text-generation', model='gpt2')
+    self.joke_prefixes = [
+      "My best joke is: "
+    ]
+
     """
-    """
-    def rate_joke(self, joke):
-        # Rate the joke based on its sentiment polarity
-        # This is a simple example and doesn't actually reflect humor
-        blob = TextBlob(joke)
-        polarity = blob.sentiment.polarity
-        rating = (polarity + 1) * 5  # convert polarity from [-1, 1] to [0, 10]
-        return rating
-    """
-    
     self.name = 'Nenad'
 
     self.device = 'cpu'
@@ -98,7 +87,6 @@ class Bot:
     self.model = GPT2LMHeadModel.from_pretrained('gpt2')
     self.model = self.model.to(self.device)
     self.utils = Utils()
-
 
   #Checks if any comibnation of tokens which make the forbidden word are present in the new sequence after adding token
   def check_forbidden(self, f_sequence, current_sequence):
@@ -251,7 +239,7 @@ class Bot:
   def make_joke_default(self):
     words = self.read_forbidden_words('forbidden.txt')
     forbidden_list = self.get_forbidden_token_list(self.tokenizer, words)
-    joke = self.generate_text(f"My best joke is:", 50, forbidden_list)
+    joke = self.generate_text(f"My best joke is:", 25, forbidden_list)
     return joke
 
 
@@ -362,8 +350,7 @@ class Bot:
   def load_state(self, models_folder="trained_models", weights_file="gpt2_joker_0.pt"):
     model_path = os.path.join(models_folder, weights_file)
     self.model.load_state_dict(torch.load(model_path))
-
-
+ 
 if __name__ == "__main__":
   bot_nenad = Bot()
   
@@ -379,6 +366,6 @@ if __name__ == "__main__":
   #Interactive, no rating
   #print(bot_nenad.tell_joke(True, False))
   
-  Interactive with rating
+  #Interactive with rating
   print(bot_nenad.tell_joke(True, True))
 
