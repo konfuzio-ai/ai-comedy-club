@@ -352,9 +352,40 @@ class Bot:
     self.model.load_state_dict(torch.load(model_path))
 
 
+class RatingDataset(torch.utils.data.Dataset):
+    def __init__(self, path, tokenizer):
+
+        df = pd.read_csv(path) # smaller dataset to save training time.
+
+        self.labels = [labels[label] for label in df['rating']]
+        self.texts = [tokenizer(text,
+                                padding='max_length',
+                                max_length=128,
+                                truncation=True,
+                                return_tensors="pt") for text in df['text']]
+
+    def classes(self):
+        return self.labels
+
+    def __len__(self):
+        return len(self.labels)
+
+    def get_batch_labels(self, idx):
+        # Get a batch of labels
+        return np.array(self.labels[idx])
+
+    def get_batch_texts(self, idx):
+        # Get a batch of inputs
+        return self.texts[idx]
+
+    def __getitem__(self, idx):
+        batch_texts = self.get_batch_texts(idx)
+        batch_y = self.get_batch_labels(idx)
+        return batch_texts, batch_y
 
 class SimpleGPT2SequenceClassifier(nn.Module):
     def __init__(self, hidden_size=768, num_classes=10 ,max_seq_len=128, gpt_model_name='gpt2'):
+    	self.tokenizer = GPT2Tokenizer.from_pretrained('gpt2')    
         super(SimpleGPT2SequenceClassifier,self).__init__()
         self.gpt2model = GPT2Model.from_pretrained(gpt_model_name)
         self.fc1 = nn.Linear(hidden_size*max_seq_len, num_classes)
@@ -381,7 +412,7 @@ class SimpleGPT2SequenceClassifier(nn.Module):
 
      
     def train(model, train_data, learning_rate=1e-5, epochs=1):
-        train = RatingDataset(train_data)
+        train = RatingDataset(train_data, self.tokenizer)
 
         train_dataloader = torch.utils.data.DataLoader(train, batch_size=2, shuffle=True)
 
