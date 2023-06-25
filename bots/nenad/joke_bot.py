@@ -71,23 +71,6 @@ This is the main joker bot class based on GPT2 from transformers
 class Bot:
   def __init__(self):
     """
-    self.joke_generator = pipeline('text-generation', model='gpt2')
-    self.joke_prefixes = [
-      "My best joke is: "
-    ]
-
-    """
-    self.name = 'Nenad'
-
-    self.device = 'cpu'
-    if torch.cuda.is_available():
-      self.device = 'cuda'
-
-    self.tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
-    self.model = GPT2LMHeadModel.from_pretrained('gpt2')
-    self.model = self.model.to(self.device)
-    self.utils = Utils()
-    """
     def tell_joke(self):
         # Use the GPT-2 model to generate a joke
         # Choose a random prefix for the joke
@@ -104,6 +87,18 @@ class Bot:
         rating = (polarity + 1) * 5  # convert polarity from [-1, 1] to [0, 10]
         return rating
     """
+    
+    self.name = 'Nenad'
+
+    self.device = 'cpu'
+    if torch.cuda.is_available():
+      self.device = 'cuda'
+
+    self.tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+    self.model = GPT2LMHeadModel.from_pretrained('gpt2')
+    self.model = self.model.to(self.device)
+    self.utils = Utils()
+
 
   #Checks if any comibnation of tokens which make the forbidden word are present in the new sequence after adding token
   def check_forbidden(self, f_sequence, current_sequence):
@@ -367,28 +362,6 @@ class Bot:
   def load_state(self, models_folder="trained_models", weights_file="gpt2_joker_0.pt"):
     model_path = os.path.join(models_folder, weights_file)
     self.model.load_state_dict(torch.load(model_path))
-
-
-import pytest
-#from joke_bot import Bot
-
-"""
-@pytest.fixture
-def bot():
-    return Bot()
-
-def test_tell_joke(bot):
-    joke = bot.tell_joke()
-    assert isinstance(joke, str), "Joke is not a string."
-    assert len(joke) > 50, "Joke length is not within the correct range."
-
-def test_rate_joke(bot):
-    joke = "Why was the computer cold at the office? Because it left its Windows open."
-    rating = bot.rate_joke(joke)
-    assert isinstance(rating, (int, float)), "Rating is not a number."
-    assert 0 <= rating <= 10, "Rating is not within the correct range."
-
-"""
 
 
 if __name__ == "__main__":
