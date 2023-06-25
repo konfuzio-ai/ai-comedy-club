@@ -7,21 +7,78 @@ import torch
 import numpy as np
 
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
+from transformers import AdamW, get_linear_schedule_with_warmup
 
 
 from transformers import pipeline
 from textblob import TextBlob
 import random
 
+from csv import writer
+
+from torch.utils.data import Dataset
+from torch.utils.data import Dataset, DataLoader
+import os
+import json
+import csv
+
+
+class Utils():
+    def append_rating_to_csv(self, name, joke, rating):
+      List = [name, joke, rating]
+ 
+      with open('ratings.csv', 'a') as f_object:
+
+        writer_object = writer(f_object)
+ 
+        # Pass the list as an argument into
+        writer_object.writerow(List)
+ 
+        # Close the file object
+        f_object.close()
+
+"""
+This is the Jokes dataset class for model customization on jokes datasets
+"""
+class JokesDataset(Dataset):
+    def __init__(self, jokes_dataset_path):
+        super().__init__()
+
+        #short_jokes_path = os.path.join(jokes_dataset_path, jokes_dataset_path)
+
+        self.joke_list = []
+        self.end_of_text_token = "<|endoftext|>"
+        
+        with open(jokes_dataset_path) as csv_file:
+            csv_reader = csv.reader(csv_file, delimiter=',')
+            
+            x = 0
+            for row in csv_reader:
+                joke_str = f"JOKE:{row[1]}{self.end_of_text_token}"
+                self.joke_list.append(joke_str)
+        
+    def __len__(self):
+        return len(self.joke_list)
+
+    def __getitem__(self, item):
+        return self.joke_list[item]
+
+
+
+"""
+This is the main joker bot class based on GPT2 from transformers
+"""
 class Bot:
-  name = 'Try AI to funny'
   def __init__(self):
     """
     self.joke_generator = pipeline('text-generation', model='gpt2')
     self.joke_prefixes = [
       "My best joke is: "
     ]
+
     """
+    self.name = 'Nenad'
+
     self.device = 'cpu'
     if torch.cuda.is_available():
       self.device = 'cuda'
@@ -29,7 +86,7 @@ class Bot:
     self.tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
     self.model = GPT2LMHeadModel.from_pretrained('gpt2')
     self.model = self.model.to(self.device)
-
+    self.utils = Utils()
     """
     def tell_joke(self):
         # Use the GPT-2 model to generate a joke
@@ -140,7 +197,7 @@ class Bot:
                 if(f is list):
                   final_forbidden = []
                   for g in forbidden_list:
-                    final_fobidden.append(str(g))
+                    final_forbidden.append(str(g))
                   f_sequence = ' '.join(final_forbidden)
                 else:
                   f_sequence = str(f)
@@ -179,7 +236,7 @@ class Bot:
     if joke_length == 'long':
       text_len = 250
     else:
-      text_len = 50
+      text_len = 25
 
     if int(years_old)<18:
       age = "minors"
@@ -193,19 +250,123 @@ class Bot:
 
     return joke
 
-
-  def tell_joke(self):
-    self.read_forbidden_words("forbidden.txt")
-    print("How old are you?")
-    years_old = input()
-    print("What is the desired joke topic?")
-    topic = input()
-    print("Do you want a short or long joke?")
-    length = input()
-    joke = self.make_joke(topic, length, years_old)
+  """
+  This variant does not involve user input
+  """
+  def make_joke_default(self):
+    words = self.read_forbidden_words('forbidden.txt')
+    forbidden_list = self.get_forbidden_token_list(self.tokenizer, words)
+    joke = self.generate_text(f"My best joke is:", 50, forbidden_list)
     return joke
 
 
+  """
+  In interactive mode, user input is taken into account
+  Rating can be enabled/disabled
+  """
+  def tell_joke(self, interactive_mode=False, rating=False):
+    self.model.eval()
+    if interactive_mode:
+      self.read_forbidden_words("forbidden.txt")
+      print('What is your name?')
+      name = input()
+      print("How old are you?")
+      years_old = input()
+      print("What is the desired joke topic?")
+      topic = input()
+      print("Do you want a short or long joke?")
+      length = input()
+      joke = self.make_joke(topic, length, years_old)
+      print(joke)
+      if rating:
+        print("Rate this joke")
+        rate = input()
+        self.utils.append_rating_to_csv(name, joke, rate)
+    else:
+      joke = self.make_joke_default()
+    return joke
+
+  """
+  Customizes the model by additional training on jokes dataset, such as shortjokes.csv
+  """
+  def train(self, jokes_dataset_path='./shortjokes.csv', BATCH_SIZE = 16, EPOCHS = 5, LEARNING_RATE = 3e-5, WARMUP_STEPS = 5000, MAX_SEQ_LEN = 400):
+    dataset = JokesDataset(jokes_dataset_path)
+    joke_loader = DataLoader(dataset, batch_size=1, shuffle=True)
+    self.model = self.model.to(self.device)
+    self.model.train()
+    optimizer = AdamW(self.model.parameters(), lr=LEARNING_RATE)
+
+    # Calculate the value of num_training_steps
+    #t_total = int(len(joke_loader) * EPOCHS)
+    t_total = -1
+
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=WARMUP_STEPS, num_training_steps = t_total)
+    proc_seq_count = 0
+    sum_loss = 0.0
+    batch_count = 0
+
+    tmp_jokes_tens = None
+    models_folder = "trained_models"
+    if not os.path.exists(models_folder):
+        os.mkdir(models_folder)
+
+    for epoch in range(EPOCHS):
+        
+        print(f"EPOCH {epoch} started" + '=' * 30)
+        
+        for idx,joke in enumerate(joke_loader):
+            #################### "Fit as many joke sequences into MAX_SEQ_LEN sequence as possible" logic start ####
+            joke_tens = torch.tensor(self.tokenizer.encode(joke[0])).unsqueeze(0).to(self.device)
+            #Skip sample from dataset if it is longer than MAX_SEQ_LEN
+            if joke_tens.size()[1] > MAX_SEQ_LEN:
+                continue
+            
+            #The first joke sequence in the sequence
+            if not torch.is_tensor(tmp_jokes_tens):
+                tmp_jokes_tens = joke_tens
+                continue
+            else:
+                #The next joke does not fit in so we process the sequence and leave the last joke 
+                #as the start for next sequence 
+                if tmp_jokes_tens.size()[1] + joke_tens.size()[1] > MAX_SEQ_LEN:
+                    work_jokes_tens = tmp_jokes_tens
+                    tmp_jokes_tens = joke_tens
+                else:
+                    #Add the joke to sequence, continue and try to add more
+                    tmp_jokes_tens = torch.cat([tmp_jokes_tens, joke_tens[:,1:]], dim=1)
+                    continue
+            ################## Sequence ready, process it trough the model ##################
+
+
+            outputs = self.model(work_jokes_tens, labels=work_jokes_tens)
+
+            loss, logits = outputs[:2]                        
+            loss.backward()
+            sum_loss = sum_loss + loss.detach().data
+            print(f"sum loss {sum_loss}")
+                          
+            proc_seq_count = proc_seq_count + 1
+            if proc_seq_count == BATCH_SIZE:
+                proc_seq_count = 0    
+                batch_count += 1
+                optimizer.step()
+                scheduler.step() 
+                optimizer.zero_grad()
+                self.model.zero_grad()
+
+            if batch_count == 100:
+                print(f"sum loss {sum_loss}")
+                batch_count = 0
+                sum_loss = 0.0
+        # Store the model after each epoch to compare the performance of them
+        torch.save(self.model.state_dict(), os.path.join(models_folder, f"gpt2_joker_{epoch}.pt"))
+
+  """
+  Load weight of a pre-trained model from given file
+  """
+  def load_state(self, models_folder="trained_models", weights_file="gpt2_joker_0.pt"):
+    model_path = os.path.join(models_folder, weights_file)
+    self.model.load_state_dict(torch.load(model_path))
 
 
 import pytest
@@ -228,8 +389,23 @@ def test_rate_joke(bot):
     assert 0 <= rating <= 10, "Rating is not within the correct range."
 
 """
+
+
 if __name__ == "__main__":
   bot_nenad = Bot()
+  
+  #Datasets are needed for this
+  #bot_nenad.train('./jokes_data/shortjokes.csv')
+  
+  #Load previously saved model weights
+  #bot_nenad.load_state("trained_models", "gpt2_joker_0.pt")
+  
+  #Automatic no-interaction joke
   print(bot_nenad.tell_joke())
-
+  
+  #Interactive, no rating
+  #print(bot_nenad.tell_joke(True, False))
+  
+  Interactive with rating
+  print(bot_nenad.tell_joke(True, True))
 
