@@ -1,7 +1,7 @@
 
 from typing import Optional, Tuple, Any
 from keras.preprocessing.text import Tokenizer
-from keras.preprocessing.sequence import pad_sequences
+from keras.utils import pad_sequences
 from keras.models import Sequential, Model, load_model
 from keras.layers import Embedding, LSTM, Dense, Dropout
 from keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
