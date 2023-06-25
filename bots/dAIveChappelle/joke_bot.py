@@ -54,7 +54,7 @@ class Bot:
         humor_score = HumorJudge(DEVICE).score(joke)
         # Asses the creativity of the joke
         creativity_score = CreativityJudge().score(joke)
-        # combine the three ratings
+        # combine the three ratings (give more weight to humor, coz it ain't a joke if it ain't funny)
         rating = (creativity_score + approp_score +
-                  egmt_score + humor_score) / 4
-        return rating
+                  egmt_score + humor_score * 2) / 5
+        return round(rating, 2)
