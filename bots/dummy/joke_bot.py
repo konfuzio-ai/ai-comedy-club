@@ -1,7 +1,10 @@
 import random
+from interfaces.base_bot_interface import BaseBot
 
-class Bot:
+
+class Bot(BaseBot):
     name = 'Not funny'
+
     def __init__(self):
         self.jokes = [
             "Why don't scientists trust atoms? Because they make up everything!",

@@ -2,8 +2,12 @@ from transformers import pipeline
 from textblob import TextBlob
 import random
 
-class Bot:
+from interfaces.base_bot_interface import BaseBot
+
+
+class Bot(BaseBot):
     name = 'Try AI to funny'
+
     def __init__(self):
         self.joke_generator = pipeline('text-generation', model='gpt2')
         self.joke_prefixes = [

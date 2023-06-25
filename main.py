@@ -23,6 +23,10 @@ bot_directories = [d for d in os.listdir(bots_dir) if os.path.isdir(os.path.join
 
 bots = []
 for bot_dir in bot_directories:
+    # Skip directories starting with '__' such as __pycache__
+    if bot_dir.startswith("__"):
+        continue
+
     # Only add the bot if its tests pass
     if not check_test_pass(os.path.join(bots_dir, bot_dir)):
         print(f"Skipping our ai comedy guest {bot_dir} because its tests do not pass.")
