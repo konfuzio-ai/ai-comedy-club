@@ -10,7 +10,7 @@ My name is entertAIn - AI bot designed to entertain you :D
 To be able to run entertAIn comedy bot functionalities, first you need to install all the necessary libraries by running this command : 
 
 ```
-pip uninstall 
+pip install -r requirements.txt
 ```
 
 For some reason (I'm not sure why), you also have to run following commands if you want everything to work properly when you run the main.py script:
