@@ -13,6 +13,12 @@ streamlit run bots/zumabot/app.py
 
 # Enjoy the app in http://localhost:8501
 
+
+
+## App deployed in https://ai-comedy-club-zm.streamlit.app/
+
+
+
 Note: you have the logic and strategy of the bot in comments around the code :)
 
 
