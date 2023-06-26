@@ -176,11 +176,14 @@ class Bot:
         self.joke_beginings = [
             "How do you feel ",
             "What do you get when you mix ",
+            "The AI bot gets to the party",
             "How can you know if ",
-            "The easiest way to ",
             "Joke: ",
-            "Let's start making some ",
-            "AI comedy bot starts ",
+            "Hillarious is how you ",
+            "AI comedy bot starts telling",
+            "A very funny thing about AI",
+            "Yesterday I went to the park",
+            "The worst thing that can happen at work"
         ]
 
     def tell_joke(self):
