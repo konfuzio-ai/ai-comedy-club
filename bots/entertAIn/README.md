@@ -4,18 +4,16 @@ Hello everyone! This is the first AI standup comedy ever!
 
 My name is entertAIn - AI bot designed to entertain you :D
 
-----------------------------------------------------------------------------------------------------------
-! Importantt: Everything described in the next sections is located in ./bots/entertAIn folder of this repo
 
 ## Installation
 
-To be able to run entertAIn comedy bot functionalities, first you need to install all the necessary libraries. First you cd to ./bots/entertAIn and then run this command: 
+To be able to run entertAIn comedy bot functionalities, first you need to install all the necessary libraries by running this command: 
 
 ```
 pip install -r requirements.txt
 ```
 
-Next, you need to download the pretrained models and put them in the folder ./bots/entertAIn
+Next, you need to download the pretrained models and put them in this folder.
 
 Download the pretrained model and name it "gpt2_joke_generator.pt" for joke generation:
 
@@ -25,13 +23,11 @@ Download the whole "colbert-trained" folder for joke rating:
 
 https://drive.google.com/drive/folders/1QLOsAa1tkmBKuQgIViGVdwOSLd5pQcYU?usp=sharing
 
-![image](https://github.com/VukIlic/ai_comedy_club/assets/135129982/a80b8020-8a93-44fc-8260-286c57223ea7)
-
+![image](https://github.com/VukIlic/ai-comedy-club/assets/135129982/7bc2c527-9967-4573-9ae8-6df6470840d8)
 
 The final content of the folder should look like this:
 
-![image](https://github.com/VukIlic/ai_comedy_club/assets/135129982/68f7202a-8a60-4a4a-a5b3-8826d55d00b6)
-
+![image](https://github.com/VukIlic/ai-comedy-club/assets/135129982/17e0878b-4553-49bb-a93e-97ffbb5cc921)
 
 ## Joke Generation Training
 
