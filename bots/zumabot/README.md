@@ -2,7 +2,7 @@
 
 # To install all requirements for this bot
 ```
-pip install  bots/zumabot/data/requirement.txt
+pip install -r bots/zumabot/data/requirements.txt
 ```
 
 # To run the web application
