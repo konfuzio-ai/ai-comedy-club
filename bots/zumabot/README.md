@@ -16,8 +16,7 @@ streamlit run bots/zumabot/app.py
 
 
 ## App deployed in https://ai-comedy-club-zm.streamlit.app/
-
-
+if the app doesn't work please contact: zumaquerodavid@gmail.com
 
 Note: you have the logic and strategy of the bot in comments around the code :)
 
