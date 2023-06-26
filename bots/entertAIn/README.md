@@ -10,7 +10,17 @@ My name is entertAIn - AI bot designed to entertain you :D
 To be able to run entertAIn comedy bot functionalities, first you need to install all the necessary libraries by running this command : 
 
 ```
-pip install -r requirements.txt
+pip uninstall 
+```
+
+For some reason (I'm not sure why), you also have to run following commands if you want everything to work properly when you run the main.py script:
+
+```
+pip uninstall pytest
+```
+
+```
+pip install pytest>=6.2.2
 ```
 
 Next, you need to download the pretrained models and put them in this folder.
