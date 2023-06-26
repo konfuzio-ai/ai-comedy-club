@@ -81,3 +81,8 @@ validators==0.20.0
 watchdog==3.0.0
 xformers==0.0.20
 zipp==3.15.0
+streamlit
+gtts
+torch
+transformers
+sentence_transformers
