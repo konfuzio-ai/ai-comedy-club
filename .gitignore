@@ -1,2 +1,4 @@
 venv/*
 .idea/*
+bots/__pycache__/*
+bots/seinfeld_ai/__pycache__/*

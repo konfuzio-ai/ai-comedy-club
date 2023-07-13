@@ -1,0 +1,22 @@
+version: "3"
+
+services:
+  torch:
+    build: image/
+    image: seinfeld_ai:latest
+    container_name: seinfeld_ai_container
+    stdin_open: true
+    tty: true
+    volumes:
+      - "../:/code"
+    command: jupyter notebook --ip 0.0.0.0 --no-browser --allow-root &
+    ports:
+      - 3000:8888
+    network_mode: "host"
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 1
+            capabilities: [gpu]
