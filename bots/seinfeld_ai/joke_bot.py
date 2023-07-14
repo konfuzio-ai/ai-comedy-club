@@ -39,14 +39,14 @@ class SeinfeldAI:
         
         print(hello_string[random.randint(0, len(hello_string)-1)])
 
-    def generate(self, length=None):
+    def generate(self, max_length=None):
         
         starting_idx = random.randint(0, len(self.starting_strings)-1)
         joke = self.starting_strings[starting_idx]
-        if not length:
-            length = random.randint(200,300)
+        if not max_length:
+            max_length = random.randint(100,400)
         
-        joke = self.joke_generator(joke, max_length=length, do_sample=False)[0]['generated_text']
+        joke = self.joke_generator(joke, max_length=max_length, do_sample=False)[0]['generated_text']
         
         return joke
 
