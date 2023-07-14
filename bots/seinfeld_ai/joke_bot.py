@@ -35,15 +35,18 @@ class SeinfeldAI:
             9: "I was at this place the other day, and let me tell you, it was like"
         }
         
-        self.joke_generator = pipeline('text-generation', model='gpt2')
+        self.joke_generator = pipeline('text-generation', model='lposilovic/Seinfeld_gpt2')
         
         print(hello_string[random.randint(0, len(hello_string)-1)])
 
-    def generate(self):
+    def generate(self, length=None):
         
         starting_idx = random.randint(0, len(self.starting_strings)-1)
         joke = self.starting_strings[starting_idx]
-        joke = self.joke_generator(f'{joke}', max_length=random.randint(30,50), do_sample=True, pad_token_id=50256,)[0]['generated_text']
+        if not length:
+            length = random.randint(200,300)
+        
+        joke = self.joke_generator(joke, max_length=length, do_sample=False)[0]['generated_text']
         
         return joke
 
@@ -58,7 +61,13 @@ class RateJokes():
         self.max_score = max_score
   
     def rate(self, joke):
-        return random.randint(self.min_score, self.max_score)
+        
+        
+        blob = TextBlob(joke)
+        polarity = blob.sentiment.polarity
+        rating = (polarity + 1) * 5
+        
+        return int(rating)
 
 
 class Bot:
