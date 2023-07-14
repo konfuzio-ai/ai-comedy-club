@@ -1,6 +1,7 @@
 import random
 from transformers import pipeline
 from textblob import TextBlob
+from difflib import SequenceMatcher
 
 class SeinfeldAI:    
     """
@@ -22,6 +23,7 @@ class SeinfeldAI:
             9: "Buckle up, chat enthusiasts! I'm Jerry Seinfeld, here to entertain you with my witty banter and sharp humor!"
             }
         
+        # Standard begginings of the Seinfeld jokes
         self.starting_strings = {
             0: "You ever notice how",
             1: "What's the deal with",
@@ -29,14 +31,17 @@ class SeinfeldAI:
             3: "So, I was thinking about",
             4: "Why do they always",
             5: "I don't understand why",
-            6: "You know what really bugs me?",
+            6: "I find it funny how",
             7: "Why is it that every time",
             8: "You know those things that just make no sense? Like",
             9: "I was at this place the other day, and let me tell you, it was like"
         }
         
+        # Downloading and loading a custom trained model
         self.joke_generator = pipeline('text-generation', model='lposilovic/Seinfeld_gpt2')
         
+        # Saying hello to the crowd
+        print()
         print(hello_string[random.randint(0, len(hello_string)-1)])
 
     def generate(self, max_length=None):
@@ -56,17 +61,56 @@ class RateJokes():
     The class for rating jokes.
     """
     
-    def __init__(self, min_score=1, max_score=10, integer=True) -> None:
-        self.min_score = min_score
+    def __init__(self, max_score=10, integer_score=True) -> None:
+        
+        # Defining the score range (1-10 or 1-5) and score dtype
         self.max_score = max_score
+        self.integer_score = integer_score
+        
+        # Loading models for rating 
+        self.pipeline_sentiment = pipeline(model="lvwerra/distilbert-imdb")
+        self.pipeline_humor = pipeline(model="mohameddhiab/humor-no-humor")
+        
+        self.fifo = []
   
     def rate(self, joke):
         
-        blob = TextBlob(joke)
-        polarity = blob.sentiment.polarity
-        rating = (polarity + 1) * 5
+        # Let's see if it the general feeling is positive
+        result = self.pipeline_sentiment(joke)
+        sentiment = 0
+        for s in result:
+            if s["label"] == "POSITIVE":
+                sentiment = result[0]["score"]
+
+        # Did we already hear this joke?
+        already_seen = 0
+        already_seen_max = 0
+        for last_joke in self.fifo:
+            already_seen = SequenceMatcher(None, last_joke, joke).ratio()
+            already_seen = max(already_seen, already_seen_max)
+        if len(self.fifo) >= 5:
+            self.fifo.pop(0)
+        self.fifo.append(joke)
         
-        return int(rating)
+        # Let's evaluate the humor
+        result = self.pipeline_humor(joke)
+        humor = 0
+        for s in result:
+            if s["label"] == "HUMOR":
+                humor = result[0]["score"]
+        
+        print("How positive is it: ", sentiment)
+        print("Did I hear this one already?", already_seen)
+        print("Is this funny?", humor)
+        
+        if self.integer_score:
+            rating = round(sentiment*3) + round((1 - already_seen)*2) + round(humor*5)
+            rating = round(rating/10 * self.max_score)
+        else:
+            rating = sentiment*3 + (1 - already_seen)*2 + humor*5
+            rating = rating/10 * self.max_score
+            
+        return rating
 
 
 class Bot:
