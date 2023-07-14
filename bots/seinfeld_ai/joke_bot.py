@@ -61,11 +61,17 @@ class RateJokes():
     The class for rating jokes.
     """
     
-    def __init__(self, max_score=10, integer_score=True) -> None:
+    def __init__(self, max_score=10, integer_score=True, cache_size=5) -> None:
         
-        # Defining the score range (1-10 or 1-5) and score dtype
+        # Defining the score range (1-10 or 1-5), score dtype and cache size
         self.max_score = max_score
         self.integer_score = integer_score
+        self.cache_size = cache_size
+        
+        # Hardcoded values for the weights of each joke evaluation category. Here for future upgrades.
+        self.sentiment_weight = 3
+        self.originality_weight = 2
+        self.humor_weight = 5
         
         # Loading models for rating 
         self.pipeline_sentiment = pipeline(model="lvwerra/distilbert-imdb")
@@ -83,12 +89,12 @@ class RateJokes():
                 sentiment = result[0]["score"]
 
         # Did we already hear this joke?
-        already_seen = 0
-        already_seen_max = 0
+        original = 0
+        original_max = 0
         for last_joke in self.fifo:
-            already_seen = SequenceMatcher(None, last_joke, joke).ratio()
-            already_seen = max(already_seen, already_seen_max)
-        if len(self.fifo) >= 5:
+            original = SequenceMatcher(None, last_joke, joke).ratio()
+            original = max(original, original_max)
+        if len(self.fifo) >= self.cache_size:
             self.fifo.pop(0)
         self.fifo.append(joke)
         
@@ -100,14 +106,14 @@ class RateJokes():
                 humor = result[0]["score"]
         
         print("How positive is it: ", sentiment)
-        print("Did I hear this one already?", already_seen)
+        print("Did I hear this one already?", original)
         print("Is this funny?", humor)
         
         if self.integer_score:
-            rating = round(sentiment*3) + round((1 - already_seen)*2) + round(humor*5)
+            rating = round(sentiment*self.sentiment_weight) + round((1 - original)*self.originality_weight) + round(humor*self.humor_weight)
             rating = round(rating/10 * self.max_score)
         else:
-            rating = sentiment*3 + (1 - already_seen)*2 + humor*5
+            rating = sentiment*self.sentiment_weight + (1 - original)*self.originality_weight + humor*self.humor_weight
             rating = rating/10 * self.max_score
             
         return rating
