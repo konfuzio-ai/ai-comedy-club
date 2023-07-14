@@ -62,7 +62,6 @@ class RateJokes():
   
     def rate(self, joke):
         
-        
         blob = TextBlob(joke)
         polarity = blob.sentiment.polarity
         rating = (polarity + 1) * 5
