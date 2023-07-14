@@ -14,3 +14,6 @@ RUN pip install transformers
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A4B469963BF863CC
 RUN apt-get update && apt-get install libgl1 -y
 RUN pip install fer
+
+RUN apt-get install libglib2.0-0 -y
+RUN pip install opencv-python
