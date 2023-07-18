@@ -1,5 +1,6 @@
 import pytest
-
+import sys
+sys.path.insert(0, './')
 from joke_bot import Bot
 
 @pytest.fixture
