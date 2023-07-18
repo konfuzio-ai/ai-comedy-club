@@ -18,7 +18,7 @@ These actually made me laugh.
 2. You know those things that just make no sense? Like why we park on driveways and drive on parkways?
 3. Why do they always make the packaging on their products so tight?
 4. What's the deal with microwave popcorn? It's like a cosmic prank.
-5. Why is it that every time you're in a hurrysuper you just have to take a nap?
+5. Why is it that every time you're in a hurry you just have to take a nap?
 
 Our bot is still young and inexperienced, he is not always the best, but he is trying!
 
@@ -34,6 +34,6 @@ In an attempt to make this better, we developed an interactive comedy show using
 
 The demo tells user a joke and watches him enjoy it :D
 
-The demo is developed using Python Flask taking camera stream from the browser (used [this](https://github.com/NakulLakhotia/Live-Streaming-using-OpenCV-Flask/tree/main) repo as a starting point) and utilized [FER](https://pypi.org/project/fer/) for detecting and analyzing viewers emotions. It'aint beautiful, but that also makes it funny xD
+The demo is developed using Python Flask taking camera stream from the browser (used [this](https://github.com/NakulLakhotia/Live-Streaming-using-OpenCV-Flask/tree/main) repo as a starting point) and utilized [FER](https://pypi.org/project/fer/) for detecting and analyzing viewers emotions. It'aint beautiful or very interactive, but that also makes it funny xD
 
 ![A screenshot of a 'Comedy stage' ](ComedyClubStage/Capture.PNG)
