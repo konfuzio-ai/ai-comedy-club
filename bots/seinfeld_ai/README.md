@@ -35,3 +35,5 @@ In an attempt to make this better, we developed an interactive comedy show using
 The demo tells user a joke and watches him enjoy it :D
 
 The demo is developed using Python Flask taking camera stream from the browser (used [this](https://github.com/NakulLakhotia/Live-Streaming-using-OpenCV-Flask/tree/main) repo as a starting point) and utilized [FER](https://pypi.org/project/fer/) for detecting and analyzing viewers emotions. It'aint beautiful, but that also makes it funny xD
+
+![A screenshot of a 'Comedy stage' ](ComedyClubStage/Capture.PNG)

@@ -12,8 +12,8 @@ socketio = SocketIO(app, async_mode="eventlet")
 
 from flask import jsonify
 
-#from fer import FER
-#detector = FER()
+from fer import FER
+detector = FER()
 
 import sys
 sys.path.insert(0, '../')
@@ -77,7 +77,6 @@ def receive_image(image):
     image=base64_to_image(image)
     frame_resized = cv2.resize(image, (640, 360))
     
-    """
     detection = detector.detect_emotions(frame_resized)
     if len(detection):
         x1, y1, h, w = detection[0]["box"]
@@ -86,7 +85,7 @@ def receive_image(image):
         emotion = detection[0]["emotions"]["happy"]
         cv2.rectangle(frame_resized, (x1, y1), (x2, y2), (255,0,0), 2)
         cv2.putText(frame_resized, "happy: " + str(emotion), (x1, y1-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (255,0,0), 2)
-    """
+    
     encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 90]
     _, frame_encoded = cv2.imencode(".jpg", frame_resized, encode_param)
     processed_img_data = base64.b64encode(frame_encoded).decode()

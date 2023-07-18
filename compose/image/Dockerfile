@@ -17,3 +17,9 @@ RUN pip install fer
 
 RUN apt-get install libglib2.0-0 -y
 RUN pip install opencv-python
+
+RUN pip install --upgrade Flask-SocketIO==4.3.1 python-engineio==3.13.2 python-socketio==4.6.0 Flask==2.0.3 Werkzeug==2.0.3 opencv_python==4.7.0.68 gunicorn==20.1.0 eventlet==0.30.2
+
+RUN apt-get -o Dpkg::Options::="--force-confmiss" install --reinstall netbase
+
+RUN pip install --upgrade protobuf==3.20.1 tensorflow==2.3.0 pillow==8.3.2 numpy==1.20.3
