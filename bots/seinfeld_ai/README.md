@@ -27,3 +27,11 @@ Our bot is still young and inexperienced, he is not always the best, but he is t
 For the joke ratings we use two different models. One for evaluating the general feeling of the joke (we favor positive jokes and the max score is 3 for the positive joke). The second one is for the evaluation of the general humor of the joke. Both models are used without additional training.
 
 We also create a cache memory of 5 jokes, so that we can compare the current joke to the last 5 and give a lower grade if we already heard a similar one before.
+
+# Can it be better?
+
+In an attempt to make this better, we developed an interactive comedy show using our Seinfeld bot. The demo is developed in Flask and can be run using the start.ipynb jupyter notebook.
+
+The demo tells user a joke and watches him enjoy it :D
+
+The demo is developed using Python Flask taking camera stream from the browser (used [this](https://github.com/NakulLakhotia/Live-Streaming-using-OpenCV-Flask/tree/main) repo as a starting point) and utilized [FER](https://pypi.org/project/fer/) for detecting and analyzing viewers emotions. It'aint beautiful, but that also makes it funny xD

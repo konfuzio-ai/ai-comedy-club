@@ -12,6 +12,7 @@ services:
     command: jupyter notebook --ip 0.0.0.0 --no-browser --allow-root &
     ports:
       - 3000:8888
+      - 5000:5000
     network_mode: "host"
     deploy:
       resources:
