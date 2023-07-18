@@ -10,7 +10,7 @@ app = Flask(__name__, static_folder="./templates/static")
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, async_mode="eventlet")
 
-from flask import jsonify
+from flask import request, jsonify
 
 from fer import FER
 detector = FER()
@@ -107,9 +107,11 @@ def index():
     return render_template("index.html", joke=joke)
 
 
-@app.route('/background_process_test')
-def background_process_test():
-    joke = Seinfeld.tell_joke()
+@app.route('/joke_generator')
+def joke_generator():
+    user_input = request.args.get('input')
+    print(user_input)
+    joke = Seinfeld.tell_joke(user_input)
     print(joke)
     return jsonify(joke=joke)
 

@@ -60,6 +60,15 @@ html, body, h1, h2, h3, p, ul, li {
     text-align: center;
   }
   
+  .user-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 300px;
+    margin-bottom: 10px;
+  }
+
   h3 {
     font-size: 24px;
     color: #333;

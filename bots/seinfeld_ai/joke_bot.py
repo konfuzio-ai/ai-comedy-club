@@ -44,12 +44,16 @@ class SeinfeldAI:
         print()
         print(hello_string[random.randint(0, len(hello_string)-1)])
 
-    def generate(self, max_length=None):
+    def generate(self, max_length=None, starting_string=None):
         
-        starting_idx = random.randint(0, len(self.starting_strings)-1)
-        joke = self.starting_strings[starting_idx]
+        if not starting_string:
+            starting_idx = random.randint(0, len(self.starting_strings)-1)
+            joke = self.starting_strings[starting_idx]
+        else:
+            joke = starting_string
+            
         if not max_length:
-            max_length = random.randint(100,400)
+                max_length = random.randint(100,400)
         
         joke = self.joke_generator(joke, max_length=max_length, do_sample=False)[0]['generated_text']
         
@@ -131,9 +135,9 @@ class Bot:
         
         pass
     
-    def tell_joke(self):
+    def tell_joke(self, starting_string=None):
         
-        return self.joker.generate()
+        return self.joker.generate(starting_string=starting_string)
     
     def rate_joke(self, joke):
         

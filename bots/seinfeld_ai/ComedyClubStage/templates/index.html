@@ -12,26 +12,29 @@
   <script>
     $(function () {
       // Function to fetch the joke using async/await
-      async function fetchJoke() {
+      async function fetchJoke(userInput) {
         try {
-          // Make the AJAX GET request to the Flask backend
-          const response = await $.getJSON('/background_process_test');
+          // Make the AJAX GET request to the Flask backend with user input as a query parameter
+          const response = await $.getJSON('/joke_generator', { input: userInput });
           return response.joke; // Return the joke data
         } catch (error) {
           console.error('Error fetching the joke:', error);
           return null; // Return null in case of an error
         }
       }
-
-      // Attach a click event handler to the button with ID "test"
-      $('#test').on('click', async function (e) {
-        e.preventDefault(); // Prevent the default behavior of the link
-
+  
+      // Attach a click event handler to the button with ID "generate"
+      $('#generate').on('click', async function (e) {
+        e.preventDefault(); // Prevent the default behavior of the button
+  
         console.log('Button clicked!');
-
-        // Fetch the joke using the async function
-        const joke = await fetchJoke();
-
+  
+        // Get the user input from the text box
+        const userInput = $('#userInput').val();
+  
+        // Fetch the joke using the async function and pass the user input
+        const joke = await fetchJoke(userInput);
+  
         // Update the "joker" paragraph with the joke text
         $('#joker').text(joke || 'Failed to fetch the joke.');
       });
@@ -64,7 +67,9 @@
       <h3>Comedy stage</h3>
       <p id="joker"></p>
       <form>
-        <a href=# id=test><button class='btn btn-default'>Press for a joke</button></a>
+        <input type="text" id="userInput" class="user-input" placeholder="How should Ii start my next joke?">
+        <br><br>
+        <a href=# id=generate><button class='btn btn-default'>Press for a joke</button></a>
       </form>
     </div>
 
