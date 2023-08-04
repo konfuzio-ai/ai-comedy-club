@@ -18,5 +18,5 @@ def test_tell_joke():
 def test_rate_joke():
     bot = Bot()
     joke = "I'm not a fan of computer jokes. Not one bit. I tried to catch some fog earlier. Mist. I'm reading a book about anti-gravity. It's impossible to put down."
-    assert type(bot.rate_joke(joke)) == float or type(bot.rate_joke(joke)) == int
+    assert bot.rate_joke(joke) >= 1 and bot.rate_joke(joke) <= 10
 
