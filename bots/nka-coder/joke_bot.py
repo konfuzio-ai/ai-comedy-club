@@ -12,13 +12,40 @@ class Bot:
         f = open("bots"+"/nka-coder/"+"long_memory.txt", "r")
 
         self.long_memory = ast.literal_eval(f.read())
-        print(len(list(self.long_memory.keys())))
-
-        if list(self.long_memory.keys()) != []:
-            self.jokes = self.long_memory
-        else:
-            self.jokes = {"Why don't scientists trust atoms? Because they make up everything!":
+        #print(len(list(self.long_memory.keys())))
+        self.jokes = {"Why don't scientists trust atoms? Because they make up everything!":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the chicken go to the seance? To talk to the other side!":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why don't we tell secrets on a farm? Because the potatoes have eyes, the corn has ears, and the beans stalk.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "I would tell you a joke about time travel, but you didn't like it.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why don't programmers like nature? It has too many bugs.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why do programmers always mix up Christmas and Halloween? Because Oct 31 == Dec 25!":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why do programmers prefer iOS development? It's less Java to spill.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the programmer go broke? Because he used up all his cache.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the programmer get kicked out of school? Because he kept breaking the class.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the programmer go on a diet? He had too many bytes.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why do programmers prefer dark mode? Because light attracts bugs.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why was the computer cold? It left its Windows open.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the web developer go broke? Because he didn't get enough cache.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why did the programmer refuse to play cards with the jungle cat? Because he was afraid of Cheetahs.":
+                          {'score': 10, 'type': 'middle', 'category': 'no style'},
+                          "Why was the developer unhappy at their job? They wanted arrays.":
                           {'score': 10, 'type': 'middle', 'category': 'no style'}}
+        
+        self.jokes = {**self.jokes, **self.long_memory}
+            
 
         self.short_memory = {}
 
