@@ -1,8 +1,9 @@
 import random
 
 import torch
-from transformers import (AutoModelForSequenceClassification,
-                          AutoModelForCausalLM, AutoTokenizer)
+from transformers import (AutoModelForCausalLM, AutoTokenizer,
+                          DistilBertForSequenceClassification,
+                          DistilBertTokenizer)
 
 
 class Bot:
@@ -16,16 +17,16 @@ class Bot:
         ]
 
         generator_model = "botbrain/ChuckleWhiz"
-        rater_model = "mohameddhiab/rate-jokes-bert"
+        rater_model = "botbrain/ChuckleWhizRater"
 
         self.generator = AutoModelForCausalLM.from_pretrained(
             generator_model).eval()
         self.generator_tokeniser = AutoTokenizer.from_pretrained(
             generator_model)
 
-        self.rater = AutoModelForSequenceClassification.from_pretrained(
+        self.rater = DistilBertForSequenceClassification.from_pretrained(
             rater_model).eval()
-        self.rater_tokeniser = AutoTokenizer.from_pretrained(rater_model)
+        self.rater_tokeniser = DistilBertTokenizer.from_pretrained(rater_model)
 
     def tell_joke(self) -> str:
         prefix = random.choice(self.joke_prefixes)
@@ -55,16 +56,20 @@ class Bot:
         return joke[:end_pos + 1]
 
     def rate_joke(self, joke: str) -> int:
-        inputs = self.rater_tokeniser.encode_plus(
+        encoding = self.rater_tokeniser.encode_plus(
             joke,
             add_special_tokens=True,
             truncation=True,
             padding="longest",
             return_tensors="pt"
         )
-        logits = self.rater(**inputs).logits
-        rating = int(logits.argmax())
 
-        # Map the rating to a range of 1 to 10.
-        rating = min(max(rating, 1), 10)
+        input_ids = encoding["input_ids"]
+        attention_mask = encoding["attention_mask"]
+
+        with torch.no_grad():
+            outputs = self.rater(input_ids, attention_mask)
+
+        rating = outputs.logits.item()
+        rating = round(min(max(rating, 1), 10))
         return rating
