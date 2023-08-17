@@ -20,7 +20,17 @@ from datasets import load_dataset, Dataset
 
 def load_data():
     """
-    Load joke data from a URL, download, and decompress it if necessary.
+    Load rjoke dataset from a URL, download, and decompress it if necessary.
+    rJokes Dataset [1]: a collection of over 550,000 jokes posted over an 11 year period on the Reddit r/Jokes subreddit channel.
+    This dataset also provides quantitative metrics for the level of humor (0 - 11) in each joke, determined by subreddit user
+    feedback (upvoted and downvoted).
+
+    After the exploration of the dataset, for this challenge I am only planning to use jokes with label from 1 to 10.
+
+
+    [1] https://aclanthology.org/2020.lrec-1.753
+
+    GitHub link to download the dataset: https://github.com/orionw/rJokesData/tree/master/data
 
     Returns:
         pd.DataFrame: A DataFrame containing the loaded joke data.
