@@ -1,3 +1,13 @@
+"""
+Joke Bot
+
+This module defines a Joke Bot class that interacts with users, tells jokes, and collects user feedback.
+
+Author: Raigon Augustin
+Date: 17.08.2023
+"""
+
+# Import necessary modules
 import random
 from transformers import pipeline
 import json
@@ -12,9 +22,22 @@ import config
 
 
 class Bot:
+    """
+    Joke Bot Class
+
+    This class interacts with users, tells jokes, rates jokes, and collects user feedback.
+
+    Attributes:
+        name (str): The name of the bot.
+    """
     name = 'raigon'
 
     def __init__(self):
+        """
+        Initialize the Bot.
+
+        This method initializes the bot with configuration settings and pipelines for joke generation and rating.
+        """
         self.christmas_joke_api_url = config.JokeApiConfig.christmas_joke_api_url
         self.programming_joke_api_url = config.JokeApiConfig.programming_joke_api_url
         self.joke_generator_model = config.JokeModelConfig.path_to_joke_generator_model
@@ -39,10 +62,25 @@ class Bot:
         self.joke_type = 'programming'
 
     def rate_joke(self, joke: str) -> int:
+        """
+        Rate a joke using the joke rater model.
+
+        Args:
+            joke (str): The joke to be rated.
+
+        Returns:
+            int: The rating of the joke.
+        """
         joke_rating = self.joke_rater_pipeline(joke)[0]['label'][-1]
         return int(joke_rating) + 1
 
     def tell_joke(self):
+        """
+        Tell a joke to the user based on the joke type.
+
+        Returns:
+            str: The joke to be told.
+        """
         if self.joke_type == 'christmas':
             return get_joke(self.christmas_joke_api_url)
         elif self.joke_type == 'programming':
@@ -60,6 +98,12 @@ class Bot:
             return generated_joke
 
     def user_interaction(self):
+        """
+        Perform user interaction.
+
+        This method interacts with the user, asks about their mood, preferences for joke types,
+        tells jokes, collects user feedback, and saves it.
+        """
         user_mood = input('How are you feeling today? (good/bad)')
         if user_mood == 'good':
             user_input = input('Great!! Would you like to hear a Christmas joke? (y/n)')
@@ -86,6 +130,9 @@ class Bot:
         return
 
     def save_user_feedback(self):
+        """
+        Save user feedback to a JSON file.
+        """
         with open(os.path.join(script_dir, config.FileConfig.user_feedback_file), 'w') as json_file:
             json.dump(self.user_feedback, json_file, indent=4)
 

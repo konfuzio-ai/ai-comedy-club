@@ -1,6 +1,12 @@
 """
-This Python file contains necessary functions to load data and to explore the data
+Joke Data Loading and Preprocessing Utilities
+
+This module provides utility functions for loading joke data, performing preprocessing, and creating datasets for training joke-related machine learning models.
+
+Author: Raigon Augustin
+Date: 17.08.2023
 """
+
 import shutil
 import requests
 import config
@@ -13,9 +19,17 @@ from datasets import load_dataset, Dataset
 
 
 def load_data():
+    """
+    Load joke data from a URL, download, and decompress it if necessary.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing the loaded joke data.
+    """
 
     if os.path.exists(config.FileConfig.uncompressed_data_file):
         return pd.read_csv(config.FileConfig.uncompressed_data_file, delimiter='\t', error_bad_lines=False)
+
+    # Download and decompress the data
     response = requests.get(config.FileConfig.data_file_url)
     if response.status_code == 200:
 
@@ -41,6 +55,15 @@ def load_data():
 
 
 def get_joke_stats(list_of_jokes):
+    """
+    Compute statistics (word count and length) for a list of jokes.
+
+    Args:
+        list_of_jokes (list): A list of jokes.
+
+    Returns:
+        tuple: A tuple containing lists of word counts and joke lengths.
+    """
     word_count = []
     joke_length = []
     for joke in list_of_jokes:
@@ -50,23 +73,18 @@ def get_joke_stats(list_of_jokes):
     return word_count, joke_length
 
 
-def remove_newlines_and_carriage_returns(self, text):
-    text = text.strip()
-    cleaned_text = text.replace('\n', '').replace('\r', '')
-    return cleaned_text
-
-
-def create_short_jokes_dataset(self, frame, min_length, max_length):
-    """
-    This function removes jokes which are below min_length and above max_length
-    """
-    frame = frame[frame['joke_len'] > min_length]
-    frame = frame[frame['joke_len'] < max_length]
-
-    return frame
-
-
 def create_datasets_for_training(task: str, frame: pd.DataFrame, tokenizer):
+    """
+    Create datasets for training based on the task, input DataFrame, and tokenizer.
+
+    Args:
+        task (str): The task type ('generation' or 'rating').
+        frame (pd.DataFrame): Input DataFrame containing jokes and labels.
+        tokenizer: The tokenizer to use for tokenizing jokes.
+
+    Returns:
+        tuple: A tuple containing tokenized training, test, and validation datasets.
+    """
     preprocess_obj = Preprocessing(frame)
     if task == 'generation':
         frame_after_preprocessing = preprocess_obj.preprocess_data_for_joke_generator()
@@ -90,6 +108,3 @@ def create_datasets_for_training(task: str, frame: pd.DataFrame, tokenizer):
 
     return tokenized_train_dataset, tokenized_test_dataset, tokenized_val_dataset
 
-
-if __name__ == '__main__':
-    load_data()

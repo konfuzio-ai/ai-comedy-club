@@ -1,6 +1,13 @@
 """
-Purpose of this file
+Joke Data Preprocessing and Perspective API Utilities
+
+This module provides utility functions for preprocessing joke data and utilizing the Perspective API for attribute extraction.
+
+Author: Raigon Augustin
+Date: 17.08.2023
 """
+
+# Import necessary modules and classes
 import re
 from googleapiclient import discovery
 import time
@@ -10,8 +17,29 @@ import config
 
 
 class Preprocessing:
+    """
+    Joke Data Preprocessing and Perspective API
+
+    This class encapsulates various preprocessing steps for joke data and provides methods for utilizing the Perspective API
+    to extract attributes from the jokes.
+
+    Args:
+        data_frame (pd.DataFrame): Input DataFrame containing joke data.
+
+    Attributes:
+        frame (pd.DataFrame): The DataFrame containing joke data.
+        perspective_api_model_version (str): The Perspective API model version.
+        perspective_api_method (str): The Perspective API method.
+        prompts (dict): A dictionary mapping label values to prompts for joke generation.
+    """
 
     def __init__(self, data_frame):
+        """
+        Initialize the Preprocessing class.
+
+        Args:
+            data_frame (pd.DataFrame): Input DataFrame containing joke data.
+        """
         self.frame = data_frame
         self.perspective_api_model_version = config.PerspectiveApiConfig.model_version
         self.perspective_api_method = config.PerspectiveApiConfig.method
@@ -30,19 +58,35 @@ class Preprocessing:
 
     @staticmethod
     def remove_special_characters(text):
+        """
+        Remove special characters from the given text.
+
+        Args:
+            text (str): Input text containing special characters.
+
+        Returns:
+            str: Cleaned text with special characters removed.
+        """
         cleaned_text = re.sub(r'[^\w\s]', '', text)
         return cleaned_text
 
     @staticmethod
     def remove_newlines_and_carriage_returns(text):
+        """
+        Remove new lines and carraige returns.
+
+        Args:
+            text (str): Input text containing special characters.
+
+        Returns:
+            str: Cleaned text with special characters removed.
+        """
         text = text.strip()
         cleaned_text = text.replace('\n', '').replace('\r', '')
         return cleaned_text
 
     def create_short_jokes_dataset(self, min_length, max_length):
-        """
-        This function removes jokes which are below min_length and above max_length
-        """
+
         self.frame = self.frame[self.frame['joke_len'] > min_length]
         self.frame = self.frame[self.frame['joke_len'] < max_length]
 
@@ -147,6 +191,16 @@ class Preprocessing:
         return prompt + ' ' + row['joke']
 
     def preprocess_data_for_joke_generator(self):
+        """
+        Preprocess joke data for joke generator task.
+
+        This method applies a series of preprocessing steps to the input DataFrame containing joke data,
+        preparing it for training a joke generator model. The preprocessing steps include removing special characters,
+        newlines, and short jokes, and appending prompts to jokes.
+
+        Returns:
+            pd.DataFrame: The preprocessed DataFrame containing jokes for joke generation.
+        """
         self.frame['joke'] = self.frame['joke'].apply(self.remove_special_characters)
         self.frame['joke'] = self.frame['joke'].apply(self.remove_newlines_and_carriage_returns)
         self.frame = self.create_short_jokes_dataset(10, 50)
@@ -168,6 +222,16 @@ class Preprocessing:
         return self.frame
 
     def preprocess_data_for_joke_rater(self):
+        """
+        Preprocess joke data for joke rater task.
+
+        This method applies preprocessing steps to the input DataFrame containing joke data,
+        preparing it for training a joke rater model. The preprocessing steps include removing newlines,
+        short jokes, and balancing the dataset classes.
+
+        Returns:
+            pd.DataFrame: The preprocessed DataFrame containing jokes for joke rating.
+        """
         self.frame['joke'] = self.frame['joke'].apply(self.remove_newlines_and_carriage_returns)
         self.frame = self.create_short_jokes_dataset(10, 1024)
 

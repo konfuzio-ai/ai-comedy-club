@@ -1,8 +1,16 @@
 """
-This Python file contains the function for training the joke-generator and joke-rater models
-"""
-from transformers import AdamW, TrainingArguments, get_linear_schedule_with_warmup
+Joke Model Training Utilities
 
+This module provides utility functions for training joke-related machine learning models.
+It includes functions to train both joke rater and joke generator models.
+
+Author: Raigon Augustin
+Date: 17.08.2023
+"""
+
+# Import necessary modules and classes
+
+from transformers import AdamW, TrainingArguments, get_linear_schedule_with_warmup
 import config
 import data_util
 from model_joke_generator import ModelJokeGenerator
@@ -10,12 +18,25 @@ from model_joke_rater import ModelJokeRater
 
 
 def train_joke_rater(training_config, data_frame):
+    """
+        Train a joke rater model using the provided configuration and data.
 
+        Args:
+            training_config (TrainingConfig): An object containing training configuration settings.
+            data_frame (pandas.DataFrame): A DataFrame containing the training data.
+
+        Returns:
+            pandas.DataFrame: A DataFrame containing the training history.
+    """
+
+    # Initialize joke rater model
     model_obj = ModelJokeRater(training_config.model_name, training_config.num_labels)
 
+    # Tokenize datasets for training
     tokenized_train_dataset, tokenized_test_dataset, tokenized_val_dataset = data_util.create_datasets_for_training(
         training_config.task, data_frame, model_obj.tokenizer)
 
+    # Set up training arguments
     training_args = TrainingArguments(
         output_dir=training_config.output_dir,
         num_train_epochs=training_config.num_train_epochs,
@@ -30,6 +51,7 @@ def train_joke_rater(training_config, data_frame):
         report_to=training_config.report_to
     )
 
+    # Create optimizer and scheduler
     optimizer = AdamW(model_obj.model.parameters(), lr=2e-5)
 
     scheduler = get_linear_schedule_with_warmup(
@@ -38,21 +60,35 @@ def train_joke_rater(training_config, data_frame):
         num_training_steps=len(tokenized_train_dataset) * 5
     )
 
+    # Fine-tune the model
     train_history_frame = model_obj.fine_tune(training_args, optimizer, scheduler, tokenized_train_dataset, tokenized_val_dataset, tokenized_test_dataset)
 
-    return
+    return train_history_frame
 
 
 def train_joke_generator(training_config, data_frame):
+    """
+        Train a joke generator model using the provided configuration and data.
 
+        Args:
+            training_config (TrainingConfig): An object containing training configuration settings.
+            data_frame (pandas.DataFrame): A DataFrame containing the training data.
+
+        Returns:
+            pandas.DataFrame: A DataFrame containing the training history.
+    """
+
+    # Initialize joke generator model
     model_obj = ModelJokeGenerator(training_config.model_name)
 
+    # Tokenize datasets for training and remove 'label' column
     tokenized_train_dataset, tokenized_test_dataset, tokenized_val_dataset = data_util.create_datasets_for_training(training_config.task, data_frame, model_obj.tokenizer)
 
     tokenized_train_dataset = tokenized_train_dataset.remove_columns(['label'])
     tokenized_test_dataset = tokenized_test_dataset.remove_columns(['label'])
     tokenized_val_dataset = tokenized_val_dataset.remove_columns(['label'])
 
+    # Set up training arguments
     training_args = TrainingArguments(
         output_dir=training_config.output_dir,
         num_train_epochs=training_config.num_train_epochs,
@@ -67,9 +103,10 @@ def train_joke_generator(training_config, data_frame):
         report_to=training_config.report_to
     )
 
+    # Fine-tune the model
     train_history_frame = model_obj.fine_tune(training_args, tokenized_train_dataset, tokenized_val_dataset, tokenized_test_dataset)
 
-    return
+    return train_history_frame
 
 
 if __name__ == '__main__':

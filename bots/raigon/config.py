@@ -1,3 +1,12 @@
+"""
+All configurations
+
+This module defines configuration constants related to my joke bot
+
+Author: Raigon Augustin
+Date: 17.08.2023
+"""
+
 class JokeApiConfig:
     christmas_joke_api_url = 'https://v2.jokeapi.dev/joke/Christmas?blacklistFlags=nsfw,religious,racist,sexist,explicit'
     programming_joke_api_url = 'https://v2.jokeapi.dev/joke/Programming,Christmas?blacklistFlags=nsfw,religious,racist,sexist,explicit&type=single'
@@ -12,9 +21,9 @@ class JokeGeneratorModelConfig:
     task = "generation"
     model_name = "gpt2"
     output_dir = 'models/joke_gen_model/output'
-    num_train_epochs = 1
-    per_device_train_batch_size = 2
-    per_device_eval_batch_size = 2
+    num_train_epochs = 4
+    per_device_train_batch_size = 4
+    per_device_eval_batch_size = 4
     save_steps = 1000
     save_total_limit = 2
     evaluation_strategy = 'epoch'
@@ -29,9 +38,9 @@ class JokeRaterModelConfig:
     model_name = "bert-base-uncased"
     num_labels = 10
     output_dir = 'models/joke_rater_model/output'
-    num_train_epochs = 1
-    per_device_train_batch_size = 2
-    per_device_eval_batch_size = 2
+    num_train_epochs = 5
+    per_device_train_batch_size = 8
+    per_device_eval_batch_size = 8
     save_steps = 1000
     save_total_limit = 2
     evaluation_strategy = 'epoch'
@@ -51,7 +60,7 @@ class FileConfig:
 class PerspectiveApiConfig:
     model_version = 'v1alpha1'
     method = 'commentanalyzer'
-    developer_key = 'AIzaSyAYmXtrealouOBeLTodUv7NgL34ONQb-d0'          # Add you developer key for the perspective API here
+    developer_key = ''          # Add you developer key for the perspective API here
 
 
 class DataSetConfig:
