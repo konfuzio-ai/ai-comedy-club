@@ -1,7 +1,5 @@
 import re
 import pandas as pd
-import config
-
 
 class Preprocessing:
     """
@@ -19,23 +17,11 @@ class Preprocessing:
 
     def __init__(self, data_frame):
         """
-        Initialize the Preprocessing class.
-        Args:
-            data_frame (pd.DataFrame): Input DataFrame containing joke data.
+            Initialize the Preprocessing class.
+            Args:
+                data_frame (pd.DataFrame): Input DataFrame containing joke data.
         """
         self.frame = data_frame
-        self.prompts = {
-            10: "Give me a hilarious joke that deserves a perfect 10: ",
-            9: "Let's challenge the comedy genius within you. Craft a joke that is an absolute 9 in humor: ",
-            8: "Make me smile with a joke worth a solid 8: ",
-            7: "Time to test your wit. Create a rib-tickler with a humor rating of 7: ",
-            6: "I need a side-splitting joke that's at least an 6 on the humor scale: ",
-            5: "Tickle my funny bone with a joke that falls between 5 and 6 on the humor scale:",
-            4: "Generate a joke with a humor score of 4:",
-            3: "Time for some light-hearted humor, a casual joke ranking around 3 should do:",
-            2: "Even the best comedians start somewhere. Share a joke with a humor level around 2:",
-            1: "Generate a joke which not that funny:"
-        }
 
     @staticmethod
     def remove_special_characters(text):
@@ -83,47 +69,8 @@ class Preprocessing:
 
         return clean_txt
 
-    def append_prompt(self, row):
-        label = row['label']
-        prompt = self.prompts[label]
-        return prompt + ' ' + row['joke']
-
-    def preprocess_data_for_joke_generator(self):
-        """
-        Preprocess joke data for joke generator task.
-        This method applies a series of preprocessing steps to the input DataFrame containing joke data,
-        preparing it for training a joke generator model. The preprocessing steps include removing special characters,
-        newlines, and short jokes, and appending prompts to jokes.
-        Returns:
-            pd.DataFrame: The preprocessed DataFrame containing jokes for joke generation.
-        """
-        self.frame['joke'] = self.frame['joke'].apply(self.remove_special_characters)
-        self.frame['joke'] = self.frame['joke'].apply(self.remove_newlines_and_carriage_returns)
-        self.frame = self.create_short_jokes_dataset(10, 50)
-
-        self.frame = self.frame[self.frame['label'] != 0]
-
-        # self.frame = self.get_features_from_perspective_api()         # Commenting this out due to large runtime due to the rate limit of perspective API
-
-        self.frame = pd.read_csv('data/short_jokes_with_toxicity_score.csv')
-
-        self.frame = self.frame[self.frame['SEVERE_TOXICITY'] < 0.7]    # I have set the threshold as 0.7 based on manual inspection of some of the examples
-        self.frame = self.frame[self.frame['TOXICITY'] < 0.7]
-        self.frame = self.frame[self.frame['PROFANITY'] < 0.7]
-
-        self.frame = self.frame[self.frame['label'] != 11]
-
-        self.frame['joke'] = self.frame.apply(self.append_prompt, axis=1)
-
-        return self.frame
-
     def preprocess_data_for_joke_rater(self):
         """
-            Preprocess joke data for joke rater task.
-            This method applies preprocessing steps to the input DataFrame containing joke data,
-            preparing it for training a joke rater model. The preprocessing steps include removing newlines,
-            short jokes, and balancing the dataset classes.
-
             Returns:
                 DataFrame: The preprocessed DataFrame containing jokes for joke rating.
         """
