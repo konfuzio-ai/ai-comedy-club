@@ -1,3 +1,8 @@
 venv/*
 .idea/*
 __pycache__/
+/build
+/ComedyClubChallenge.egg-info
+.vscode/
+.venv/
+.ipynb_checkpoints/
