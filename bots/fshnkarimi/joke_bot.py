@@ -90,18 +90,11 @@ class Bot:
         total_score = max(1, min(10, total_score))  # Ensure score is between 1 and 10
 
         return total_score
-    
-    # def rate_joke(self, joke: str):
-    #     sentiment = self.classifier(joke)[0]
-    #     if sentiment["label"] == "POSITIVE":
-    #         rating = max(1, min(10, int(5 + (sentiment["score"] * 5))))
-    #     else:
-    #         rating = max(1, min(10, int(5 - (sentiment["score"] * 5))))
-    #     return rating
 
 
-bot = Bot()
-joke = bot.tell_joke()
-rating = bot.rate_joke(joke)
-print("joke: ", joke)
-print("rating: ", rating)
+
+# bot = Bot()
+# joke = bot.tell_joke()
+# rating = bot.rate_joke(joke)
+# print("joke: ", joke)
+# print("rating: ", rating)
