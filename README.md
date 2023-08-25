@@ -1,4 +1,4 @@
-# Joke Bot Project
+# Joke Bot Project (konfuzio-ai Code Challenge)
 
 Welcome to the Joke Bot project! This repository contains a Python-based joke bot that generates tailored jokes based on user input and provides a rating for each joke's humor, appropriateness, and more.
 
