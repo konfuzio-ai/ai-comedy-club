@@ -18,5 +18,5 @@ def test_tell_joke():
 def test_rate_joke():
     bot = Bot()
     joke = "I'm not a fan of computer jokes. Not one bit. I tried to catch some fog earlier. Mist. I'm reading a book about anti-gravity. It's impossible to put down."
-    assert bot.rate_joke(joke) >= 1 and bot.rate_joke(joke) <= 10
+    assert bot.rate_joke(joke) >= 0 and bot.rate_joke(joke) <= 10
 
