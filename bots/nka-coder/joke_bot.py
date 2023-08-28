@@ -1,6 +1,6 @@
 import importlib.util
 import pandas as pd
-from math import floor, ceil
+from textblob import TextBlob
 import random
 import os
 from fuzzywuzzy import fuzz 
@@ -36,7 +36,14 @@ class Bot:
             self.long_memory = json.load(json_long_memory)
 
         # Initializing the list of joke to be used during the scene
-        self.jokes = self.long_memory
+        def convert(tup, di):
+            di ={}
+            for a, b in tup:
+                di[a]=b
+            return di
+        tup = random.sample(self.long_memory.items(),1000)
+        self.jokes ={}
+        self.jokes  = convert(tup, self.jokes)
             
         # Initializing short term memory for the scene
         self.short_memory = {}
@@ -107,13 +114,20 @@ class Bot:
             self.training_data["1"].append(processed_joke)
         
     def rate_joke(self, joke):
-        # This function detects humor in a sentences.
-        # Sumbitted jokes longer than 150 characters are not considered being a joke.
+        # This function detects humor in a sentences or group of sentences.
+        # Sumbitted jokes longer than 100 characters are not considered being a joke.
         def detect_joke(joke):
+            temp =joke
+            if temp.replace(' ', '')[-1] not in ['.','?','!']:
+                return 0
+
             joke = self.processing(joke)
             res = self.model(joke)._.cats
+
             if res['1']<res['0'] or len(joke)>1000:
-                return res['1']*10
+                blob = TextBlob(joke)
+                polarity = 2*blob.sentiment.polarity
+                return round(10*res['1']+polarity ,2)
             else:
                 return 0
 
@@ -134,7 +148,14 @@ class Bot:
         rate = detect_joke(joke)
         if rate!=0:
             rate = rate + penalty(joke)
-        self.collect_feedback(joke)
+            if rate < 0:
+                rate=0
+            if rate > 10:
+                rate=10
+        # collect other bots feedback and save the joke if the rate of 
+        # submited joke is > 0
+        if rate > 0:
+            self.collect_feedback(joke)
         return rate
     
     def processing(self, joke):
