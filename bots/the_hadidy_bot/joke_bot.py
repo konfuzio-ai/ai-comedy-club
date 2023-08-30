@@ -6,6 +6,9 @@ from pprint import pprint
 import torch
 import torch.nn as nn
 from huggingface_hub import notebook_login
+import torch
+from transformers import BertTokenizer, BertForSequenceClassification
+
 from peft import (
     PeftConfig,
     PeftModel,
@@ -52,6 +55,15 @@ class Bot:
         self.generation_config.eos_token_id = self.tokenizer.eos_token_id
 
 
+        self.tokenizer_bert = BertTokenizer.from_pretrained('bert-base-uncased')
+        self.model_bert = BertForSequenceClassification.from_pretrained('trained_classification_head')  # Replace with the path to your trained model
+
+        # Set the device
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model_bert.to(self.device)
+        self.model_bert.eval()
+
+
     def get_randomom_element(self, list:List):
         # throw an error if the list is empty
         if len(list) == 0:
@@ -95,16 +107,20 @@ class Bot:
 
         return joke_lines
     
-    def tell_joke(self,prompt:str)->str:
+    def tell_joke(self,prompt="tell me an ai joke")->str:
         jokes = self.get_jokes(prompt)
         joke = self.get_randomom_element(jokes)
         return joke
     
 
-
-
-
-    def rate_joke(self, joke):
-
-        rating=0
-        return rating   
+ 
+    
+    def rate_joke(self,joke_text):
+        tokenized_text = self.tokenizer_bert.encode(joke_text, add_special_tokens=True)
+        padded_text = torch.tensor(tokenized_text).unsqueeze(0).to(self.device)
+        
+        with torch.no_grad():
+            outputs = self.model_bertmodel(padded_text)[0]
+            predicted_class = torch.argmax(outputs).item()
+        
+        return predicted_class
