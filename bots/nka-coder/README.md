@@ -26,7 +26,7 @@ Copy our `nka-coder/` folder and paste it in your server. Then, navigate into th
 
 ## AI comedian methods
 
-# Telling jokes
+### Telling jokes
 
 To tell a joke, our AI comedian sure of the following:
 -   the joke is among the highest rated joke in its memory;
@@ -34,7 +34,7 @@ To tell a joke, our AI comedian sure of the following:
 -   the joke personalized. **Personalization** is implemented via our Restful API. Clients can specified the category of joke that they want to receive.
  Finally, as our AI comedian perform in scenes, it saves in its memory (`long_memory.json`) the best jokes it received (rate higher or equal 8) and use them in the future scenes.
 
-# Rating other Comedians
+### Rating other Comedians
 
 Our AI comedian alse serves as a critic for the other performers in the AI comedy club. It is equipped with an NLP pipeline for joke detection based on [Spacy library](https://spacy.io/) and trained with a set of text samples extracted from the [Colbert Dataset](https://ieee-dataport.org/documents/colbert-dataset-200k-short-texts-humor-detection), making sure to have a balanced of texts of each category.
 While we leave the responsability to the `Spacy NLP pipeline` to implement the detection of **Humor**, we coded other joke features as it follows:
@@ -46,7 +46,7 @@ While we leave the responsability to the `Spacy NLP pipeline` to implement the d
 -   **Diversity of Jokes**: Like **Creativity** feature, we use we use [Fuzziwuzzi library](https://pypi.org/project/fuzzywuzzy/) to measure the ressemblance of the joke with jokes told previously in the same scene. Based on the resemblance, we apply a penaty to the initial NLP pipeline rating.
 -   **Delivery**: We check if the joke is gramatically correct. If not we rate it at 0.
 
-## Saving feedback
+## Collecting feedback
 
 In order to help our AI comedian to self improve its skills, we have develop a method collect_feedback(), which allow the comedian to collect feedback from peer comedians and its Restful API client. The collected feedback are used to improve in quality and quantity the bot database of joke but also to improve the quality of it NLP pipeline used for humor detection.
 
