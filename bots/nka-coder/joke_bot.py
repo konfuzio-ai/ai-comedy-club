@@ -178,6 +178,15 @@ class Bot:
                 json_object = json.dumps(self.training_data , indent=4)
                 with open("bots/nka-coder/training_data.json", "w") as file:
                     file.write(json_object)
+            
+            # Thank you messages given by the bot for the feedback
+            message = [
+                    "Thanks for the feedback. It helps me improve my skills.",
+                    "That's kind from you! I appreciate your honesty.",
+                    "Thanks bro! I really apreciated your time.",
+                    "Thanks bro! I really apreciated your honesty."
+                    ]
+            return random.choice(message)
         
         else:
             bots_dir = 'bots'

@@ -52,8 +52,7 @@ class rateJoke(Resource):
 class collectJokeFeedback(Resource):
 	def get(self,joke, rating):
 		bot = Bot()
-		bot.collect_feedback(joke, rating)
-		return jsonify({"Message": "Thanks for the feedback. It helps me improve my skills."})
+		return jsonify({"Message": bot.collect_feedback(joke, rating)})
 
 	def post(self):
 		data = request.get_json()	
