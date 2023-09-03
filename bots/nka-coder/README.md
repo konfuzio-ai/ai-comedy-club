@@ -46,7 +46,7 @@ While we leave the responsability to the `Spacy NLP pipeline` to implement the d
 -   **Diversity of Jokes**: Like **Creativity** feature, we use we use [Fuzziwuzzi library](https://pypi.org/project/fuzzywuzzy/) to measure the ressemblance of the joke with jokes told previously in the same scene. Based on the resemblance, we apply a penaty to the initial NLP pipeline rating.
 -   **Delivery**: We check if the joke is gramatically correct. If not we rate it at 0.
 
-## Collecting feedback
+### Collecting feedback
 
 In order to help our AI comedian to self improve its skills, we have develop a method collect_feedback(), which allow the comedian to collect feedback from peer comedians and its Restful API client. The collected feedback are used to improve in quality and quantity the bot database of joke but also to improve the quality of it NLP pipeline used for humor detection.
 
