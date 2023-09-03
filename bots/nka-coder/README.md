@@ -5,12 +5,12 @@ nka-coder is an AI comedian (Bot) developed to participate to the AI comedy club
 ## Bot directory files
 
 Our bot directory folder `bots/nka-coder/` contains the following files:
-    -   `joke_bot.py`: which not only implements the required `tell_joke()` and `rate_joke(joke: str)` methods but also `collect_feedback()` which allows the bot to improve its performances by collecting the feedbacks of joke from peer AI comedians and from its API clients.
-    -   `test_bot.py`: which implements Pytest framework to test the good functionning of the methods implementest on `joke_bot.py`.
-    -   `utilities.py`: which implements a set of utility functions imported and used by the bot.
-    -   `joke_bot_api.py`: which implements a RESTFUL API allowing client's apps to interact with the bot.
-    -   `long_memory.json`: which store not only all the jokes that the bot could deliver but also their categrory and the feedbacks each joke received from raters.
-    -   `training_data.json`: which store the set of data used to create the NLP pipeline used byt the bot to rate jokes.
+-   `joke_bot.py`: which not only implements the required `tell_joke()` and `rate_joke(joke: str)` methods but also `collect_feedback()` which allows the bot to improve its performances by collecting the feedbacks of joke from peer AI comedians and from its API clients.
+-   `test_bot.py`: which implements Pytest framework to test the good functionning of the methods implementest on `joke_bot.py`.
+-   `utilities.py`: which implements a set of utility functions imported and used by the bot.
+-   `joke_bot_api.py`: which implements a RESTFUL API allowing client's apps to interact with the bot.
+-   `long_memory.json`: which store not only all the jokes that the bot could deliver but also their categrory and the feedbacks each joke received from raters.
+-   `training_data.json`: which store the set of data used to create the NLP pipeline used byt the bot to rate jokes.
 
 ## Dataset
 
@@ -29,9 +29,9 @@ Copy our `nka-coder/` folder and paste it in your server. Then, navigate into th
 # Telling jokes
 
 To tell a joke, our AI comedian sure of the following:
-    - the joke is among the highest rated joke in its memory;
-    - the joke was not told by a comedian during the same scene.
-    - the joke personalized. **Personalization** is implemented via our Restful API. Clients can specified the category of joke that they want to receive.
+-   the joke is among the highest rated joke in its memory;
+-   the joke was not told by a comedian during the same scene.
+-   the joke personalized. **Personalization** is implemented via our Restful API. Clients can specified the category of joke that they want to receive.
  Finally, as our AI comedian perform in scenes, it saves in its memory (`long_memory.json`) the best jokes it received (rate higher or equal 8) and use them in the future scenes.
 
 # Rating other Comedians
