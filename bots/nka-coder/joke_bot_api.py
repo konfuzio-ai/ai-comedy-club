@@ -10,7 +10,8 @@ api = Api(app)
 class Hello(Resource):
 	def get(self):
 		bot = Bot()
-		return jsonify({"message": "Hello bro! \n I'm as AI comedian. ;-) \n My name is {}. I'm specialized on joke about: {}.".format(bot.name, bot.joke_categories)})
+		return jsonify({"message": "Hello bro! \n I'm as AI comedian. ;-) \n My name is {}. I'm specialized on joke about: {}.".format(bot.name, bot.joke_categories),
+		                "comedian": bot.name})
 
 	def post(self):	
 		data = request.get_json()	
@@ -21,7 +22,7 @@ class Hello(Resource):
 class Name(Resource):
 	def get(self):
 		bot = Bot()
-		return jsonify({"name": bot.name})
+		return jsonify({"comedian": bot.name})
 
 	def post(self):	
 		data = request.get_json()	
@@ -31,7 +32,7 @@ class Name(Resource):
 class tellJoke(Resource):
 	def get(self,category="all"):
 		bot = Bot()
-		return jsonify({"joke": bot.tell_joke(category.lower()), "joker": bot.name})
+		return jsonify({"message": bot.tell_joke(category.lower()), "comedian": bot.name})
 
 	def post(self):	
 		data = request.get_json()	
@@ -41,7 +42,7 @@ class tellJoke(Resource):
 class rateJoke(Resource):
 	def get(self,joke):
 		bot = Bot()
-		return jsonify({"rate": bot.rate_joke(joke), "rater": bot.name})
+		return jsonify({"message": bot.rate_joke(joke), "comedian": bot.name})
 
 	def post(self):	
 		data = request.get_json()	
@@ -49,22 +50,22 @@ class rateJoke(Resource):
 
 # Resource to feedback of a joke a joke
 class collectJokeFeedback(Resource):
-	def get(self,joke):
+	def get(self,joke, rating):
 		bot = Bot()
-		bot.collect_feedback()
-		return jsonify({"Message": "Thanks for the feedback. It helps me improve mys skills."})
+		bot.collect_feedback(joke, rating)
+		return jsonify({"Message": "Thanks for the feedback. It helps me improve my skills."})
 
-	def post(self):	
+	def post(self):
 		data = request.get_json()	
 		return jsonify({"data": data}), 201
 
 
 # adding the defined resources along with their corresponding urls
 api.add_resource(Hello, '/')
-api.add_resource(Name, '/name')
+api.add_resource(Name, '/comedian')
 api.add_resource(tellJoke, '/tell-joke/<string:category>')
 api.add_resource(rateJoke, '/rate-joke/<string:joke>')
-api.add_resource(collectJokeFeedback, '/rate-joke/<string:joke>/<int:rating>')
+api.add_resource(collectJokeFeedback, '/collect-feedback/<string:joke>/<int:rating>')
 
 
 # driver function
