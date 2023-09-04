@@ -66,7 +66,6 @@ api.add_resource(tellJoke, '/tell-joke/<string:category>')
 api.add_resource(rateJoke, '/rate-joke/<string:joke>')
 api.add_resource(collectJokeFeedback, '/collect-feedback/<string:joke>/<int:rating>')
 
-
 # driver function
 if __name__ == '__main__':
 

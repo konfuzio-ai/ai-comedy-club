@@ -8,7 +8,6 @@ import os
 from fuzzywuzzy import fuzz 
 import spacy
 import json
-    
 
 class Bot:
 

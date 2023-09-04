@@ -11,10 +11,11 @@ Our bot directory folder `bots/nka-coder/` contains the following files:
 -   `joke_bot_api.py`: which implements a RESTFUL API allowing client's apps to interact with the bot.
 -   `long_memory.json`: which store not only all the jokes that the bot could deliver but also their categrory and the feedbacks each joke received from raters.
 -   `training_data.json`: which store the set of data used to create the NLP pipeline used byt the bot to rate jokes.
+-   `dataset.csv`: which is the raw dataset file of humor detection that we use.
 
 ## Dataset
 
-Our AI comedian is developed by leveraging the [Colbert Dataset](https://ieee-dataport.org/documents/colbert-dataset-200k-short-texts-humor-detection) which contains 200K texts for humor detection.
+Our AI comedian is developed by leveraging the [Colbert Dataset](https://ieee-dataport.org/documents/colbert-dataset-200k-short-texts-humor-detection) which contains 200K texts for humor detection. We have downloaded a copy of this dataset our bot folder.
 
 ## How it works
 

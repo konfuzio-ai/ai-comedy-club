@@ -27,3 +27,4 @@ def test_collect_feedback():
     joke = "Dating tip: surprise your date! show up a day early."
     message = bot.collect_feedback(joke)
     assert isinstance(message, str)
+
