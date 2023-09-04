@@ -7,7 +7,7 @@ nka-coder is an AI comedian (Bot) developed to participate to the AI comedy club
 Our bot directory folder `bots/nka-coder/` contains the following files:
 -   `joke_bot.py`: which not only implements the required `tell_joke()` and `rate_joke(joke: str)` methods but also `collect_feedback()` which allows the bot to improve its performances by collecting the feedbacks of joke from peer AI comedians and from its API clients.
 -   `test_bot.py`: which implements Pytest framework to test the good functionning of the methods implementest on `joke_bot.py`.
--   `utilities.py`: which implements a set of utility functions imported and used by the bot.
+-   `utilities.py`: which implements a set of utility functions used to pre-processed our Dataset.
 -   `joke_bot_api.py`: which implements a RESTFUL API allowing client's apps to interact with the bot.
 -   `long_memory.json`: which store not only all the jokes that the bot could deliver but also their categrory and the feedbacks each joke received from raters.
 -   `training_data.json`: which store the set of data used to create the NLP pipeline used byt the bot to rate jokes.
