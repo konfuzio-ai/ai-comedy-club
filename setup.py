@@ -9,7 +9,8 @@ setup(
         "transformers>=4.0",
         "textblob>=0.15.3",
         "torch>=1.8.1",
-        "pytest>=6.2.2"
+        "pytest>=6.2.2",
+        "openai==0.28.0"
     ],
 
     author="Konfuzio",
