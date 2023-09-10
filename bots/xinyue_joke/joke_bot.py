@@ -109,7 +109,7 @@ class Bot:
             prompt_repository=self._prompt_repository
         )
 
-    def tell_joke(self):
+    def tell_joke(self) -> str:
         _, list_of_jokes = self._joke_repository.tell_joke(num_of_jokes=8)
         copy_of_jokes = copy.deepcopy(list_of_jokes)
         random.shuffle(copy_of_jokes)
