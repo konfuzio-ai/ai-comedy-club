@@ -1,19 +1,16 @@
-from langchain.chat_models import ChatOpenAI
-from langchain.prompts.chat import (
-    ChatPromptTemplate,
-    HumanMessagePromptTemplate,
-    SystemMessagePromptTemplate,
-)
-from langchain.schema.messages import BaseMessage, HumanMessage
-from loguru import logger
-
-from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+import copy
 import random
 from typing import Tuple
-import copy
 
 import requests
 from bs4 import BeautifulSoup
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import ResponseSchema, StructuredOutputParser
+from langchain.prompts.chat import (ChatPromptTemplate,
+                                    HumanMessagePromptTemplate,
+                                    SystemMessagePromptTemplate)
+from langchain.schema.messages import BaseMessage
+from loguru import logger
 
 random.seed(1024)
 
