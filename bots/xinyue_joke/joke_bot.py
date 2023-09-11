@@ -28,7 +28,7 @@ class PromptRepository:
             else ChatOpenAI(model="gpt-4-0613", verbose=False, openai_api_key=key)
         )
 
-    def prompt(self, prompt: list[BaseMessage]):
+    def prompt(self, prompt: list[BaseMessage]) -> BaseMessage:
         return self._chat(prompt)
 
 
