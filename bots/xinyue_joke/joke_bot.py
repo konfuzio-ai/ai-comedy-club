@@ -21,7 +21,7 @@ random.seed(1024)
 class PromptRepository:
     _chat: ChatOpenAI
 
-    def __init__(self, key=None) -> None: 
+    def __init__(self, key=None) -> None:
         self._chat = (
             ChatOpenAI(model="gpt-4-0613", verbose=True)
             if key is None
@@ -35,8 +35,10 @@ class PromptRepository:
 class JokeProviderRepository:
     _sys_template: SystemMessagePromptTemplate
     _user_template: HumanMessagePromptTemplate
-    _structured_output_parser: StructuredOutputParser
+    _chat_template: ChatPromptTemplate
     _prompt_repository: PromptRepository
+
+    _structured_output_parser: StructuredOutputParser
 
     def __init__(self, prompt_repository: PromptRepository) -> None:
         self._prompt_repository = prompt_repository
@@ -110,7 +112,7 @@ class Bot:
         )
 
     def tell_joke(self) -> str:
-        _, list_of_jokes = self._joke_repository.tell_joke(num_of_jokes=8)
+        _, list_of_jokes = self._joke_repository.tell_joke(num_of_jokes=4)
         copy_of_jokes = copy.deepcopy(list_of_jokes)
         random.shuffle(copy_of_jokes)
         return random.choice(copy_of_jokes)
