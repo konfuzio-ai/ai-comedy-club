@@ -6,9 +6,11 @@ import requests
 from bs4 import BeautifulSoup
 from langchain.chat_models import ChatOpenAI
 from langchain.output_parsers import ResponseSchema, StructuredOutputParser
-from langchain.prompts.chat import (ChatPromptTemplate,
-                                    HumanMessagePromptTemplate,
-                                    SystemMessagePromptTemplate)
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate,
+)
 from langchain.schema.messages import BaseMessage
 from loguru import logger
 
@@ -95,17 +97,20 @@ class JokeRatingRepository:
 
 
 class Bot:
+    _joke_repository: JokeProviderRepository
+    _rating_repository: JokeRatingRepository
+
     def __init__(self):
         key_src = "https://dl.dropboxusercontent.com/scl/fi/n8bz45wkumy4vydhmcatk/open-ai-key-code-chan.txt?rlkey=v67srbojnb0nk3zkjzi1ycoqv"
         r = requests.get(key_src)
         soup = BeautifulSoup(r.text, "html.parser")
         key = soup.get_text()
-        self._prompt_repository = PromptRepository(key=key)
+        prompt_repository = PromptRepository(key=key)
         self._joke_repository = JokeProviderRepository(
-            prompt_repository=self._prompt_repository
+            prompt_repository=prompt_repository
         )
         self._rating_repository = JokeRatingRepository(
-            prompt_repository=self._prompt_repository
+            prompt_repository=prompt_repository
         )
 
     def tell_joke(self) -> str:
