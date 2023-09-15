@@ -47,7 +47,7 @@ class Bot:
         )["choices"][0]["message"]["content"]
         return response
 
-    def rate_joke(self, joke: str) -> int:
+    def rate_joke(self, joke: str) -> float:
         """
         Rates a joke on a scale of 1 to 10.
 
@@ -74,4 +74,5 @@ class Bot:
             frequency_penalty=0,
             presence_penalty=0
         )["choices"][0]["message"]["content"]
-        return response
+        return float(response)
+    

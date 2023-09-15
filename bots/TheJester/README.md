@@ -42,5 +42,11 @@ chainlit run gui.py -w
 ```
 This will show you a http://localhost:8000 link which you can click to open into the browser and chat.
 
+To run the test cases:
+```python
+py.test
+```
+
 
 # Demo
+![gif](./rsc/TheJester_demo.gif)
