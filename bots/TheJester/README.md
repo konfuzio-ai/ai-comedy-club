@@ -35,3 +35,12 @@ pip install -r ./requirments.txt
 
 
 # Run the project
+You can use the GUI - Graphical User Interface, made using [ChainLit ![image](https://avatars.githubusercontent.com/u/128686189?s=12&v=4)]((https://docs.chainlit.io/overview)).
+```bash
+# Run this on a terminal after activating the python virtual enviroment
+chainlit run gui.py -w
+```
+This will show you a http://localhost:8000 link which you can click to open into the browser and chat.
+
+
+# Demo

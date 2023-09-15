@@ -1,3 +1,6 @@
 venv/*
 .idea/*
 __pycache__/
+chainlit.md
+.chainlit
+.venv

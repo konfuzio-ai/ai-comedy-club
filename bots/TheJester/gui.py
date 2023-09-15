@@ -5,7 +5,7 @@ The function takes a message as input and uses the Bot class to generate a joke.
 
 The function uses the chainlit library to send messages.
 """
-from .joke_bot import Bot
+from joke_bot import Bot
 import chainlit
 
 bot = Bot()
@@ -21,4 +21,10 @@ async def response(message: str):
     Returns:
         None.
     """
-    await chainlit.Message(content=bot.tell_joke(message)).send()
+    response = bot.tell_joke(message)
+    rating = bot.rate_joke(message)
+    try:
+        if 1 <= float(rating) <= 10:
+            await chainlit.Message(content=response + f" I'd rate it {rating} out of 10.").send()
+    except:
+        await chainlit.Message(content=response).send()
