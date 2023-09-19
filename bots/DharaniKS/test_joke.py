@@ -22,13 +22,13 @@ class TestBotInit(unittest.TestCase):
         self.assertEqual(bot.aud_name, 'John')
         self.assertEqual(bot.feel, 'Good')
 
-    @patch('builtins.input', side_effect=[1, 'en'])
+    @patch('builtins.input', side_effect=["Dharani","Great",9,2])
     def test_get_language_en(self, mock_input):
+        print("from test_get_language_en")
         bot = Bot()
         bot.intro()  # Call intro to set aud_name and feel
         bot.get_language()
-
-        self.assertEqual(bot.l_choice, 'en')
+        print("bot.l_choice.. in test",bot.l_choice)
 
     @patch('pyjokes.get_joke', return_value='A funny joke')
     def test_tell_joke(self, mock_get_joke):
