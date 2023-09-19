@@ -30,8 +30,10 @@ class TestBotInit(unittest.TestCase):
         bot.get_language()
         print("bot.l_choice.. in test",bot.l_choice)
 
+    @patch('builtins.input', side_effect=["Dharani","Great",9,1])
     @patch('pyjokes.get_joke', return_value='A funny joke')
-    def test_tell_joke(self, mock_get_joke):
+    def test_tell_joke(self, mock_get_joke, mock_input):
+        #print("from test_tell_joke")
         bot = Bot()
         bot.intro()  # Call intro to set aud_name and feel
         bot.get_language()  # Call get_language to set l_choice
