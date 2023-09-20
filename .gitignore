@@ -1,3 +1,11 @@
 venv/*
 .idea/*
+.env
+.DS_Store
 __pycache__/
+data/preprocessed.csv
+data/preprocessed.csv.gz
+data/jokes_merged.csv
+data/jokes.csv
+.pytest_cache/
+*.py[cod]

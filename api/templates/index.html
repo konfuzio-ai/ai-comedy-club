@@ -1,0 +1,16 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <title>{{title}}</title>
+</head>
+
+<body>
+<h1>Want some jokes?</h1>
+{% for key, value in jokes.items() %}
+<b>Joke from {{ key }}: {{ value }}</b><br>
+{% endfor %}
+</body>
+
+</html>

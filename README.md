@@ -72,13 +72,16 @@ Whether you are a seasoned programmer, a beginner who's just starting out, or so
 -   Bug reports: If you spot any bugs or issues, please let us know. You can create a new issue to report any problems you encounter.
 -   Pull Requests: Enhancements, bug fixes, better jokes - we welcome them all! Feel free to create a pull request with your changes.
 
-### Why contribute?
+### Why to contribute?
 
 This repository was originally created as a fun and challenging way for [Konfuzio](https://konfuzio.com) applicants to demonstrate their skills.
 
-If you're considering applying for a role that involves programming, contributing to this repository can be a great way to show us what you can do. Please submit a short [Online Video Interview](https://vocalvideo.com/c/helm-nagel-gmbh) in addition.
+### Contribute and apply for a job 🍾
 
-But don't worry, you don't have to be a job applicant to contribute! Whether you're looking to improve your coding skills, learn more about AI, or just want to make people laugh, contributing to the AI Comedy Club can be a rewarding experience.
+If you're considering applying for a role that involves programming, contributing to this repository can be a great way to show us what you can do.
+
+1. Please submit a short [Online Video Interview](https://vocalvideo.com/c/helm-nagel-gmbh) in addition.
+2. Book a meeting with our CTO, Florian Zyprian to get to know each other and receive a review of your pull request: **[BOOK a Meeting](https://calendly.com/zyprian/treffen-via-google-hangout?back=1&month=2023-09)**
 
 ### A Roadmap, No Joke
 
