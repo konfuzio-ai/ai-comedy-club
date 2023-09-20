@@ -11,6 +11,11 @@ setup(
         "pytest>=6.2.2",
         "openai>=0.27.8",
         "spacy"
+        "alt-profanity-check>=1.2.2"
+        "sentencepiece=0.1.99",
+        "datasets=2.13.1",
+        "accelerate=0.20.3",
+        "scikit-learn=1.2.2",
     ],
     author="Konfuzio",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",
