@@ -22,7 +22,6 @@ setup(
         "accelerate=0.20.3",
         "scikit-learn=1.2.2",
     ],
-
     author="Konfuzio",
     description="A challenge for Python developers to create AI agents that tell and rate jokes.",
     license="MIT",
