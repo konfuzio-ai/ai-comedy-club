@@ -1,0 +1,46 @@
+AI Comedy Bot Testing Documentation
+The AI Comedy Bot Testing Documentation provides an overview of the tests conducted for the AI Comedy Bot program. It covers the different test cases and their purposes.
+
+Getting Started
+To run the tests for the AI Comedy Bot, follow the steps below:
+
+Install the required libraries:
+
+pytest: Install using pip install pytest.
+
+Prepare the joke dataset:
+
+Ensure the joke dataset CSV file is available at the specified path in the test code.
+The CSV file should contain jokes in the second column.
+
+Test Cases
+The AI Comedy Bot Testing includes the following test cases:
+
+test_bot_name: This test checks if the name of the bot matches the expected value.
+
+It verifies that the name attribute of the Bot class is set correctly.
+It ensures that the bot has the expected name.
+
+test_joke_file_format: This test verifies the format of the jokes in the dataset.
+
+It tests if the jokes obtained from the dataset are in string format.
+It ensures that the jokes are correctly stored as strings.
+test_joke_file_encoding: This test checks the encoding of jokes in the dataset.
+
+It verifies if the jokes can be encoded and decoded using UTF-8.
+It ensures that the jokes can be handled with UTF-8 encoding.
+test_rate_joke_score: This test evaluates the rating score of a joke.
+
+It tests if the rating score returned by the rate_joke method is an integer.
+It ensures that the rating score falls within the range of 0 to 10.
+Running the Tests
+To run the tests, execute the following command in the terminal:
+
+pytest
+This command will run all the test cases defined in the test file.
+
+Test Results
+The test results will be displayed in the terminal after executing the pytest command.
+
+Each test case will be indicated as either passed or failed.
+Detailed information about the failures, if any, will be provided.
