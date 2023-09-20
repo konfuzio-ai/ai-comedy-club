@@ -1,16 +1,17 @@
 import importlib.util
 import os
 import subprocess
+from dotenv import load_dotenv
 
 # The directory where the bots are located
 bots_dir = './bots/'
+load_dotenv()
 
 
 def check_test_pass(directory):
     """Check whether the tests pass for the given directory."""
     # Check if a test_bot.py file exists in the directory
     if not os.path.exists(os.path.join(directory, 'test_bot.py')):
-        print(f"No tests found in {directory}.")
         return False
 
     # Run pytest on the directory

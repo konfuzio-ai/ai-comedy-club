@@ -1,6 +1,10 @@
 venv/*
 .idea/*
 *.egg-info/
-__pycache__/
 build/
 .hypothesis/
+.env
+.DS_Store
+__pycache__/
+.pytest_cache/
+*.py[cod]
