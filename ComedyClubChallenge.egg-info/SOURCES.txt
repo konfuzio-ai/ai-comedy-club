@@ -1,8 +1,0 @@
-README.md
-setup.py
-ComedyClubChallenge.egg-info/PKG-INFO
-ComedyClubChallenge.egg-info/SOURCES.txt
-ComedyClubChallenge.egg-info/dependency_links.txt
-ComedyClubChallenge.egg-info/requires.txt
-ComedyClubChallenge.egg-info/top_level.txt
-bots/__init__.py
