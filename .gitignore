@@ -1,5 +1,8 @@
 venv/*
 .idea/*
+*.egg-info/
+build/
+.hypothesis/
 .env
 .DS_Store
 __pycache__/

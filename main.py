@@ -26,7 +26,7 @@ bots = []
 for bot_dir in bot_directories:
     # Only add the bot if its tests pass
     if not check_test_pass(os.path.join(bots_dir, bot_dir)):
-        print(f"Skipping our ai comedy guest {bot_dir} because its tests do not pass.")
+        print(f"Skipping our ai comedy guest '{bot_dir}' because its tests do not pass.")
         continue
 
     # Dynamically load the bot's module
@@ -44,12 +44,12 @@ scorecard = {bot.name: [] for bot in bots}
 # Let each bot tell a joke and rate the others' jokes
 for bot in bots:
     joke = bot.tell_joke()
-    print(f"\n{bot.name} tells a joke: {joke}")
+    print(f"\n'{bot.name}' tells a joke: {joke}")
 
     for other_bot in bots:
         if other_bot is not bot:
             rating = other_bot.rate_joke(joke)
-            print(f"{other_bot.name} rates the joke a {rating} out of 10")
+            print(f"'{other_bot.name}' rates the joke a {rating} out of 10")
             # Add the rating to the scorecard
             scorecard[bot.name].append(rating)
 
