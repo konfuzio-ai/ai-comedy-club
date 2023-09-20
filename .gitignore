@@ -2,4 +2,6 @@ venv/*
 .idea/*
 .env
 .DS_Store
-*.pyc
+__pycache__/
+.pytest_cache/
+*.py[cod]
