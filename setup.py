@@ -15,7 +15,7 @@ setup(
         "hypothesis>=6.79.1",
         "sentence-transformers>=2.2.2",
         "pandas>=2.0.2",
-        "openai==0.28.0"
+        "openai==0.28.0",
         "mock>=5.0.2",
         "python-dotenv>=1.0.0",
         "gpt-2-simple",
