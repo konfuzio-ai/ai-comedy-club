@@ -12,7 +12,7 @@ setup(
         "textblob>=0.15.3",
         "torch>=1.8.1",
         "pytest>=6.2.2",
-        "openai>=0.27.8",
+        "openai==0.28.0"
         "mock>=5.0.2",
         "python-dotenv>=1.0.0",
         "gpt-2-simple",
