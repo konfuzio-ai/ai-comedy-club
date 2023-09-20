@@ -1,0 +1,10 @@
+venv/*
+.idea/*
+research/*
+__pycache__/*
+.ipynb_checkpoints/*
+src/__pycache__/*
+src/.ipynb_checkpoints/*
+models/.ipynb_checkpoints/*
+models/merge-*
+models/mood_*

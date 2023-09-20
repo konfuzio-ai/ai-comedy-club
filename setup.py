@@ -11,6 +11,10 @@ setup(
         "torch>=1.8.1",
         "pytest>=6.2.2",
         "alt-profanity-check>=1.2.2"
+        "sentencepiece=0.1.99",
+        "datasets=2.13.1",
+        "accelerate=0.20.3",
+        "scikit-learn=1.2.2",
     ],
 
     author="Konfuzio",
