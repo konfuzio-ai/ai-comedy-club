@@ -1,9 +1,11 @@
 import importlib.util
 import os
 import subprocess
+from dotenv import load_dotenv
 
 # The directory where the bots are located
 bots_dir = './bots/'
+load_dotenv()
 
 
 def check_test_pass(directory):
