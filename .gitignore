@@ -1,4 +1,5 @@
 venv/*
 .idea/*
-/bots/gpt2tuned/fine-tuning/checkpoint/
-/bots/gpt2tuned/fine-tuning/models/
+__pycache__/
+.pytest_cache/
+*.py[cod]
