@@ -26,7 +26,7 @@ bots = []
 for bot_dir in bot_directories:
     # Only add the bot if its tests pass
     if not check_test_pass(os.path.join(bots_dir, bot_dir)):
-        print(f"Skipping our ai comedy guest '{bot_dir}' because its tests do not pass.")
+        print(f"Skipping our ai comedy guest '{bot_dir}' because it's tests do not pass.")
         continue
 
     # Dynamically load the bot's module
@@ -35,8 +35,12 @@ for bot_dir in bot_directories:
     spec.loader.exec_module(bot_module)
 
     # Create an instance of the bot and add it to the list
-    bot = bot_module.Bot()
-    bots.append(bot)
+    try:
+        bot = bot_module.Bot()
+        bots.append(bot)
+        print(f"Adding our ai comedy guest '{bot_dir}' because it's tests pass and it can be initialized.")
+    except Exception as e:
+        print(f"Skipping our ai comedy guest '{bot_dir}' because it fails to initialize the Bot(): {str(e)}")
 
 # Scorecard for each bot
 scorecard = {bot.name: [] for bot in bots}
