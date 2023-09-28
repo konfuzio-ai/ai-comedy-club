@@ -22,7 +22,6 @@ assert AMOUNT_AVAILABLE_JOKES <= len(
 available_jokes = random.sample([joke for _, joke in jokes_from_file], AMOUNT_AVAILABLE_JOKES)
 
 
-@dataclass
 class Bot(AbstractBot):
     """Bot class from user rosskost that is based on Reddit Humour.
     -tell_joke() uses jokes from r/cleanjokes and is able to return a random joke or a
@@ -31,10 +30,17 @@ class Bot(AbstractBot):
     -rate_joke() uses the tiny variant of BERT, that was finetuned by me on scores from r/jokes
     and returns a int rating from 1-10.
     """
-    name: str = BOT_NAME
-    rating_model: torch.nn.Module = model
-    topic: Optional[Topic] = None
-    available_jokes: List[str] = field(default_factory=lambda: available_jokes)
+
+    def __init__(self,
+                 name: str = BOT_NAME,
+                 rating_model: torch.nn.Module = model,
+                 topic: Optional[Topic] = None,
+                 available_jokes: List[str] = available_jokes) -> None:
+
+        self.name = name
+        self.rating_model = rating_model
+        self.topic = topic
+        self.available_jokes = available_jokes
 
     def tell_joke(self, topic: Optional[Topic] = None, choice_from_top_n: Optional[int] = 5) -> str:
         if topic is None and self.topic is not None:
