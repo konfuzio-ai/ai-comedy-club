@@ -6,10 +6,12 @@ from langchain.chains import LLMChain
 from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
+import json
 from dotenv import load_dotenv
-from tools.CustomOutputParser import CustomOutputParser
-from tools.CustomPromptTemplate import CustomPromptTemplate
+from agents.common.CustomOutputParser import CustomOutputParser
+from agents.common.CustomPromptTemplate import CustomPromptTemplate
 load_dotenv()
+
 
 llm=OpenAI(temperature=1)
 
@@ -29,7 +31,7 @@ template = """You are an AI joke rating bot. Rate the joke that is provided in t
 
 Use the following format:
 
-User Input: the topic of the joke
+User Input: the joke to rate
 Thought: you should always think about what to do
 Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action
@@ -47,8 +49,6 @@ Joke: {input}
 prompt = CustomPromptTemplate(
     template=template,
     tools=tools,
-    # This omits the `agent_scratchpad`, `tools`, and `tool_names` variables because those are generated dynamically
-    # This includes the `intermediate_steps` variable because that is needed
     input_variables=["input", "intermediate_steps"]
 )
 
@@ -64,6 +64,7 @@ agent = LLMSingleActionAgent(
 
 joke_rating_agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)
 
-resp = joke_rating_agent_executor.run("Why didn't England bring a map to the World Cup? Because they already knew the way to the final!")
-print(resp)
+# resp = joke_rating_agent_executor.run("Why didn't England bring a map to the World Cup? Because they already knew the way to the final!")
+# json_resp = json.loads(resp)
+# print(json_resp['rating'])
 

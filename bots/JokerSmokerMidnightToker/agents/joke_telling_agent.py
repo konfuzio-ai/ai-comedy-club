@@ -6,12 +6,18 @@ from langchain.chains import LLMChain
 from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
+from langchain.memory import ConversationBufferMemory
+from agents.common.CustomOutputParser import CustomOutputParser
+from agents.common.CustomPromptTemplate import CustomPromptTemplate
+
+
 from dotenv import load_dotenv
-from tools.CustomOutputParser import CustomOutputParser
-from tools.CustomPromptTemplate import CustomPromptTemplate
 load_dotenv()
 
 llm=OpenAI(temperature=1)
+memory = ConversationBufferMemory(memory_key="chat_history")
+
+
 
 search = SerpAPIWrapper()
 tools = [
@@ -23,13 +29,13 @@ tools = [
 ]
 
 # Set up the base template
-template = """Tell me a joke about {input}. You have access to the following tools:
+template = """Tell me a joke about {input}, in the context of Chat History below. You have access to the following tools:
 
 {tools}
 
 Use the following format:
 
-User Input: the topic of the joke
+User Input: {input}
 Thought: you should always think about what to do
 Action: the action to take, should be one of [{tool_names}]
 Action Input: the input to the action
@@ -40,15 +46,15 @@ Final Answer: write a joke about the topic provided in "User Input"
 
 Begin! 
 
+Chat History: {chat_history}
+
 User Input: {input}
 {agent_scratchpad}"""
 
 prompt = CustomPromptTemplate(
     template=template,
     tools=tools,
-    # This omits the `agent_scratchpad`, `tools`, and `tool_names` variables because those are generated dynamically
-    # This includes the `intermediate_steps` variable because that is needed
-    input_variables=["input", "intermediate_steps"]
+    input_variables=["input", "intermediate_steps", "chat_history"]
 )
 
 llm_chain = LLMChain(llm=llm, prompt=prompt)
@@ -61,8 +67,16 @@ agent = LLMSingleActionAgent(
     allowed_tools=tool_names
 )
 
-joke_telling_agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)
+joke_telling_agent_executor = AgentExecutor.from_agent_and_tools(
+  agent=agent, 
+  tools=tools, 
+  memory=memory,
+  verbose=True
+)
 
-resp = joke_telling_agent_executor.run("tell me a joke about the nation that is the current world cup champion in men's football")
-print(resp)
+# reply = joke_telling_agent_executor.run("tell me a monty python joke")
+# print(reply)
+
+# second_reply = joke_telling_agent_executor.run("tell me another one")
+# print(second_reply)
 

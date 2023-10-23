@@ -16,3 +16,4 @@ data/jokes_merged.csv
 data/jokes.csv
 .pytest_cache/
 *.py[cod]
+*.pyc
