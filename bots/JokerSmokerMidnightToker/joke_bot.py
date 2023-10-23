@@ -14,6 +14,6 @@ class Bot:
         return int(json_resp['rating'])
 
     def verify_context(self, context, llm_reply):
-        # Here we would check the context/inference, by adding a new agent that checks the context/inference: joke_verify_context_agent.py
+        # Here we would check the context vs the llm_reply, by adding a new agent: joke_verify_context_agent.py
         # Example prompt: Check if joke: {llm_reply} is about: {context} // "birds and trees". Output should be in json: { context: Boolean(value) }
         return True
