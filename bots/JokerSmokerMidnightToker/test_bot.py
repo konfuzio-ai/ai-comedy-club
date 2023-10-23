@@ -20,7 +20,7 @@ def test_tell_joke_with_memory():
 
 def test_rate_joke():
     bot = Bot()
-    rating = bot.rate_joke("Why didn't England bring a map to the World Cup? Because they already knew the way to the final!")
+    rating = bot.rate_joke("Why didn't Argentina bring a map to the World Cup? Because they already knew the way to the final!")
     assert isinstance(rating, int)
     assert rating >= 1 and rating <= 10
 
