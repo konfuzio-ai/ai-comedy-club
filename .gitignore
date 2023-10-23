@@ -4,6 +4,7 @@ venv/*
 build/
 .hypothesis/
 .env
+*.env
 .DS_Store
 __pycache__/
 chainlit.md
