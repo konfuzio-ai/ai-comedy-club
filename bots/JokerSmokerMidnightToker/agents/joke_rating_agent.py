@@ -31,15 +31,9 @@ template = """You are an AI joke rating bot. Rate the joke that is provided in t
 
 Use the following format:
 
-User Input: the joke to rate
-Thought: you should always think about what to do
-Action: the action to take, should be one of [{tool_names}]
-Action Input: the input to the action
-Observation: the result of the action
-... (this Thought/Action/Action Input/Observation can repeat N times)
-Thought: I now know the final answer
 Final Answer: rate the joke provided in the "Joke:" section. Rating should be between 1 and 10, with 10 being the best joke. 
-Provide the answer as JSON output, with the key "rating" and the value being the rating of the joke. 
+Provide the answer as JSON output, with the key "rating" and the value being the rating of the joke. Use double-quotes. 
+If you have uncertainties about how to rate the joke, just provide a random number between 1 and 10.
 
 Begin! 
 

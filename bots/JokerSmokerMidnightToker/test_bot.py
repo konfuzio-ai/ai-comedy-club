@@ -3,11 +3,12 @@ from joke_bot import Bot
 
 def test_tell_joke():
     bot = Bot()
-    joke_reply = bot.tell_joke("tell me a joke about the country that is the current winner of men's football world cup")
+    main_context = "tell me a joke about the country that is the current winner of men's football world cup"
+    joke_reply = bot.tell_joke(main_context)
     assert len(joke_reply) > 10
     assert isinstance(joke_reply, str)
-    assert isinstance(bot.verify_context(main_context), bool)
-    
+    assert isinstance(bot.verify_context(main_context, joke_reply), bool)
+
 def test_tell_joke_with_memory():
     bot = Bot()
     main_context = "tell me a joke about birds and trees"
@@ -15,12 +16,11 @@ def test_tell_joke_with_memory():
     joke_reply_2 = bot.tell_joke("tell me another one")    
     assert len(joke_reply_2) > 10
     assert isinstance(joke_reply_2, str)
-    assert isinstance(bot.verify_context(main_context), bool)
+    assert isinstance(bot.verify_context(main_context, joke_reply_2), bool)
 
 def test_rate_joke():
     bot = Bot()
-    joke_reply = bot.tell_joke('tell me a joke about monty python')
-    rating = bot.rate_joke(joke_reply)
+    rating = bot.rate_joke("Why didn't England bring a map to the World Cup? Because they already knew the way to the final!")
     assert isinstance(rating, int)
-    assert rating >= 0 and rating <= 10
+    assert rating >= 1 and rating <= 10
 
