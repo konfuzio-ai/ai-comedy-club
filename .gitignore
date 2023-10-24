@@ -17,3 +17,5 @@ data/jokes.csv
 .pytest_cache/
 *.py[cod]
 *.pyc
+myenv/
+

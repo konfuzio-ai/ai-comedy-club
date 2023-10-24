@@ -4,6 +4,8 @@ from agents.joke_rating_agent import joke_rating_agent_executor
 from agents.joke_telling_agent import joke_telling_agent_executor
 
 class Bot:
+    name = "JokerSmokerMidnightToker"
+
     def tell_joke(self, joke_instruction):
         reply = joke_telling_agent_executor.run(joke_instruction)
         return reply
