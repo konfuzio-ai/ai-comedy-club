@@ -2,14 +2,23 @@ import json
 import random
 import sys
 import os
+import random
 
 from bots.JokerSmokerMidnightToker.agents.joke_rating_agent import joke_rating_agent_executor
 from bots.JokerSmokerMidnightToker.agents.joke_telling_agent import joke_telling_agent_executor
 
+predefined_jokes = [
+            "Why don't scientists trust atoms? Because they make up everything!",
+            "Why did the chicken go to the seance? To talk to the other side.",
+            "Why don't some animals play cards? Because they're afraid of cheetahs.",
+            "What do you call fake spaghetti? An impasta!",
+            "Why did the scarecrow win an award? Because he was outstanding in his field!"
+        ]
+
 class Bot:
     name = "JokerSmokerMidnightToker"
 
-    def tell_joke(self, joke_instruction):
+    def tell_joke(self, joke_instruction=random.choice(predefined_jokes)):
         reply = joke_telling_agent_executor.run(joke_instruction)
         return reply
 

@@ -16,7 +16,6 @@ def check_test_pass(directory):
 
     # Run pytest on the directory
     result = subprocess.run(['pytest', directory], stdout=subprocess.PIPE)
-    print(result)
     return result.returncode == 0
 
 
@@ -38,6 +37,8 @@ for bot_dir in bot_directories:
     # Create an instance of the bot and add it to the list
     try:
         bot = bot_module.Bot()
+        if not hasattr(bot, 'name'):
+            bot.name = bot_dir
         bots.append(bot)
         print(f"Adding our ai comedy guest '{bot_dir}' because it's tests pass and it can be initialized.")
     except Exception as e:
@@ -56,7 +57,11 @@ for bot in bots:
             rating = other_bot.rate_joke(joke)
             print(f"'{other_bot.name}' rates the joke a {rating} out of 10")
             # Add the rating to the scorecard
-            scorecard[bot.name].append(rating)
+            try:
+                float_rating = float(rating)
+                scorecard[bot.name].append(float_rating)
+            except:
+                continue    
 
 # Display the scorecard
 print("\nScorecard:")
