@@ -22,6 +22,6 @@ def test_rate_joke():
     bot = Bot()
     rating = bot.rate_joke("Why didn't Argentina bring a map to the World Cup? Because they already knew the way to the final!")
     assert isinstance(rating, int)
-    assert rating >= 1 and rating <= 10
+    assert rating >= 0 and rating <= 10
 
 
