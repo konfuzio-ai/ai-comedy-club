@@ -70,8 +70,7 @@ agent = LLMSingleActionAgent(
 joke_telling_agent_executor = AgentExecutor.from_agent_and_tools(
   agent=agent, 
   tools=tools, 
-  memory=memory,
-  verbose=True
+  memory=memory
 )
 
 # reply = joke_telling_agent_executor.run("tell me a monty python joke")

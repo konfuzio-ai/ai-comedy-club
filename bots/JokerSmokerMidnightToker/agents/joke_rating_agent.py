@@ -58,7 +58,7 @@ agent = LLMSingleActionAgent(
     allowed_tools=tool_names
 )
 
-joke_rating_agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools, verbose=True)
+joke_rating_agent_executor = AgentExecutor.from_agent_and_tools(agent=agent, tools=tools)
 
 # resp = joke_rating_agent_executor.run("Why didn't England bring a map to the World Cup? Because they already knew the way to the final!")
 # json_resp = json.loads(resp)
