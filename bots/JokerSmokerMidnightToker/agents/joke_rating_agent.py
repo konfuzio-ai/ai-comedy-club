@@ -8,8 +8,10 @@ from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
 import json
 from dotenv import load_dotenv
-from agents.common.CustomOutputParser import CustomOutputParser
-from agents.common.CustomPromptTemplate import CustomPromptTemplate
+from bots.JokerSmokerMidnightToker.common.CustomOutputParser import CustomOutputParser
+from bots.JokerSmokerMidnightToker.common.CustomPromptTemplate import CustomPromptTemplate
+import sys
+
 load_dotenv()
 
 

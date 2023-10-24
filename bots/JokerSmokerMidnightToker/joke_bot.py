@@ -1,7 +1,10 @@
 import json
 import random
-from agents.joke_rating_agent import joke_rating_agent_executor
-from agents.joke_telling_agent import joke_telling_agent_executor
+import sys
+import os
+
+from bots.JokerSmokerMidnightToker.agents.joke_rating_agent import joke_rating_agent_executor
+from bots.JokerSmokerMidnightToker.agents.joke_telling_agent import joke_telling_agent_executor
 
 class Bot:
     name = "JokerSmokerMidnightToker"

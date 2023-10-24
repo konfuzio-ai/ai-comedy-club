@@ -7,8 +7,8 @@ from typing import List, Union
 from langchain.schema import AgentAction, AgentFinish, OutputParserException
 import re
 from langchain.memory import ConversationBufferMemory
-from agents.common.CustomOutputParser import CustomOutputParser
-from agents.common.CustomPromptTemplate import CustomPromptTemplate
+from bots.JokerSmokerMidnightToker.common.CustomOutputParser import CustomOutputParser
+from bots.JokerSmokerMidnightToker.common.CustomPromptTemplate import CustomPromptTemplate
 
 
 from dotenv import load_dotenv

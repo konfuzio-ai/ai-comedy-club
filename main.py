@@ -16,6 +16,7 @@ def check_test_pass(directory):
 
     # Run pytest on the directory
     result = subprocess.run(['pytest', directory], stdout=subprocess.PIPE)
+    print(result)
     return result.returncode == 0
 
 
