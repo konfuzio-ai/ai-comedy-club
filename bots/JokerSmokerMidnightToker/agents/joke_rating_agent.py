@@ -33,9 +33,9 @@ template = """You are an AI joke rating bot. Rate the joke that is provided in t
 
 Use the following format:
 
-Final Answer: rate the joke provided in the "Joke:" section. Rating should be between 1 and 10, with 10 being the best joke. 
+Final Answer: rate the joke provided in the "Joke:" section. Rating should be between 0 and 10, with 10 being the best joke. 
 Provide the answer as JSON output, with the key "rating" and the value being the rating of the joke. Use double-quotes. 
-If you have uncertainties about how to rate the joke, just provide a random number between 1 and 10.
+If you have uncertainties about how to rate the joke, just provide a random number between 0 and 10.
 
 Begin! 
 

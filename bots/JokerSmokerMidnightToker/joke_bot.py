@@ -24,8 +24,14 @@ class Bot:
 
     def rate_joke(self, joke):
         resp = joke_rating_agent_executor.run(joke)
-        json_resp = json.loads(resp.replace("\'", "\""))
-        return int(json_resp['rating'])
+        try:
+            json_resp = json.loads(resp.replace("\'", "\"").replace('""','"'))
+            rating = int(json_resp['rating'])
+        except Exception as e:
+            print(f"Error in rating: {str(e)}")
+            rating = 0
+        
+        return rating        
 
     def verify_context(self, context, llm_reply):
         # Here we would check the context vs the llm_reply, by adding a new agent: joke_verify_context_agent.py
