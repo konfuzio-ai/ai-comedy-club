@@ -18,9 +18,12 @@ predefined_jokes = [
 class Bot:
     name = "JokerSmokerMidnightToker"
 
-    def tell_joke(self, joke_instruction=random.choice(predefined_jokes)):
-        reply = joke_telling_agent_executor.run(joke_instruction)
-        return reply
+    def tell_joke(self, joke_instruction=None):
+        if joke_instruction:
+            reply = joke_telling_agent_executor.run(joke_instruction)
+            return reply
+        else:
+            return random.choice(predefined_jokes)
 
     def rate_joke(self, joke):
         resp = joke_rating_agent_executor.run(joke)
