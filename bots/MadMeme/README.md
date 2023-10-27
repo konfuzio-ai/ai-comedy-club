@@ -1,11 +1,10 @@
-# MadMeme
+# MadMeme 🥴
 
 Welcome the first multi modal comedian on stage. 🎉
 
 MadMeme's **strength** is **presenting and interpreting memes**, but it can tell normal jokes as well!
 
-<video src="./assets/MadMeme_Demo.mp4" controls="controls" style="max-width: 730px;"></video>
-
+https://github.com/nengelmann/ai-comedy-club/assets/120744129/8f5defa7-1cb6-4136-aacd-d96fdb5a278c
 
 # Requirements
 MadMeme should just be run on a PC with **Nvidia GPU** and at least **16GB** free GPU **memory**.
