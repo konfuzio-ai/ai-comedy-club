@@ -4,6 +4,10 @@ Welcome the first multi modal comedian on stage. 🎉
 
 MadMeme's **strength** is **presenting and interpreting memes**, but it can tell normal jokes as well!
 
+Check it out in this colab or watch the video down below! 👇
+
+<a href="https://colab.research.google.com/github/nengelmann/ai-comedy-club/blob/main/bots/MadMeme/Fuyu_8B_Exploration.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
 https://github.com/nengelmann/ai-comedy-club/assets/120744129/8f5defa7-1cb6-4136-aacd-d96fdb5a278c
 
 # Requirements
