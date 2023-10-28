@@ -74,7 +74,7 @@ class Fuyu:
 
         if image is None:
             # If no image is provided, use a small image with random normal noise.
-            # It will add variation in the joke generation, after finetuning the model
+            # It will add variation in the joke generation, after fine tuning the model
             # image = np.random.normal(np.ones((60, 60, 3), dtype=np.uint8))
             # For test purpose only!
             image = np.zeros((30, 30, 3), dtype=np.uint8)
@@ -119,5 +119,5 @@ if __name__ == "__main__":
 
     assert (
         output == "A bus parked on the side of a road."
-    ), "Someting went wrong. Default example is incorrect."
+    ), "Something went wrong. Default example is incorrect."
     print(f"\nThe model ran successfully.\n")
