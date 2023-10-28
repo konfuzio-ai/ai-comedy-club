@@ -39,6 +39,7 @@ if "running" not in st.session_state:
 if "run_button" not in st.session_state:
     st.session_state["running"] = False
 
+
 # define functions
 def get_meme() -> Tuple[np.ndarray, str]:
     """get random meme"""
@@ -84,7 +85,8 @@ with col2:
             try:
                 image, name = get_meme()
             except:
-                print("Meme API call faild, trying one more time")
+                # TODO: Implement logging
+                print("Meme API call failed, trying one more time")
                 image, name = get_meme()
 
             st.session_state["img"] = [image, name]
