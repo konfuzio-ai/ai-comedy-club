@@ -27,4 +27,4 @@ if __name__ == "__main__":
     img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
     cv2.imshow("test image", img)
     cv2.waitKey(2000)
-    print("\nutils.py ran sucefully.\n")
+    print("\nutils.py ran successfully.\n")
