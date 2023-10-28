@@ -1,15 +1,18 @@
 """MadMeme joke bot"""
 
+import ast
 import random
+from urllib.request import Request, urlopen
 
-from model import Fuyu
-from utils import get_joke
+# from bots.MadMeme.model import Fuyu
 
 
 class Bot:
     """Bot for generating and judging jokes."""
 
     def __init__(self) -> None:
+
+        self.name = "MadMeme"
 
         # TODO: fine tune model
         # Without fine tuning the performance without image data is not good.
@@ -44,7 +47,7 @@ class Bot:
 
         # The above integration is working code wise, but the model needs still to be fine tuned to generate good jokes.
         # Going with an API integration in the meanwhile
-        joke = get_joke()
+        joke = self._get_joke()
         return joke
 
     def rate_joke(self, joke: str) -> int:
@@ -74,6 +77,18 @@ class Bot:
             # TODO: Bare 'except' -> Implement logging or raise error directly.
             rate = 7
         return rate
+
+    def _get_joke(self) -> str:
+        """Get joke via API (https://github.com/15Dkatz/official_joke_api)"""
+        req = Request(
+            url="https://official-joke-api.appspot.com/random_joke",
+            headers={"User-Agent": "Mozilla/6.0"},
+        )
+        resp = urlopen(req).read()
+        resp = resp.decode("UTF-8")
+        resp = ast.literal_eval(resp)
+        joke = resp["setup"] + "\n" + resp["punchline"].lstrip()
+        return joke
 
 
 if __name__ == "__main__":

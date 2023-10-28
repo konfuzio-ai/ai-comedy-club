@@ -7,9 +7,10 @@ from typing import Tuple
 import cv2
 import numpy as np
 import streamlit as st
-from meme import MemeAPI
-from model import Fuyu
-from utils import url_to_image
+
+from bots.MadMeme.meme import MemeAPI
+from bots.MadMeme.model import Fuyu
+from bots.MadMeme.utils import url_to_image
 
 # title
 title = "MadMeme 🥴"
@@ -35,9 +36,7 @@ if "img" not in st.session_state:
 if "running" not in st.session_state:
     st.session_state["running"] = False
 
-if "run_button" in st.session_state and st.session_state["running"] == True:
-    st.session_state["running"] = True
-else:
+if "run_button" not in st.session_state:
     st.session_state["running"] = False
 
 # define functions
@@ -136,25 +135,31 @@ with tab:
             on_click=disable,
             use_container_width=True,
             key="run_button",
-        ):  # on_click=disable
-            st.session_state["out"] = None
-            with st.spinner(
-                "🏃 running model ...    (if you run on GPU, this should take"
-                " ~5-10s, on CPU ~10-20min)"
+        ):
+            if not st.session_state["out"]:
+                with st.spinner(
+                    "🏃 running model ...    (if you run on GPU, this should"
+                    " take ~5-10s, on CPU ~10-20min)"
+                ):
+                    image = st.session_state["img"][0]
+                    update_img()
+                    st.session_state["out"] = st.session_state["bot"].prompt(
+                        prompt, image
+                    )
+            if (
+                "run_button" in st.session_state
+                and st.session_state["running"]
             ):
-                image = st.session_state["img"][0]
-                update_img()
-                st.session_state["out"] = st.session_state["bot"].prompt(
-                    prompt, image
-                )
                 st.session_state["running"] = False
                 st.rerun()
-        update_img()
-    st.divider()
+
     if st.session_state["out"]:
+        st.divider()
+        update_img()
         st.text_area(
             "Model output:",
             st.session_state["out"],
             on_change=None,
             disabled=True,
         )
+        st.session_state["out"] = None

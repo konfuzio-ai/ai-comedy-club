@@ -17,7 +17,8 @@ from transformers import (
     FuyuImageProcessor,
     FuyuProcessor,
 )
-from utils import url_to_image
+
+from bots.MadMeme.utils import url_to_image
 
 
 class Fuyu:
