@@ -55,3 +55,4 @@ python bots/MadMeme/joke_bot.py
 
 # TODO
 - [ ] Fine tune fuyu-8b model with noisy image data (randomness) and jokes as labels.
+- [ ] Add logging
