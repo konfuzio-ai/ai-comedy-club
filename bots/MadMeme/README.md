@@ -32,7 +32,7 @@ pip install -e .
 ```bash
 pip install streamlit
 pip install requests
-pip install git+https://github.com/huggingface/transformers.git
+pip install transformers
 pip install bitsandbytes
 pip install accelerate
 pip install opencv-python

@@ -29,7 +29,6 @@ class Fuyu:
         model_id: str = "ybelkada/fuyu-8b-sharded",
         force_cpu: bool = False,
     ) -> None:
-
         supported = ["adept/fuyu-8b", "ybelkada/fuyu-8b-sharded"]
         if model_id not in supported:
             raise ValueError(f"'model_id' needs to be one of {supported}.")
@@ -80,14 +79,9 @@ class Fuyu:
             image = np.zeros((30, 30, 3), dtype=np.uint8)
 
         # pre processing image and text
-        inputs = self.processor(text=text, images=[image], return_tensors="pt")
-        inputs = {
-            k: v.to(
-                dtype=self.dtype if torch.is_floating_point(v) else v.dtype,
-                device=self.device,
-            )
-            for k, v in inputs.items()
-        }
+        inputs = self.processor(
+            text=text, images=[image], return_tensors="pt"
+        ).to(self.device)
         prompt_len = inputs["input_ids"].shape[-1]
 
         # process
@@ -107,7 +101,6 @@ class Fuyu:
 
 
 if __name__ == "__main__":
-
     # test the model
     fuyu = Fuyu("adept/fuyu-8b", force_cpu=True)
 
