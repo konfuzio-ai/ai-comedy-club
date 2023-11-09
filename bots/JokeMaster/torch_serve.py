@@ -3,12 +3,11 @@ import gradio as gr
 import transformers
 import uvicorn
 from fastapi import FastAPI
-from typing import List
 from transformers import TextIteratorStreamer
 import logging
 import multiprocessing as mp
 import torch
-from .utils import ChatRequest, InstructRequest, seafoam, prompt_model
+from .utils import InstructRequest, seafoam, prompt_model, JOKE_SYSTEM_PROMPT, SCALE_SYSTEM_PROMPT
 
 
 class PytorchServerConfig:
@@ -56,10 +55,8 @@ class PyTorchServer(object):
         self.device_rolling = self.get_gpu_memory(self.config.max_number_of_gpus)
         self.dict_max_memory_sharding = {i: str(int(mem * self.config.max_gpu_perc_to_use)) + 'GiB' for i, mem in
                                          enumerate(self.device_rolling)}
-        self.app.post('/chat')(self.forward_chat_fast_api)
         self.app.post('/instruct')(self.forward_instruct_fast_api)
         self.app.get('/status')(self.status)
-        self.app = gr.mount_gradio_app(self.app, self.create_gradio_ui_chat(), '/gradio_chat')
         self.app = gr.mount_gradio_app(self.app, self.create_gradio_ui_instruct(), '/gradio_instruct')
 
     @staticmethod
@@ -121,32 +118,9 @@ class PyTorchServer(object):
             'response': response
         }
 
-    def forward_chat_fast_api(self, data: ChatRequest):
-        string = self.format_chat(
-            system=data.system,
-            history=data.history,
-            prompt=data.prompt,
-        )
-        response = self.process(
-            string=string,
-            max_length=self.config.max_length,
-            temperature=data.temperature,
-            stream=False,
-            top_k=self.config.top_k,
-            top_p=self.config.top_p,
-            max_new_tokens=self.config.max_new_tokens
-        )
-        return {
-            'response': response
-        }
-
     @staticmethod
     def format_instruct(system: str, instruction: str) -> str:
         raise prompt_model(chat_history=[], message=instruction, system_prompt=system)
-
-    @staticmethod
-    def format_chat(history: List[str], prompt: str, system: str = None) -> str:
-        raise prompt_model(chat_history=history, message=prompt, system_prompt=system)
 
     def process(self,
                 string: str,
@@ -155,7 +129,8 @@ class PyTorchServer(object):
                 temperature: float = 0.6,
                 top_k=50,
                 top_p=0.9,
-                stream: bool = True
+                stream: bool = True,
+                sample: bool = True
                 ):
         assert self.model is not None, 'you should first load model with ``load`` method'
         tokens = self.tokenizer(
@@ -185,7 +160,8 @@ class PyTorchServer(object):
                     top_k=top_k,
                     top_p=top_p,
                     max_new_tokens=max_new_tokens or self.config.max_new_tokens,
-                    num_beams=1
+                    num_beams=1,
+                    do_sample=sample
                 )
             )
             thread_ = threading.Thread(
@@ -208,7 +184,8 @@ class PyTorchServer(object):
                     top_k=top_k,
                     top_p=top_p,
                     max_new_tokens=max_new_tokens or self.config.max_new_tokens,
-                    num_beams=1
+                    num_beams=1,
+                    do_sample=sample
                 )
             )
             pred = self.tokenizer.decode(self.model.generate(
@@ -232,41 +209,17 @@ class PyTorchServer(object):
         self.model = model
         self.tokenizer = tokenizer
 
-    def process_gradio_chat(self,
-                            prompt: str,
-                            history: List[str],
-                            max_new_tokens: int,
-                            temperature: float,
-                            max_length: int,
-                            top_p: float,
-                            top_k: int
-                            ):
-        string = self.format_chat(prompt=prompt, history=history, system=None)
-        history.append([prompt, ''])
-        responses = ''
-        for response in self.process(
-                string=string,
-                max_new_tokens=max_new_tokens,
-                temperature=temperature,
-                max_length=max_length,
-                top_p=top_p,
-                top_k=top_k,
-                stream=True
-        ):
-            responses += response
-            history[-1][-1] = responses
-            yield '', history
-
     def process_gradio_instruct(self,
                                 instruction: str,
-                                system: str,
+                                explain_joke: bool,
                                 max_new_tokens: int,
                                 temperature: float,
                                 max_length: int,
                                 top_p: float,
                                 top_k: int
                                 ):
-        string = self.format_instruct(system=system, instruction=instruction)
+        string = self.format_instruct(system=SCALE_SYSTEM_PROMPT if explain_joke else JOKE_SYSTEM_PROMPT,
+                                      instruction=instruction)
         responses = ''
         for response in self.process(
                 string=string,
@@ -275,64 +228,15 @@ class PyTorchServer(object):
                 max_length=max_length,
                 top_p=top_p,
                 top_k=top_k,
-                stream=True
+                stream=True,
+                sample=True
         ):
             responses += response
             yield '', response
 
-    def create_gradio_ui_chat(self):
-        with gr.Blocks(
-                theme=seafoam) as block:
-            gr.Markdown("# <h1> <center>Powered by [EasyDeL](https://github.com/erfanzar/EasyDel) </center> </h1>")
-            with gr.Row():
-                history = gr.Chatbot(elem_id="EasyDel", label="EasyDel", container=True, height=600)
-
-            with gr.Row():
-                with gr.Column():
-                    prompt = gr.Textbox(show_label=False, placeholder='Message Box', container=False)
-                with gr.Column():
-                    with gr.Row():
-                        submit = gr.Button(variant="primary")
-                        stop = gr.Button(value='Stop ')
-                        clear = gr.Button(value='Clear Conversation')
-
-            with gr.Row():
-                with gr.Accordion('Advanced Options', open=False):
-                    max_new_tokens = gr.Slider(value=self.config.max_new_tokens, maximum=10000,
-                                               minimum=self.config.max_stream_tokens,
-                                               label='Max New Tokens', step=self.config.max_stream_tokens)
-                    max_length = gr.Slider(value=self.config.max_length, maximum=self.config.max_length, minimum=1,
-                                           label='Max Length', step=1)
-                    temperature = gr.Slider(value=0.2, maximum=1, minimum=0.1, label='Temperature', step=0.01)
-                    top_p = gr.Slider(value=0.9, maximum=1, minimum=0.1, label='Top P', step=0.01)
-                    top_k = gr.Slider(value=50, maximum=100, minimum=1, label='Top K', step=1)
-
-            inputs = [
-                prompt,
-                history,
-                max_new_tokens,
-                temperature,
-                max_length,
-                top_p,
-                top_k
-            ]
-            sub_event = submit.click(fn=self.process_gradio_chat, inputs=inputs, outputs=[prompt, history])
-
-            def clear_():
-                return []
-
-            clear.click(fn=clear_, outputs=[history])
-            txt_event = prompt.submit(fn=self.process_gradio_chat, inputs=inputs, outputs=[prompt, history])
-
-            stop.click(fn=None, inputs=None, outputs=None, cancels=[txt_event, sub_event])
-
-        block.queue()
-        return block
-
     def create_gradio_ui_instruct(self):
         with gr.Blocks(
                 theme=seafoam) as block:
-            gr.Markdown("# <h1> <center>Powered by [EasyDeL](https://github.com/erfanzar/EasyDel) </center> </h1>")
             with gr.Row():
                 pred = gr.TextArea(elem_id="EasyDel", label="EasyDel", container=True, height=600)
 
@@ -340,10 +244,9 @@ class PyTorchServer(object):
                 submit = gr.Button(variant="primary")
                 stop = gr.Button(value='Stop ')
                 clear = gr.Button(value='Clear Conversation')
+                explain_joke = gr.Checkbox(value=True)
             with gr.Column():
                 prompt = gr.Textbox(show_label=False, placeholder='Instruct Message', container=False)
-                system = gr.Textbox(value='You Are an helpful AI Assistant, generate good and helpful answers',
-                                    show_label=False, placeholder='System Message', container=False)
 
             with gr.Row():
                 with gr.Accordion('Advanced Options', open=False):
@@ -358,7 +261,7 @@ class PyTorchServer(object):
 
             inputs = [
                 prompt,
-                system,
+                explain_joke,
                 max_new_tokens,
                 temperature,
                 max_length,
@@ -390,50 +293,3 @@ class PyTorchServer(object):
             self.process_uvicorn.join()
         else:
             logging.warning('you have to fire server before ending that this command will be ignored')
-
-
-def generate(server,
-             string: str,
-             max_new_tokens: int = None,
-             max_length: int = None,
-             temperature: float = 0.6,
-             top_k=50,
-             top_p=0.9,
-             ):
-    assert server.model is not None, 'you should first load model with ``load`` method'
-    tokens = server.tokenizer(
-        string,
-        return_tensors='pt'
-    )
-    input_ids = tokens.input_ids.to(server.model.device)
-    attention_mask = tokens.attention_mask.to(server.model.device)
-    iterator_streamer = transformers.TextIteratorStreamer(
-        tokenizer=server.tokenizer,
-        skip_prompt=True,
-        skip_special_tokens=True
-    )
-
-    kwargs = dict(
-        input_ids=input_ids,
-        attention_mask=attention_mask,
-        streamer=iterator_streamer,
-        generation_config=transformers.GenerationConfig(
-            bos_token_id=server.tokenizer.bos_token_id,
-            eos_token_id=server.tokenizer.eos_token_id,
-            pad_token_id=server.tokenizer.pad_token_id,
-            max_length=max_length or server.config.max_length,
-            temperature=temperature,
-            top_k=top_k,
-            top_p=top_p,
-            max_new_tokens=max_new_tokens or server.config.max_new_tokens,
-            num_beams=1,
-            do_sample=True
-        )
-    )
-    thread_ = threading.Thread(
-        target=server.model.generate,
-        kwargs=kwargs
-    )
-    thread_.start()
-    for string in iterator_streamer:
-        yield string

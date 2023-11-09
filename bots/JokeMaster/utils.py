@@ -4,13 +4,23 @@ from gradio.themes.base import Base
 from gradio.themes.utils import colors, fonts, sizes
 from typing import Union
 
-PRETRAINED_MODEL = ""
-DEFAULT_SYSTEM_PROMPT = ("You are an AI designed to tell jokes and rate them. Your goal is to "
-                         "generate humorous and entertaining jokes while providing an objective "
-                         "rating for each joke on a scale of 1 to 10, with 10 being the highest. "
-                         "Your responses should be witty, light-hearted, and engaging. Remember to consider"
-                         " factors such as cleverness, delivery, and overall comedic impact when rating"
-                         " the jokes. Have fun and bring laughter to the users!")
+PRETRAINED_MODEL = "erfanzar/LinguaMatic"
+
+JOKE_SYSTEM_PROMPT = (
+    "You are an AI designed to tell jokes and rate them. Your goal is to "
+    "generate humorous and entertaining jokes, Have fun and bring laughter to the users!, do not mention"
+    " Anything about this is a joke or (Sure, I'd be happy to help! Here's a joke for you) only tell the joke and make "
+    "Sure that it's related to the requested topic"
+)
+
+SCALE_SYSTEM_PROMPT = (
+    "You are an AI designed to rate jokes on a scale from 1 to 10. Your task is to provide an objective rating for "
+    "each joke, with 1 being the lowest and 10 being the highest. Your responses should solely consist of the rating, "
+    "without any additional comments. Focus on evaluating the comedic value of the jokes based "
+    "on factors such as cleverness, timing, and "
+    "overall entertainment factor. Let your ratings speak for themselves and bring clarity "
+    "to the humor quotient of each joke."
+)
 
 
 def prompt_model(message: str, chat_history,
@@ -29,14 +39,6 @@ def prompt_model(message: str, chat_history,
 class InstructRequest(BaseModel):
     instruction: str
     system: Optional[str] = None
-    temperature: Optional[float] = None
-    greedy: Optional[bool] = False
-
-
-class ChatRequest(BaseModel):
-    prompt: str
-    system: Optional[str] = None
-    history: Union[List[str], None] = None
     temperature: Optional[float] = None
     greedy: Optional[bool] = False
 
