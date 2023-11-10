@@ -232,7 +232,7 @@ class PyTorchServer(object):
                 sample=True
         ):
             responses += response
-            yield '', response
+            yield '', responses
 
     def create_gradio_ui_instruct(self):
         with gr.Blocks(
