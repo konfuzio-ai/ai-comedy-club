@@ -8,7 +8,17 @@ args = parser.parse_args()
 
 
 def launch_jax():
-    ...
+    from .jax_serve import JokeMasterJaxServe
+    from EasyDel.serve.jax_serve import JaxServerConfig
+    from .utils import PRETRAINED_MODEL
+    config = JaxServerConfig(
+        max_length=4096,
+        dtype='bf16',
+        max_new_tokens=1024,
+        batch_size=1
+    )
+    server = JokeMasterJaxServe.run(PRETRAINED_MODEL, config)
+    server.create_gradio_ui_instruct().launch(share=False)
 
 
 def launch_torch():
@@ -30,7 +40,7 @@ def launch_torch():
     server.model = model
     server.tokenizer = tokenizer
 
-    server.create_gradio_ui_instruct().launch()
+    server.create_gradio_ui_instruct().launch(share=False)
 
 
 def main():

@@ -5,6 +5,8 @@ from EasyDel.transform.llama import llama_from_pretrained
 from transformers import AutoTokenizer
 from fjformer.load import get_float_dtype_by_name
 import jax
+import gradio as gr
+from .utils import seafoam, JOKE_SYSTEM_PROMPT, SCALE_SYSTEM_PROMPT
 
 
 class JokeMasterJaxServe(JAXServer):
@@ -62,3 +64,62 @@ class JokeMasterJaxServe(JAXServer):
             repo_id=repo_id,
             config=config)
         return server
+
+    def create_gradio_ui_instruct(self):
+        with gr.Blocks(
+                theme=seafoam) as block:
+            with gr.Row():
+                pred = gr.TextArea(elem_id="EasyDel", label="EasyDel", container=True)
+
+            with gr.Row():
+                submit = gr.Button(variant="primary")
+                stop = gr.Button(value='Stop ')
+                clear = gr.Button(value='Clear Conversation')
+                explain_joke = gr.Checkbox(value=True)
+            with gr.Column():
+                prompt = gr.Textbox(show_label=False, placeholder='Instruct Message', container=False)
+
+            with gr.Row():
+                with gr.Accordion('Advanced Options', open=False):
+                    max_new_tokens = gr.Slider(value=self.config.max_new_tokens, maximum=10000,
+                                               minimum=self.config.max_stream_tokens,
+                                               label='Max New Tokens', step=self.config.max_stream_tokens, )
+
+                    greedy = gr.Checkbox(value=False, label='Greedy Search')
+
+            inputs = [prompt, explain_joke, max_new_tokens, greedy]
+            sub_event = submit.click(fn=self.process_gradio_instruct, inputs=inputs, outputs=[prompt, pred], )
+
+            def clear_():
+                return ''
+
+            clear.click(fn=clear_, outputs=[pred])
+            txt_event = prompt.submit(fn=self.process_gradio_instruct, inputs=inputs, outputs=[prompt, pred])
+
+            stop.click(fn=None, inputs=None, outputs=None, cancels=[txt_event, sub_event])
+
+        block.queue()
+        return block
+
+    def process_gradio_instruct(self, instruction, explain, max_new_tokens, greedy):
+        string = self.format_instruct(instruction=instruction,
+                                      system=SCALE_SYSTEM_PROMPT if explain else JOKE_SYSTEM_PROMPT)
+        if not self.config.stream_tokens_for_gradio:
+            response = ''
+            for response, _ in self.process(
+                    string=string,
+                    greedy=greedy,
+                    max_new_tokens=max_new_tokens,
+            ):
+                pass
+
+        else:
+            response = ''
+            for response, _ in self.process(
+                    string=string,
+                    greedy=greedy,
+                    max_new_tokens=max_new_tokens,
+                    stream=True
+            ):
+                yield '', response
+        return '', response
