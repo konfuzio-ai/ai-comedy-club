@@ -120,7 +120,7 @@ class PyTorchServer(object):
 
     @staticmethod
     def format_instruct(system: str, instruction: str) -> str:
-        raise prompt_model(chat_history=[], message=instruction, system_prompt=system)
+        return prompt_model(chat_history=[], message=instruction, system_prompt=system)
 
     def process(self,
                 string: str,
