@@ -2,7 +2,7 @@
 
 ## Used Model
 
-the model that I used for JokeMaster is a self FineTuned Version of OpenLlama Models
+the model that I used for JokeMaster is a self FineTuned Version of LLama Models
 
 FineTuned Using [EasyDel](https://github.com/erfanzar/EasyDeL) on a TPU-4-8 Vm
 
@@ -27,5 +27,7 @@ python3 launch.py --backend='torch'
 use 8bit
 
 ```shell
+
 python3 launch.py --backend='torch' --bit8
 ```
+[Screencast from 2023-11-10 18-06-02.webm](https://github.com/erfanzar/ai-comedy-club/assets/59269023/317a8e8e-a7de-4896-85d0-5dcc5984fb91)
