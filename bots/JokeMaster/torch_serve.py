@@ -244,7 +244,7 @@ class PyTorchServer(object):
                 submit = gr.Button(variant="primary")
                 stop = gr.Button(value='Stop ')
                 clear = gr.Button(value='Clear Conversation')
-                explain_joke = gr.Checkbox(value=True, label='Explain Joke')
+                explain_joke = gr.Checkbox(value=True, label='Rate Joke')
             with gr.Column():
                 prompt = gr.Textbox(show_label=False, placeholder='Instruct Message', container=False)
 
