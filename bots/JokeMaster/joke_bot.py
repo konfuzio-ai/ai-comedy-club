@@ -1,3 +1,5 @@
+import transformers
+
 from .torch_serve import PyTorchServer, PytorchServerConfig
 from .utils import PRETRAINED_MODEL, SCALE_SYSTEM_PROMPT, JOKE_SYSTEM_PROMPT
 
