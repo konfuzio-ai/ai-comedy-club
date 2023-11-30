@@ -2,21 +2,20 @@ import pytest
 from joke_bot import Bot
 
 
+bot = Bot()
+
+
 def test_bot_name():
-    bot = Bot()
     assert bot.name == 'LLama riding Camel'
 
 
 def test_tell_joke():
-    bot = Bot()
     joke = bot.tell_joke()
     assert len(joke) > 0
     assert bot.name in joke
 
 
 def test_rate_joke():
-    bot = Bot()
-
     # appropriate joke with proper user question. should score high.
     short_joke = "Whats wrong with nature? It has too many bugs."
 

@@ -7,7 +7,7 @@ from dotenv import load_dotenv, dotenv_values
 
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 from joke_samples import get_all_jokes_list
-from bot_classes import AIComedian, AIJudge
+from bot_classes import AIComedian, AIJudge, LlamaRidingCamel
 
 load_dotenv()
 
@@ -18,10 +18,11 @@ COMEDIAN_NAME = "LLama riding Camel"
 
 
 class SmartAgent:
-    def __init__(self, hf_api_token: str, name: str = COMEDIAN_NAME):
-        self.comedian = AIComedian(hf_api_token, name=name)
+    def __init__(self, name: str = COMEDIAN_NAME):
+        self.model = LlamaRidingCamel()
+        self.comedian = AIComedian(self.model, name=name)
         self.jokes = get_all_jokes_list()
-        self.judge = AIJudge(hf_api_token)
+        self.judge = AIJudge(self.model)
 
     def tell_joke(self, context: str = ''):
         return self.comedian.tell_joke(context)
@@ -84,25 +85,23 @@ class DumbAgent:
 class Bot:
     def __init__(self):
         self.name = COMEDIAN_NAME
-        self.bot = self.init_agent(COMEDIAN_NAME)
+        self.agent = self.init_agent(COMEDIAN_NAME)
 
     def init_agent(self, name: str):
+        # huggingface api token extraction
+        # not relevant for this implementation
         config = dotenv_values()
         hf_token = HF_API_TOKEN
         if HF_API_TOKEN == "" and "HF_API_TOKEN" in config:
             hf_token = config["HF_API_TOKEN"]
 
-        agent = DumbAgent(name)
-        if self._verify_hf_token(hf_token):
-            try:
-                agent = SmartAgent(hf_token, name=name)
-            except Exception as e:
-                print("Huggingface API authentication failed. Switching back to dumb agent")
-                warnings.warn('Huggingface API authentication failed: ' + str(e))
-        else:
-            print("Invalid Huggingface hub api token provided. Can\'t initialize smart agent. \
-Switching to DumbAgent")
-            warnings.warn("Invalid Huggingface hub api token")
+        try:
+            agent = SmartAgent(name=name)
+        except Exception as e:
+            warnings.warn('Agents initialization failed.: ' + str(e))
+            print('Switching to DumbAgent.')
+            agent = DumbAgent(name)
+
         return agent
 
     @staticmethod
@@ -113,33 +112,7 @@ Switching to DumbAgent")
         return False
 
     def tell_joke(self, context: str = ''):
-        return self.bot.tell_joke(context)
+        return self.agent.tell_joke(context)
 
     def rate_joke(self, joke):
-        return self.bot.rate_joke(joke)
-
-
-'''
-loading quantized model
-loading quantized models code demo
-
-from transformers import AutoTokenizer
-from auto_gptq import AutoGPTQForCausalLM
-from huggingface_hub import snapshot_download
-
-self.model_name_or_path = "TheBloke/Llama-2-13B-chat-GPTQ"
-self.model_basename = "gptq_model-4bit-128g"
-local_folder = "./models/test-llama-2"
-
-snapshot_download(repo_id=self.model_name_or_path, local_dir=local_folder, local_dir_use_symlinks=False)
-
-self.tokenizer = AutoTokenizer.from_pretrained(self.model_name_or_path, use_fast=True)
-
-self.model = AutoGPTQForCausalLM.from_quantized(local_folder,
-                                                model_basename=self.model_basename,
-                                                use_safetensors=True,
-                                                trust_remote_code=True,
-                                                device="cpu",
-                                                use_triton=False,
-                                                quantize_config=None)
-'''
+        return self.agent.rate_joke(joke)

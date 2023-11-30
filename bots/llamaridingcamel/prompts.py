@@ -1,8 +1,6 @@
-JOKE_GENERATE_PROMPT = """<s>
-[INST] You are a comedian with a strange name {}. You use `hey bro` like phrases such as, `hey dude`, `bro`, etc. \
-while telling your jokes or before your final punchline. Come up with hilarious {} related jokes. Think of some clever \
-puns, observations, and humorous situations related to {}. 
-[/INST]
+JOKE_GENERATE_PROMPT = """[INST] You are a comedian with a strange name {}. You use `hey bro` like phrases such as, \
+`hey dude`, `bro`, etc. while telling your jokes or before your final punchline. Come up with hilarious {} related \
+jokes. Think of some clever puns, observations, and humorous situations related to {}. [/INST]
 
 Joke 1:
 {}
@@ -23,12 +21,11 @@ up some humpday humor on {}!",
 popcorn, and let's here a blockbuster {} joke!"
 ]
 
-CATEGORY_EXTRACT_PROMPT = """<s>
-[INST] Extract the category and the keywords from a given sentence. The category must be one of {}. If the sentence \
-does not relate to any of the categories mentioned here, extract the category as `general`. Keywords are some related \
-topics from the given sentence. Try to guess two or three topics related to the sentence as keywords. Keywords must be \
-nouns only, no verbs or anything else. Just detect and write the category and keywords. No need to write anything \
-else. Finish your generation with the sequence `[END]`.
+CATEGORY_EXTRACT_PROMPT = """[INST] Extract the category and the keywords from a given sentence. The category \
+must be one of {}. If the sentence does not relate to any of the categories mentioned here, extract the category \
+as `general`. Keywords are some related topics from the given sentence. Try to guess two or three topics related to \
+the sentence as keywords. Keywords must be nouns only, no verbs or anything else. Just detect and write the category \
+and keywords. No need to write anything else. Finish your generation with the sequence `[END]`.[/INST]
 
 Here are some examples:
 
@@ -51,15 +48,13 @@ Sentence: What do you know about the Americans?
 Category: general
 Keywords: americans, germans, british
 [END]
-[/INST]
 
 Sentence: {}
 Category:"""
 
-HUMOR_RATING_PROMPT = """<s>
-[INST] Rate the humor of a joke using numbers between 1 to 10. Try to understand the humor of the provided joke, \
-detect how funny it is, and how creative the joke is. Finally, give a score to the joke. No need to write \
-anything else. Finish your answer with the sequence `[END]`.
+HUMOR_RATING_PROMPT = """[INST] Rate the humor of a joke using numbers between 1 to 10. Try to understand the \
+humor of the provided joke, detect how funny it is, and how creative the joke is. Finally, give a score to the joke. \
+No need to write anything else. Finish your answer with the sequence `[END]`.[/INST]
 
 Here are some examples:
 
@@ -92,15 +87,12 @@ use it when talking to the refs. I mean, you don't want to be caught using the w
 score: 6
 [END]
 
-[/INST]
-
 Joke: {}
 score:"""
 
-INAPPROPRIATE_CONTENT_DETECT_PROMPT = """<s>
-[INST] Detect if the joke contains inappropriate, offensive, or vulgar materials. Look for nudity, vulgar or racist \
+INAPPROPRIATE_CONTENT_DETECT_PROMPT = """[INST] Detect if the joke contains inappropriate, offensive, or vulgar materials. Look for nudity, vulgar or racist \
 words in the joke and if found any, answer with True or else False. No need to write anything else. Finish \
-your answer with the sequence `[END]`.
+your answer with the sequence `[END]`.[/INST]
 
 Here are some examples:
 
@@ -108,7 +100,7 @@ Joke: What happens if an Asian with an erection walks into a wall? He breaks his
 answer: True
 [END]
 
-Joke: Before you marry a person, you should first make them use a computer with a slow Internet \
+Joke: Before you marry a person, you should first make them use a computer with a slow Internet \
 connection to see who they really are.
 answer: False
 [END]
@@ -121,17 +113,16 @@ Joke: How does a black girl tell if she is pregnant? When she pulls the tampon o
 all the cotton is picked.
 answer: True
 [END]
-[/INST]
 
 Joke: {}
 answer:"""
 
-HUMOR_CLASSIFICATION_PROMPT = """<s>
-[INST] Classify the humor level of a joke 5 classes. Output must be a class from one of very funny, funny, neutral, \
-not funny, or sad. Try to understand the humor of the joke and evaluate how funny or creative the joke is. Joke can be \
-funny if it represents current events, popular culture or maintain certain tone. If the joke does not have any meaning \
-it can be not funny or sad. Finally, identify the class of the joke. No need to write anything else. Finish your answer \
-with the sequence `[END]`.
+
+HUMOR_CLASSIFICATION_PROMPT = """[INST] Classify the humor level of a joke 5 classes. Output must be a class from one \
+of very funny, funny, neutral, not funny, or sad. Try to understand the humor of the joke and evaluate how funny or \
+creative the joke is. Joke can be funny if it represents current events, popular culture or maintain certain tone. If \
+the joke does not have any meaning it can be not funny or sad. Finally, identify the class of the joke. No need to \
+write anything else. Finish your answer with the sequence `[END]`.[/INST]
 
 Here are some examples:
 
@@ -148,27 +139,9 @@ and this silence is not letting me sleep now.
 class: sad
 [END]
 
-Joke: Why didn't the skeleton go to the party? Because he had 'no-body' to go with.
-class: very funny
-[END]
-
-Joke: In the moonlit garden, a forgotten key whispered secrets to the curious breeze, unlocking a portal to a \
-world where shadows danced with forgotten dreams. As the clock struck midnight, a timid mouse in a tiny hat \
-led a daring rebellion of the cheese-loving residents against the cat monarchy.
-class: not funny
-[END]
-
-Joke: LLama riding Camel in the virtual dojo, here to sprinkle some sports magic on your binary life! Why did the \
-football player bring a dictionary to the game? Because he wanted to make sure he knew the correct terminology to \
-use it when talking to the refs. I mean, you don't want to be caught using the wrong words and get penalized, bro!
-class: funny
-[END]
-
 Joke: Why did the computer always restart? Because its operating system is not working anymore!
 class: neutral
 [END]
-
-[/INST]
 
 Joke: {}
 class:"""

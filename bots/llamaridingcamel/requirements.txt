@@ -1,0 +1,8 @@
+transformers>=4.32.0
+optimum>=1.12.0
+accelerate
+peft
+datasets
+huggingface_hub
+-i https://huggingface.github.io/autogptq-index/whl/cu118/
+auto-gptq

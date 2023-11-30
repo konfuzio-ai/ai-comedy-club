@@ -1,3 +1,4 @@
+from transformers import AutoModelForCausalLM, AutoTokenizer, GenerationConfig, StoppingCriteria
 from huggingface_hub import InferenceClient
 import re
 import random
@@ -11,12 +12,93 @@ from prompts import JOKE_GENERATE_PROMPT, INTRODUCTION_TEMPLATES, CATEGORY_EXTRA
     INAPPROPRIATE_CONTENT_DETECT_PROMPT, HUMOR_CLASSIFICATION_PROMPT
 
 MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.1"
+MODEL_NAME_OR_PATH = "TheBloke/Mistral-7B-Instruct-v0.1-GPTQ"
+COMEDIAN_ADAPTER = "rajesh06/mistral-7b-llama-riding-camel"
+
+
+class AgentBrainInterface:
+    def text_generation(self, prompt: str, **kwargs) -> str:
+        """Generate relevant text using the prompt"""
+        pass
+
+
+class MyStoppingCriteria(StoppingCriteria):
+    def __init__(self, tokenizer, target_sequence, prompt):
+        self.target_sequence = target_sequence
+        self.tokenizer = tokenizer
+        self.prompt = prompt
+
+    def __call__(self, input_ids, scores, **kwargs):
+        # Get the generated text as a string
+        generated_text = self.tokenizer.decode(input_ids[0])
+        generated_text = generated_text.replace(self.prompt, '')
+        # Check if the target sequence appears in the generated text
+        if self.target_sequence in generated_text:
+            return True  # Stop generation
+
+        return False  # Continue generation
+
+    def __len__(self):
+        return 1
+
+    def __iter__(self):
+        yield self
+
+
+class LlamaRidingCamel(AgentBrainInterface):
+    def __init__(self):
+        self.model = None
+        self.tokenizer = None
+        self.init_model()
+        return
+
+    def init_model(self):
+        self.model = AutoModelForCausalLM.from_pretrained(
+            MODEL_NAME_OR_PATH,
+            device_map="auto",
+            revision="gptq-8bit-128g-actorder_True",
+            trust_remote_code=False,
+        )
+
+        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME_OR_PATH, use_fast=True)
+        self.model.load_adapter(COMEDIAN_ADAPTER)
+
+    @staticmethod
+    def _clean_output(output: str):
+        output = output.replace('<s>', '')
+        output = output.replace('</s>', '')
+        return output.strip()
+
+    def text_generation(self, prompt: str,
+                        max_new_tokens=256,
+                        stop_sequence='</s>',
+                        temperature: float = 0.7
+                        ) -> str:
+        input_ids = self.tokenizer(prompt, return_tensors='pt').input_ids.cuda()
+        generation_config = GenerationConfig(
+            temperature=temperature,
+            do_sample=True,
+            top_p=0.95,
+            top_k=40,
+            max_new_tokens=max_new_tokens,
+            pad_token_id=self.tokenizer.eos_token_id
+        )
+        output = self.model.generate(
+            inputs=input_ids,
+            generation_config=generation_config,
+            stopping_criteria=MyStoppingCriteria(self.tokenizer, stop_sequence, prompt)
+        )
+
+        generated_text = self.tokenizer.decode(output[0])
+        generated_text = generated_text.replace(prompt, '')
+        return self._clean_output(generated_text)
 
 
 class AIComedian:
-    def __init__(self, hf_api_token: str, name: str = 'Llama riding Camel'):
+    def __init__(self, model: AgentBrainInterface, name: str = 'Llama riding Camel'):
         self.name = name
-        self.client = InferenceClient(model=MODEL_NAME, token=hf_api_token)
+        # self.client = InferenceClient(model=MODEL_NAME, token=hf_api_token)
+        self.brain = model
         # make a dummy request to model to validate while initializing
         self._validate_client()
 
@@ -43,8 +125,8 @@ class AIComedian:
             self.name, category, keywords, joke_sample
         )
 
-        output = self.client.text_generation(
-            prompt, max_new_tokens=joke_len * 10
+        output = self.brain.text_generation(
+            prompt, max_new_tokens=joke_len * 10, stop_sequence='</s>'
         )
         return output
 
@@ -89,9 +171,9 @@ class AIComedian:
         categories_joined = ', '.join(categories[:-1]) + ', or ' + categories[-1]
 
         category_prompt = CATEGORY_EXTRACT_PROMPT.format(categories_joined, context)
-        output = self.client.text_generation(
+        output = self.brain.text_generation(
             category_prompt, max_new_tokens=35,
-            stop_sequences=['[END]']
+            stop_sequence='[END]'
         )
 
         return self._parse_category_output(output)
@@ -107,8 +189,9 @@ class AIComedian:
 
 
 class AIJudge:
-    def __init__(self, hf_api_token: str):
-        self.client = InferenceClient(model=MODEL_NAME, token=hf_api_token)
+    def __init__(self, model: AgentBrainInterface):
+        # self.client = InferenceClient(model=MODEL_NAME, token=hf_api_token)
+        self.brain = model
 
     @staticmethod
     def rate_sentiment_polarity(joke: str):
@@ -140,8 +223,8 @@ class AIJudge:
 
     def detect_if_joke_contains_inappropriate_content(self, joke: str):
         inappropriate_prompt = INAPPROPRIATE_CONTENT_DETECT_PROMPT.format(joke)
-        output = self.client.text_generation(
-            inappropriate_prompt, max_new_tokens=15, stop_sequences=['[END]']
+        output = self.brain.text_generation(
+            inappropriate_prompt, max_new_tokens=15, stop_sequence='[END]'
         )
 
         return self._parse_true_false_output(output)
@@ -171,8 +254,9 @@ class AIJudge:
 
     def rate_joke_humor(self, joke: str):
         humor_prompt = HUMOR_CLASSIFICATION_PROMPT.format(joke)
-        output = self.client.text_generation(
-            humor_prompt, max_new_tokens=15, stop_sequences=['[END]']
+        output = self.brain.text_generation(
+            humor_prompt, max_new_tokens=15, stop_sequence='[END]',
+            temperature=0.3,
         )
 
         output = self._remove_end_sequence(output)
