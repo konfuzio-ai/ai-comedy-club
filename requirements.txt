@@ -86,3 +86,5 @@ gtts
 torch
 transformers
 sentence_transformers
+hypothesis
+python-dotenv

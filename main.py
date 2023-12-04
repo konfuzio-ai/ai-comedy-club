@@ -25,6 +25,7 @@ bot_directories = [d for d in os.listdir(bots_dir) if os.path.isdir(os.path.join
 bots = []
 for bot_dir in bot_directories:
     # Only add the bot if its tests pass
+
     if not check_test_pass(os.path.join(bots_dir, bot_dir)):
         print(f"Skipping our ai comedy guest '{bot_dir}' because it's tests do not pass.")
         continue
@@ -35,16 +36,21 @@ for bot_dir in bot_directories:
     spec.loader.exec_module(bot_module)
 
     # Create an instance of the bot and add it to the list
-    try:
+    if hasattr(bot_module, "Bot"):
         bot = bot_module.Bot()
-        bots.append(bot)
-        print(f"Adding our ai comedy guest '{bot_dir}' because it's tests pass and it can be initialized.")
-    except Exception as e:
-        print(f"Skipping our ai comedy guest '{bot_dir}' because it fails to initialize the Bot(): {str(e)}")
+
+        # this helps with one of the bot not having a .name attribute apparently
+        if hasattr(bot, "name"):
+            bots.append(bot)
+
+        else:
+            print(f"bot dir without .name att: {bot_dir}")
+    else:
+        print(f"ERROR: bot dir without .Bot att: {bot_module, bot_dir}")
 
 # Scorecard for each bot
+print(f"printing bots list: {bots}")
 scorecard = {bot.name: [] for bot in bots}
-
 # Let each bot tell a joke and rate the others' jokes
 for bot in bots:
     joke = bot.tell_joke()
