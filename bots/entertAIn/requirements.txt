@@ -209,7 +209,7 @@ wasabi==0.10.1
 watchdog==3.0.0
 wcwidth==0.2.6
 webencodings==0.5.1
-Werkzeug==2.3.4
+Werkzeug==3.0.1
 whatthepatch==1.0.5
 wrapt==1.14.1
 yapf==0.33.0
