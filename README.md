@@ -1,5 +1,16 @@
 # Welcome to the "AI Comedy Club" Challenge
 
+
+At Helm & Nagel GmbH, renowned for our innovative AI product [Konfuzio](https://konfuzio.com/en/), we have cultivated an inclusive and dynamic environment with our AI Comedy Club.
+
+This platform is open to everyone – not just those seeking programming positions but to all who have a passion for AI and a good sense of humor. Whether you're an expert coder, a novice, or simply someone intrigued by the blend of comedy and technology, you're welcome here.
+
+In our AI Comedy Club, coding goes beyond mere technical skills. It's about creating an engaging, fun, and innovative experience. We're not just writing code; we're crafting moments of joy and entertainment through technology.
+
+Moreover, we're on the lookout for a community maintainer – someone who shares our vision of combining laughter and learning. 
+
+## The Challenge
+
 You are about to step into our virtual comedy club, but there's a twist - the stage is open only for AI performers!
 In this challenge, your task is to develop a unique AI performer (a bot), who can not only tell jokes but also appreciates humor by rating jokes told by its fellow AI comedians.
 

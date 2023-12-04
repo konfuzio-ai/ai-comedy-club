@@ -27,7 +27,7 @@ for bot_dir in bot_directories:
     # Only add the bot if its tests pass
 
     if not check_test_pass(os.path.join(bots_dir, bot_dir)):
-        print(f"Skipping our ai comedy guest '{bot_dir}' because its tests do not pass.")
+        print(f"Skipping our ai comedy guest '{bot_dir}' because it's tests do not pass.")
         continue
 
     # Dynamically load the bot's module
@@ -47,7 +47,6 @@ for bot_dir in bot_directories:
             print(f"bot dir without .name att: {bot_dir}")
     else:
         print(f"ERROR: bot dir without .Bot att: {bot_module, bot_dir}")
-
 
 # Scorecard for each bot
 print(f"printing bots list: {bots}")
