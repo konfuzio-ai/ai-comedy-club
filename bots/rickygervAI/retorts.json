@@ -1,0 +1,34 @@
+[
+    {
+        "Type": "Knock Knock",
+        "Retort": "For reference, knock knock jokes usually go \"knock knock\", \"Who's there?\" and punchline, similarly to answering a door. For reference a door is a usually wooden thing you go through when entering a room."
+    },
+    {
+        "Type": "Knock Knock",
+        "Retort": "Not quite the reaction we were hoping for, if knock knock jokes are not your favorite you can try doing their opposite and exiting this joke to request a new one. If not please continue where we left off."
+    },
+    {
+        "Type": "Positive",
+        "Retort": "I'm glad you liked that joke. How would you rate it from 1 to 10?"
+    },
+    {
+        "Type": "Incorrect rating",
+        "Retort": "That doesn't seem to be within the scale, so I'll assume that last joke was so funny it confused you, and I'll mark it as a 10! Glad you enjoyed it!"
+    },
+    {
+        "Type": "Incorrect rating",
+        "Retort": "That doesn't seem to be within the scale, so let's skip that step for now and get back to the laughing part!"
+    },
+    {
+        "Type": "Positive",
+        "Retort": "How much would you say you liked that joke from 1 (laughed very hard) to 10 (will never be able to laugh at another joke again)?"
+    },
+    {
+        "Type": "Negative",
+        "Retort": "Not quite your type of joke I see. How would you rate it from 1 to 10?"
+    },
+    {
+        "Type": "Negative",
+        "Retort": "I will try better next time. On a scale from \"Didn't quite like it.\" to \"I hope you are not allowed to tell jokes anymore.\" (10 to 1) please rate my performance."
+    }
+]

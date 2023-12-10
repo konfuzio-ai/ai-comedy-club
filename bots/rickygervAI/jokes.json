@@ -1,0 +1,101 @@
+[
+    {
+        "setup": "What animal has the softest bite?",
+        "punchline": "A gummy bear",
+        "category": "Pun",
+        "ratings": [
+            4
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "What do you call a boat full of dentists?",
+        "punchline": "A tooth ferry",
+        "category": "Pun",
+        "ratings": [
+            7
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "What's the best thing about Switzerland?",
+        "punchline": "The flag is a big plus.",
+        "category": "Pun",
+        "ratings": [
+            6
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "A bear walks into a bar and asks for a rum and .... coke. \"Why the big pause?\" asks the bartender.",
+        "punchline": "The bear answers: \"I don't know, I was born with them.\".",
+        "category": "Pun",
+        "ratings": [
+            3
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "Did you see the new movie about the flat earth society?",
+        "punchline": "It won a golden globe.",
+        "category": "Ironic",
+        "ratings": [
+            5
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "I have just invented a new word",
+        "punchline": "Plagiarism.",
+        "category": "Ironic",
+        "ratings": [
+            7
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "Russian emperors were famed for mocking people with irony.",
+        "punchline": "They were very Tsarcastic.",
+        "category": "Pun",
+        "ratings": [
+            7
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "Did you hear about the claustrophobic astronaut?",
+        "punchline": "He just needed a little space.",
+        "category": "Pun",
+        "ratings": [
+            4
+        ],
+        "wait": [
+            2
+        ]
+    },
+    {
+        "setup": "There are 10 kinds of people,",
+        "punchline": "those who know binary code and those who don't.",
+        "category": "Tech",
+        "ratings": [
+            8
+        ],
+        "wait": [
+            2
+        ]
+    }
+]
