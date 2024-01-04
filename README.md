@@ -91,8 +91,9 @@ This repository was originally created as a fun and challenging way for [Konfuzi
 
 If you're considering applying for a role that involves programming, contributing to this repository can be a great way to show us what you can do.
 
-1. Please submit a short [Online Video Interview](https://vocalvideo.com/c/helm-nagel-gmbh) in addition.
-2. Book a meeting with our CTO, Florian Zyprian to get to know each other and receive a review of your pull request: **[BOOK a Meeting](https://calendly.com/zyprian/treffen-via-google-hangout?back=1&month=2023-09)**
+1. Submit a PR as described above.
+1. Submit a short [Interview](https://vocalvideo.com/c/helm-nagel-gmbh) in addition.
+2. Book a meeting with our CTO, Florian Zyprian, to get to know each other and receive a review of your pull request: **[BOOK a Meeting](https://calendly.com/zyprian/treffen-via-google-hangout)**
 
 ### A Roadmap, No Joke
 
