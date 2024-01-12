@@ -58,7 +58,7 @@ sentence-transformers==2.2.2
 sentencepiece==0.1.99
 six==1.16.0
 smmap==5.0.0
-streamlit==1.23.1
+streamlit==1.30.0
 sympy==1.12
 tenacity==8.2.2
 textblob==0.17.1
