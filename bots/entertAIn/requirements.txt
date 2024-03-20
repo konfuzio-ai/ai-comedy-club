@@ -16,7 +16,7 @@ bcrypt==4.0.1
 beautifulsoup4==4.12.2
 better-profanity==0.7.0
 binaryornot==0.4.4
-black==23.3.0
+black==24.3.0
 bleach==6.0.0
 cachetools==5.3.1
 certifi==2023.5.7
